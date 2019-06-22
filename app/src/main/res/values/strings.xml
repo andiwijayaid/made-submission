@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">POPFlix</string>
+    <string name="popcorn">popcorn</string>
+    <string name="title">Title</string>
+    <string name="poster">poster</string>
+    <string name="rating">Rating</string>
+</resources>
