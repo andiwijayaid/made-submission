@@ -3,5 +3,5 @@
     <dimen name="padding_from_frame">12dp</dimen>
     <dimen name="margin_within_object">12dp</dimen>
     <dimen name="card_view_radius">8dp</dimen>
-    <dimen name="card_view_elevation">8dp</dimen>
+    <dimen name="card_view_elevation">4dp</dimen>
 </resources>

@@ -1,11 +1,13 @@
 package andi.android.madegdk;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
@@ -24,6 +26,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private MovieCollection movieCollection;
     private MovieAdapter movieAdapter;
+    static final String EXTRA_MOVIE = "EXTRA_MOVIE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,15 @@ public class HomeActivity extends AppCompatActivity {
                     }
                     lastFirstVisibleItem = currentFirstVisibleItem;
                 }
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), MovieDetailActivity.class);
+                intent.putExtra(EXTRA_MOVIE, movieCollection.getMovies().get(position));
+                startActivity(intent);
             }
         });
     }

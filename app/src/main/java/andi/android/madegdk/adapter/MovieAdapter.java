@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import andi.android.madegdk.R;
 import andi.android.madegdk.model.Movie;
+import andi.android.madegdk.utils.Util;
 
 public class MovieAdapter extends BaseAdapter {
 
@@ -75,14 +76,13 @@ public class MovieAdapter extends BaseAdapter {
             Glide.with(context)
                     .load(getDrawableId(movie.getPoster()))
                     .into(posterIV);
-//            ratingBar.setMax(100);
-            ratingBar.setRating(convertRatingToFloat(movie.getRating()));
+            ratingBar.setRating(Util.convertRatingToFloat(movie.getRating()));
         }
     }
 
-    private Float convertRatingToFloat(Integer rating) {
-        return rating * 5 / 100f;
-    }
+//    private Float convertRatingToFloat(Integer rating) {
+//        return rating * 5 / 100f;
+//    }
 
     private Integer getDrawableId(String drawableName) {
         return context.getResources().getIdentifier(drawableName, "drawable", context.getPackageName());

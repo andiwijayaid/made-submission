@@ -4,4 +4,6 @@
     <string name="title">Title</string>
     <string name="poster">poster</string>
     <string name="rating">Rating</string>
+    <string name="date">Date</string>
+    <string name="overview">Overview</string>
 </resources>

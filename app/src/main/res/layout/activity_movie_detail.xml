@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MovieDetailActivity">
+
+    <ImageView
+        android:id="@+id/posterBackgroundIV"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:alpha="0.6"
+        android:scaleType="centerCrop"
+        android:src="@drawable/poster_a_star"
+        android:contentDescription="@string/poster" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_white_to_transparent" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_within_object"
+        android:layout_marginTop="150dp"
+        android:layout_marginRight="@dimen/margin_within_object"
+        app:cardCornerRadius="@dimen/card_view_radius"
+        app:cardElevation="@dimen/margin_within_object"
+        tools:targetApi="lollipop">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_within_object"
+            android:paddingBottom="@dimen/padding_from_frame"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/titleTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="165dp"
+                android:text="@string/title"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/dateTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="165dp"
+                android:text="@string/date"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="165dp"
+                android:layout_marginTop="14dp"
+                android:text="@string/rating"
+                android:textSize="12sp" />
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="165dp"
+                android:progressTint="@color/yellow_gold"
+                android:secondaryProgressTint="@color/yellow_orange" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_within_object"
+                android:text="@string/overview" />
+
+            <TextView
+                android:id="@+id/overviewTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_within_object"
+                android:text="@string/overview" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="50dp"
+        app:cardCornerRadius="@dimen/card_view_radius"
+        app:cardElevation="@dimen/margin_within_object"
+        tools:targetApi="lollipop">
+
+        <ImageView
+            android:id="@+id/posterIV"
+            android:layout_width="140dp"
+            android:layout_height="200dp"
+            android:contentDescription="@string/poster"
+            android:scaleType="centerCrop"
+            android:src="@drawable/poster_a_star" />
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>
