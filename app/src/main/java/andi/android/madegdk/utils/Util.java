@@ -9,9 +9,6 @@ public class Util {
 
     private Context context;
 
-    public Util() {
-    }
-
     public Util(Context context) {
         this.context = context;
     }

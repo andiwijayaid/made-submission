@@ -1,4 +1,4 @@
-package andi.android.madegdk;
+package andi.android.madegdk.ui.home;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -9,9 +9,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Pair;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
@@ -22,9 +20,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import andi.android.madegdk.adapter.MovieAdapter;
+import andi.android.madegdk.R;
 import andi.android.madegdk.model.Movie;
 import andi.android.madegdk.model.MovieCollection;
+import andi.android.madegdk.ui.home.adapter.MovieAdapter;
+import andi.android.madegdk.ui.moviedetail.MovieDetailActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -48,28 +48,6 @@ public class HomeActivity extends AppCompatActivity {
 
         readJson();
         initMovies();
-
-//        getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            int lastFirstVisibleItem = 0;
-
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (view.getId() == listView.getId()) {
-                    final int currentFirstVisibleItem = listView.getFirstVisiblePosition();
-                    if (currentFirstVisibleItem > lastFirstVisibleItem) {
-                        getSupportActionBar();
-                    } else if (currentFirstVisibleItem < lastFirstVisibleItem) {
-                        Objects.requireNonNull(getSupportActionBar()).show();
-                    }
-                    lastFirstVisibleItem = currentFirstVisibleItem;
-                }
-            }
-        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

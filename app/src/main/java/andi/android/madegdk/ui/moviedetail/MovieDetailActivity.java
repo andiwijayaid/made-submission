@@ -1,8 +1,8 @@
-package andi.android.madegdk;
+package andi.android.madegdk.ui.moviedetail;
 
 import android.annotation.SuppressLint;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,14 +16,17 @@ import com.bumptech.glide.Glide;
 
 import java.util.Objects;
 
+import andi.android.madegdk.R;
 import andi.android.madegdk.model.Movie;
 import andi.android.madegdk.utils.Util;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
-    private TextView titleTV, dateTV, overviewTV, budgetTV, revenueTV;
+    private TextView titleTV, dateTV, overviewTV, budgetTV, revenueTV, runtimeTV;
     private ImageView posterIV, posterBackgroundIV;
     private RatingBar ratingBar;
+
+    static final String EXTRA_MOVIE = "EXTRA_MOVIE";
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -34,11 +37,12 @@ public class MovieDetailActivity extends AppCompatActivity {
         initUI();
         Util util = new Util(this);
 
-        Movie movie = getIntent().getParcelableExtra(HomeActivity.EXTRA_MOVIE);
+        Movie movie = getIntent().getParcelableExtra(EXTRA_MOVIE);
         titleTV.setText(movie.getTitle());
         dateTV.setText(movie.getDate());
         overviewTV.setText(movie.getOverview() + "\n");
         ratingBar.setRating(Util.convertRatingToFloat(movie.getRating()));
+        runtimeTV.setText(movie.getRuntime().toString());
 
         if (util.isZero(movie.getBudget())) {
             budgetTV.setText(getString(R.string.not_available_sign));
@@ -83,12 +87,13 @@ public class MovieDetailActivity extends AppCompatActivity {
         posterIV = findViewById(R.id.posterIV);
         posterBackgroundIV = findViewById(R.id.posterBackgroundIV);
         ratingBar = findViewById(R.id.ratingBar);
+        runtimeTV = findViewById(R.id.runtimeTV);
 
         Button watchBT = findViewById(R.id.watchBT);
         watchBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Watching...", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.watching), Toast.LENGTH_LONG).show();
             }
         });
     }

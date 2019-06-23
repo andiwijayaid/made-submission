@@ -1,5 +1,6 @@
-package andi.android.madegdk.adapter;
+package andi.android.madegdk.ui.home.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,7 +60,7 @@ public class MovieAdapter extends BaseAdapter {
     }
 
     private class ViewHolder {
-        private TextView titleTV, dateTV;
+        private TextView titleTV, dateTV, runtimeTV;
         private ImageView posterIV;
         private RatingBar ratingBar;
 
@@ -68,21 +69,20 @@ public class MovieAdapter extends BaseAdapter {
             dateTV = view.findViewById(R.id.dateTV);
             posterIV = view.findViewById(R.id.posterIV);
             ratingBar = view.findViewById(R.id.ratingBar);
+            runtimeTV = view.findViewById(R.id.runtimeTV);
         }
 
+        @SuppressLint("SetTextI18n")
         void bind(Movie movie) {
             titleTV.setText(movie.getTitle());
             dateTV.setText(movie.getDate());
+            runtimeTV.setText(movie.getRuntime() + " min");
             Glide.with(context)
                     .load(getDrawableId(movie.getPoster()))
                     .into(posterIV);
             ratingBar.setRating(Util.convertRatingToFloat(movie.getRating()));
         }
     }
-
-//    private Float convertRatingToFloat(Integer rating) {
-//        return rating * 5 / 100f;
-//    }
 
     private Integer getDrawableId(String drawableName) {
         return context.getResources().getIdentifier(drawableName, "drawable", context.getPackageName());
