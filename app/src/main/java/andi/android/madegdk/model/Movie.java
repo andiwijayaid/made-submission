@@ -15,8 +15,38 @@ public class Movie implements Parcelable {
     private String date;
     @SerializedName("rating")
     private Integer rating;
+    @SerializedName("runtime")
+    private Integer runtime;
+    @SerializedName("budget")
+    private Integer budget;
+    @SerializedName("revenue")
+    private Integer revenue;
     @SerializedName("overview")
     private String overview;
+
+    public Integer getBudget() {
+        return budget;
+    }
+
+    public void setBudget(Integer budget) {
+        this.budget = budget;
+    }
+
+    public Integer getRevenue() {
+        return revenue;
+    }
+
+    public void setRevenue(Integer revenue) {
+        this.revenue = revenue;
+    }
+
+    public Integer getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(Integer runtime) {
+        this.runtime = runtime;
+    }
 
     public String getPoster() {
         return poster;
@@ -58,6 +88,20 @@ public class Movie implements Parcelable {
         this.overview = overview;
     }
 
+    public Movie() {
+    }
+
+    public Movie(String poster, String title, String date, Integer rating, Integer runtime, Integer budget, Integer revenue, String overview) {
+        this.poster = poster;
+        this.title = title;
+        this.date = date;
+        this.rating = rating;
+        this.runtime = runtime;
+        this.budget = budget;
+        this.revenue = revenue;
+        this.overview = overview;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -69,17 +113,10 @@ public class Movie implements Parcelable {
         dest.writeString(this.title);
         dest.writeString(this.date);
         dest.writeValue(this.rating);
+        dest.writeValue(this.runtime);
+        dest.writeValue(this.budget);
+        dest.writeValue(this.revenue);
         dest.writeString(this.overview);
-    }
-
-    public Movie(){}
-
-    public Movie(String poster, String title, String date, Integer rating, String overview) {
-        this.poster = poster;
-        this.title = title;
-        this.date = date;
-        this.rating = rating;
-        this.overview = overview;
     }
 
     protected Movie(Parcel in) {
@@ -87,10 +124,13 @@ public class Movie implements Parcelable {
         this.title = in.readString();
         this.date = in.readString();
         this.rating = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.runtime = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.budget = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.revenue = (Integer) in.readValue(Integer.class.getClassLoader());
         this.overview = in.readString();
     }
 
-    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
         @Override
         public Movie createFromParcel(Parcel source) {
             return new Movie(source);

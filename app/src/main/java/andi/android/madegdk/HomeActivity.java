@@ -1,13 +1,17 @@
 package andi.android.madegdk;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Pair;
 import android.view.View;
-import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
@@ -48,8 +52,10 @@ public class HomeActivity extends AppCompatActivity {
 //        getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             int lastFirstVisibleItem = 0;
+
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {}
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
@@ -68,9 +74,21 @@ public class HomeActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), MovieDetailActivity.class);
-                intent.putExtra(EXTRA_MOVIE, movieCollection.getMovies().get(position));
-                startActivity(intent);
+                CardView posterCV = view.findViewById(R.id.posterCV);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Pair[] pairs = new Pair[1];
+                    pairs[0] = new Pair<View, String>(posterCV, getString(R.string.poster));
+                    ActivityOptions activityOptions = ActivityOptions.makeSceneTransitionAnimation(
+                            HomeActivity.this, pairs
+                    );
+                    Intent intent = new Intent(getApplicationContext(), MovieDetailActivity.class);
+                    intent.putExtra(EXTRA_MOVIE, movieCollection.getMovies().get(position));
+                    startActivity(intent, activityOptions.toBundle());
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), MovieDetailActivity.class);
+                    intent.putExtra(EXTRA_MOVIE, movieCollection.getMovies().get(position));
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -83,6 +101,9 @@ public class HomeActivity extends AppCompatActivity {
                     movieCollection.getMovies().get(i).getTitle(),
                     movieCollection.getMovies().get(i).getDate(),
                     movieCollection.getMovies().get(i).getRating(),
+                    movieCollection.getMovies().get(i).getRuntime(),
+                    movieCollection.getMovies().get(i).getBudget(),
+                    movieCollection.getMovies().get(i).getRevenue(),
                     movieCollection.getMovies().get(i).getOverview()
             );
             movies.add(movie);
