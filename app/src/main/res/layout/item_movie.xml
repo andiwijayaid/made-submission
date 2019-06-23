@@ -29,7 +29,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/poster"
                 android:scaleType="centerCrop"
-                android:src="@drawable/poster_a_star" />
+                android:src="@drawable/poster_a_start_is_born" />
 
         </android.support.v7.widget.CardView>
 

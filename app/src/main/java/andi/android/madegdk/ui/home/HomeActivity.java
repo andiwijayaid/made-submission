@@ -30,7 +30,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private MovieCollection movieCollection;
     private MovieAdapter movieAdapter;
-    static final String EXTRA_MOVIE = "EXTRA_MOVIE";
+    private static final String EXTRA_MOVIE = "EXTRA_MOVIE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
