@@ -6,6 +6,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="@dimen/card_view_radius"
     android:elevation="@dimen/card_view_elevation"
+    android:layout_marginBottom="@dimen/margin_within_object"
+    android:layout_marginLeft="@dimen/margin_within_object"
+    android:layout_marginRight="@dimen/margin_within_object"
     tools:targetApi="lollipop">
 
     <LinearLayout

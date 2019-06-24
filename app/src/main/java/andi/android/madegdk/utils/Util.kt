@@ -6,7 +6,7 @@ import java.text.DecimalFormat
 import java.text.NumberFormat
 
 
-fun getDrawableId(context: Context, drawableName: String): Int? {
+fun getDrawableId(context: Context, drawableName: String?): Int? {
     return context.resources.getIdentifier(drawableName, "drawable", context.packageName)
 }
 
