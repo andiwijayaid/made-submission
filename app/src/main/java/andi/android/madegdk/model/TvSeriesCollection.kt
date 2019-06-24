@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
-data class TvShowCollection(
-        @SerializedName("movies")
-        private val movies: ArrayList<Movie>? = null
+data class TvSeriesCollection(
+        @SerializedName("tv_series")
+        val tvSeries: ArrayList<TvSeries>? = null
 ) : Parcelable

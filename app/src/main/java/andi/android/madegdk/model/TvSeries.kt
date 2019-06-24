@@ -5,23 +5,23 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class TvShow(
+data class TvSeries(
 
         @SerializedName("poster")
-        private val poster: String? = null,
+        val poster: String? = null,
         @SerializedName("title")
-        private val title: String? = null,
+        val title: String? = null,
         @SerializedName("date")
-        private val date: String? = null,
+        val date: String? = null,
         @SerializedName("rating")
-        private val rating: Int? = null,
+        val rating: Int? = null,
         @SerializedName("runtime")
-        private val runtime: Int? = null,
+        val runtime: Int? = null,
         @SerializedName("num_of_episode")
-        private val numberOfEpisode: Int? = null,
+        val numberOfEpisode: Int? = null,
         @SerializedName("language")
-        private val language: String? = null,
+        val language: String? = null,
         @SerializedName("overview")
-        private val overview: String? = null
+        val overview: String? = null
 
 ) : Parcelable

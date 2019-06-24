@@ -4,6 +4,8 @@ import andi.android.madegdk.R
 import andi.android.madegdk.model.Movie
 import andi.android.madegdk.model.MovieCollection
 import andi.android.madegdk.ui.home.movie.adapter.MovieAdapter
+import andi.android.madegdk.ui.moviedetail.MovieDetailActivity
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -20,6 +22,7 @@ class MovieFragment : Fragment() {
     private lateinit var movieAdapter: MovieAdapter
     private lateinit var movieCollection: MovieCollection
     private var movies: ArrayList<Movie> = arrayListOf()
+    private val extraMovie = "EXTRA_MOVIE"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -28,7 +31,11 @@ class MovieFragment : Fragment() {
         readJson()
         initMovies()
 
-        movieAdapter = MovieAdapter(context, movies) {}
+        movieAdapter = MovieAdapter(context, movies) {
+            val intent = Intent(context, MovieDetailActivity::class.java)
+            intent.putExtra(extraMovie, it)
+            startActivity(intent)
+        }
         view.movieRV.adapter = movieAdapter
         view.movieRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
