@@ -5,9 +5,10 @@ import andi.android.madegdk.model.TvSeries
 import andi.android.madegdk.utils.convertRatingToFloat
 import andi.android.madegdk.utils.getDrawableId
 import android.annotation.SuppressLint
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_tv_series_detail.*
 
@@ -42,5 +43,7 @@ class TvSeriesDetailActivity : AppCompatActivity() {
         Glide.with(this)
                 .load(getDrawableId(applicationContext, tvSeries.poster.toString()))
                 .into(posterBackgroundIV)
+
+        watchBT.setOnClickListener { Toast.makeText(applicationContext, getString(R.string.watching), Toast.LENGTH_LONG).show() }
     }
 }

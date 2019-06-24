@@ -10,7 +10,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
-import android.widget.Button
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_movie_detail.*
@@ -62,7 +61,6 @@ class MovieDetailActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp)
         toolbar.setNavigationOnClickListener { finish() }
 
-        val watchBT = findViewById<Button>(R.id.watchBT)
         watchBT.setOnClickListener { Toast.makeText(applicationContext, getString(R.string.watching), Toast.LENGTH_LONG).show() }
     }
 }
