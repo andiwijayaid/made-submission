@@ -2,7 +2,10 @@ package andi.android.madegdk.ui.home.movie
 
 import andi.android.madegdk.R
 import andi.android.madegdk.model.Movie
-import andi.android.madegdk.utils.*
+import andi.android.madegdk.utils.convertRatingToFloat
+import andi.android.madegdk.utils.convertToCurrency
+import andi.android.madegdk.utils.getDrawableId
+import andi.android.madegdk.utils.isZero
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

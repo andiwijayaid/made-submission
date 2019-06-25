@@ -21,4 +21,8 @@
     <string name="_99">99</string>
     <string name="eps">eps</string>
     <string name="container">containter</string>
+    <string name="choose_language">Pilih Bahasa</string>
+    <string name="language">Bahasa</string>
+    <string name="english">Inggris</string>
+    <string name="indonesian">Indonesia</string>
 </resources>

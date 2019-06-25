@@ -39,17 +39,17 @@ class TvSeriesAdapter(private val context: Context?, private var tvSeries: Array
 }
 
 class TvSeriesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    val titleTV: TextView = view.findViewById(R.id.titleTV)
-    val dateTV: TextView = view.findViewById(R.id.dateTV)
-    val posterIV: ImageView = view.findViewById(R.id.posterIV)
-    val ratingBar: RatingBar = view.findViewById(R.id.ratingBar)
-    val runtimeTV: TextView = view.findViewById(R.id.runtimeTV)
+    private val titleTV: TextView = view.findViewById(R.id.titleTV)
+    private val dateTV: TextView = view.findViewById(R.id.dateTV)
+    private val posterIV: ImageView = view.findViewById(R.id.posterIV)
+    private val ratingBar: RatingBar = view.findViewById(R.id.ratingBar)
+    private val runtimeTV: TextView = view.findViewById(R.id.runtimeTV)
 
     @SuppressLint("SetTextI18n")
     fun bindItem(context: Context, tvSeries: TvSeries, listener: (TvSeries) -> Unit) {
-        titleTV.setText(tvSeries.title)
-        dateTV.setText(tvSeries.date)
-        runtimeTV.setText("${tvSeries.runtime} min")
+        titleTV.text = tvSeries.title
+        dateTV.text = tvSeries.date
+        runtimeTV.text = "${tvSeries.runtime} min"
         Glide.with(context)
                 .load(getDrawableId(context, tvSeries.poster))
                 .into(posterIV)

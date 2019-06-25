@@ -66,11 +66,10 @@ class TvSeriesFragment : Fragment() {
         val jsonString: String
 
         try {
-            val inputStream: InputStream?
-            if (isIndonesian()) {
-                inputStream = context?.getAssets()?.open("tv_series_indonesian.json")
+            val inputStream: InputStream? = if (isIndonesian()) {
+                context?.assets?.open("tv_series_indonesian.json")
             } else {
-                inputStream = context?.getAssets()?.open("tv_series.json")
+                context?.assets?.open("tv_series.json")
             }
             val size = inputStream?.available()
             val buffer = ByteArray(size!!)

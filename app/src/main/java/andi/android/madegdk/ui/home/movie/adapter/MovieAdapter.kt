@@ -6,7 +6,6 @@ import andi.android.madegdk.utils.convertRatingToFloat
 import andi.android.madegdk.utils.getDrawableId
 import android.annotation.SuppressLint
 import android.content.Context
-import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -40,18 +39,17 @@ class MovieAdapter(private val context: Context?, private var movies: ArrayList<
 }
 
 class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    val titleTV: TextView = view.findViewById(R.id.titleTV)
-    val dateTV: TextView = view.findViewById(R.id.dateTV)
-    val posterIV: ImageView = view.findViewById(R.id.posterIV)
-    val ratingBar: RatingBar = view.findViewById(R.id.ratingBar)
-    val runtimeTV: TextView = view.findViewById(R.id.runtimeTV)
-    val posterCV: CardView = view.findViewById(R.id.posterCV)
+    private val titleTV: TextView = view.findViewById(R.id.titleTV)
+    private val dateTV: TextView = view.findViewById(R.id.dateTV)
+    private val posterIV: ImageView = view.findViewById(R.id.posterIV)
+    private val ratingBar: RatingBar = view.findViewById(R.id.ratingBar)
+    private val runtimeTV: TextView = view.findViewById(R.id.runtimeTV)
 
     @SuppressLint("SetTextI18n")
     fun bindItem(context: Context, movie: Movie, listener: (Movie) -> Unit) {
-        titleTV.setText(movie.title)
-        dateTV.setText(movie.date)
-        runtimeTV.setText("${movie.runtime} min")
+        titleTV.text = movie.title
+        dateTV.text = movie.date
+        runtimeTV.text = "${movie.runtime} min"
         Glide.with(context)
                 .load(getDrawableId(context, movie.poster))
                 .into(posterIV)
