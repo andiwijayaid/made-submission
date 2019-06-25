@@ -4,13 +4,13 @@ import andi.android.madegdk.R
 import andi.android.madegdk.model.Movie
 import andi.android.madegdk.model.MovieCollection
 import andi.android.madegdk.ui.home.movie.adapter.MovieAdapter
-import andi.android.madegdk.ui.moviedetail.MovieDetailActivity
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +36,7 @@ class MovieFragment : Fragment() {
 
         movieAdapter = MovieAdapter(context, movies) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Log.d("AS", "AS")
                 val pairs: Array<android.util.Pair<View, String>?> = arrayOfNulls(1)
                 pairs[0] = android.util.Pair<View, String>(posterCV, getString(R.string.poster))
                 val activityOptions = ActivityOptions.makeSceneTransitionAnimation(
@@ -44,6 +45,10 @@ class MovieFragment : Fragment() {
                 val intent = Intent(context, MovieDetailActivity::class.java)
                 intent.putExtra(extraMovie, it)
                 startActivity(intent, activityOptions.toBundle())
+//                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+//                        this.activity!!, posterCV, posterCV.transitionName
+//                )
+//                ActivityCompat.startActivity(this.context!!, intent, options.toBundle())
             } else {
                 val intent = Intent(context, MovieDetailActivity::class.java)
                 intent.putExtra(extraMovie, it)

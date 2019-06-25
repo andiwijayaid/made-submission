@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeActivity">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/colorPrimary" />
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
@@ -40,11 +45,6 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     </android.support.design.widget.AppBarLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@color/colorPrimary" />
 
     <android.support.v4.view.ViewPager
         android:layout_below="@id/toolbar"

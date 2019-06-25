@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ui.home.tvseries.TvSeriesDetailActivity"></activity>
         <activity
-            android:name=".ui.moviedetail.MovieDetailActivity"
+            android:name=".ui.home.movie.MovieDetailActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.HomeActivity"

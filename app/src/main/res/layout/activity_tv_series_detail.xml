@@ -88,8 +88,8 @@
         app:cardCornerRadius="@dimen/card_view_radius"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/cardView3"
-        app:layout_constraintHorizontal_bias="0.04"
-        app:layout_constraintStart_toStartOf="@+id/posterBackgroundIV"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/containerCV"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintVertical_bias="0.054"
         tools:targetApi="lollipop">
@@ -116,10 +116,10 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/cardView3"
-        app:layout_constraintEnd_toEndOf="@+id/cardView3"
+        app:layout_constraintEnd_toEndOf="@+id/containerCV"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/cardView4"
-        app:layout_constraintTop_toTopOf="@+id/cardView3"
+        app:layout_constraintTop_toTopOf="@+id/containerCV"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
@@ -183,7 +183,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/cardView3"
         app:layout_constraintEnd_toEndOf="@+id/cardView3"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/cardView3"
+        app:layout_constraintStart_toStartOf="@+id/containerCV"
         app:layout_constraintTop_toBottomOf="@+id/cardView4"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -193,12 +193,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:textColor="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView3"
-        app:layout_constraintEnd_toEndOf="@+id/cardView3"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/cardView3"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintEnd_toEndOf="@+id/containerCV"
+        app:layout_constraintStart_toStartOf="@+id/containerCV"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <TextView
         android:id="@+id/textView11"
@@ -213,7 +210,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/cardView3"
         app:layout_constraintEnd_toEndOf="@+id/cardView3"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/cardView3"
+        app:layout_constraintStart_toStartOf="@+id/containerCV"
         app:layout_constraintTop_toBottomOf="@+id/overviewTV"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -225,7 +222,7 @@
         android:text="@string/_99"
         android:textSize="32sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/cardView3"
+        app:layout_constraintStart_toStartOf="@+id/containerCV"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
     <TextView
@@ -263,6 +260,7 @@
         android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:layout_marginEnd="8dp"
         android:text="@string/number_of_eps"
         android:textColor="@android:color/black"

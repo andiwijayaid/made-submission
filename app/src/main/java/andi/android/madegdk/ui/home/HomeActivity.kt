@@ -22,7 +22,9 @@ class HomeActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.elevation = 0f
-        appBar.outlineProvider = null
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            appBar.outlineProvider = null
+        }
 
         homeViewPagerAdapter = HomeViewPagerAdapter(supportFragmentManager)
         setupViewPager(viewPager)

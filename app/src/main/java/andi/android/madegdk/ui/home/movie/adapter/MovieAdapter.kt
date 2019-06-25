@@ -2,11 +2,19 @@ package andi.android.madegdk.ui.home.movie.adapter
 
 import andi.android.madegdk.R
 import andi.android.madegdk.model.Movie
+import andi.android.madegdk.ui.home.movie.MovieDetailActivity
 import andi.android.madegdk.utils.convertRatingToFloat
 import andi.android.madegdk.utils.getDrawableId
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Context
+import android.content.Intent
+import android.os.Build
+import android.support.v4.content.ContextCompat.startActivity
+import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

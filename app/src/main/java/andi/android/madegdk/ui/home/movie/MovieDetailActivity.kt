@@ -1,4 +1,4 @@
-package andi.android.madegdk.ui.moviedetail
+package andi.android.madegdk.ui.home.movie
 
 import andi.android.madegdk.R
 import andi.android.madegdk.model.Movie
@@ -9,6 +9,7 @@ import andi.android.madegdk.utils.isZero
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import com.bumptech.glide.Glide
@@ -20,6 +21,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_detail)
 
