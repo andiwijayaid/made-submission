@@ -17,9 +17,9 @@ data class Movie(
         @SerializedName("runtime")
         var runtime: Int? = null,
         @SerializedName("budget")
-        var budget: Int? = null,
+        var budget: Long? = null,
         @SerializedName("revenue")
-        var revenue: Int? = null,
+        var revenue: Long? = null,
         @SerializedName("overview")
         var overview: String? = null
 ) : Parcelable

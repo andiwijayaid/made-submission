@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">POPFlix</string>
+    <string name="popcorn">popcorn</string>
+    <string name="title">Judul</string>
+    <string name="poster">poster</string>
+    <string name="rating">Penilaian</string>
+    <string name="date">Tanggal</string>
+    <string name="overview">Kilasan Singkat</string>
+    <string name="currency_sign">Rp</string>
+    <string name="not_available_sign">-</string>
+    <string name="budget">Anggaran</string>
+    <string name="revenue">Pendapatan</string>
+    <string name="watch_now">Nonton Sekarang</string>
+    <string name="watching">Nonton…</string>
+    <string name="runtime">Durasi</string>
+    <string name="min">min</string>
+    <string name="movie">Film</string>
+    <string name="series">Serial TV</string>
+    <string name="number_of_eps">Jumlah Episode.</string>
+    <string name="_99">99</string>
+    <string name="eps">eps</string>
+    <string name="container">containter</string>
+</resources>

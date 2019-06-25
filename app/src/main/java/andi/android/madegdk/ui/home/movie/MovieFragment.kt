@@ -4,21 +4,20 @@ import andi.android.madegdk.R
 import andi.android.madegdk.model.Movie
 import andi.android.madegdk.model.MovieCollection
 import andi.android.madegdk.ui.home.movie.adapter.MovieAdapter
-import android.app.ActivityOptions
+import andi.android.madegdk.utils.isIndonesian
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_movie.view.*
-import kotlinx.android.synthetic.main.item_movie.*
 import java.io.IOException
+import java.io.InputStream
 import java.nio.charset.StandardCharsets
+import java.util.*
 
 class MovieFragment : Fragment() {
 
@@ -35,25 +34,9 @@ class MovieFragment : Fragment() {
         initMovies()
 
         movieAdapter = MovieAdapter(context, movies) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Log.d("AS", "AS")
-                val pairs: Array<android.util.Pair<View, String>?> = arrayOfNulls(1)
-                pairs[0] = android.util.Pair<View, String>(posterCV, getString(R.string.poster))
-                val activityOptions = ActivityOptions.makeSceneTransitionAnimation(
-                        activity, *pairs
-                )
-                val intent = Intent(context, MovieDetailActivity::class.java)
-                intent.putExtra(extraMovie, it)
-                startActivity(intent, activityOptions.toBundle())
-//                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-//                        this.activity!!, posterCV, posterCV.transitionName
-//                )
-//                ActivityCompat.startActivity(this.context!!, intent, options.toBundle())
-            } else {
-                val intent = Intent(context, MovieDetailActivity::class.java)
-                intent.putExtra(extraMovie, it)
-                startActivity(intent)
-            }
+            val intent = Intent(context, MovieDetailActivity::class.java)
+            intent.putExtra(extraMovie, it)
+            startActivity(intent)
         }
         view.movieRV.adapter = movieAdapter
         view.movieRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -64,7 +47,7 @@ class MovieFragment : Fragment() {
     private fun initMovies() {
         movies.clear()
         for (i in 0 until movieCollection.movies!!.size) {
-            val movie = Movie (
+            val movie = Movie(
                     movieCollection.movies!![i].poster,
                     movieCollection.movies!![i].title,
                     movieCollection.movies!![i].date,
@@ -82,7 +65,12 @@ class MovieFragment : Fragment() {
         val jsonString: String
 
         try {
-            val inputStream = context?.getAssets()?.open("movie.json")
+            val inputStream: InputStream?
+            if (isIndonesian()) {
+                inputStream = context?.getAssets()?.open("movie_indonesian.json")
+            } else {
+                inputStream = context?.getAssets()?.open("movie.json")
+            }
             val size = inputStream?.available()
             val buffer = ByteArray(size!!)
             inputStream.read(buffer)

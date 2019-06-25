@@ -8,6 +8,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_tv_series_detail.*
@@ -45,10 +46,7 @@ class TvSeriesDetailActivity : AppCompatActivity() {
                 .into(posterBackgroundIV)
 
         watchBT.setOnClickListener { Toast.makeText(applicationContext, getString(R.string.watching), Toast.LENGTH_LONG).show() }
-    }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        posterBackgroundIV.animation = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
     }
 }

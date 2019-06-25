@@ -6,7 +6,7 @@
     <string name="rating">Rating</string>
     <string name="date">Date</string>
     <string name="overview">Overview</string>
-    <string name="dollar_sign">$</string>
+    <string name="currency_sign">$</string>
     <string name="not_available_sign">-</string>
     <string name="budget">Budget</string>
     <string name="revenue">Revenue</string>

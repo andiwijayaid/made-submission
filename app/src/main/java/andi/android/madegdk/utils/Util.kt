@@ -4,13 +4,14 @@ import android.content.Context
 
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.util.*
 
 
 fun getDrawableId(context: Context, drawableName: String?): Int? {
     return context.resources.getIdentifier(drawableName, "drawable", context.packageName)
 }
 
-fun convertToCurrency(money: Int?): String {
+fun convertToCurrency(money: Long?): String {
     val nf = NumberFormat.getCurrencyInstance()
     val pattern = (nf as DecimalFormat).toPattern()
     val newPattern = pattern.replace("\u00A4", "").trim { it <= ' ' }
@@ -18,8 +19,8 @@ fun convertToCurrency(money: Int?): String {
     return newFormat.format(money)
 }
 
-fun isZero(money: Int?): Boolean {
-    return money == 0
+fun isZero(money: Long?): Boolean {
+    return money == 0L
 }
 
 fun convertRatingToFloat(rating: Int?): Float {
@@ -27,4 +28,8 @@ fun convertRatingToFloat(rating: Int?): Float {
         return rating * 5 / 100f
     }
     return 0F
+}
+
+fun isIndonesian(): Boolean {
+    return Locale.getDefault().language == "in"
 }

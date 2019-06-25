@@ -21,7 +21,7 @@ class TvSeriesAdapter(private val context: Context?, private var tvSeries: Array
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): TvSeriesViewHolder {
         return TvSeriesViewHolder(
                 LayoutInflater.from(p0.context).inflate(
-                        R.layout.item_movie,
+                        R.layout.item_tv_series,
                         p0,
                         false
                 )

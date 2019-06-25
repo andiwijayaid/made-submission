@@ -4,9 +4,8 @@ import andi.android.madegdk.R
 import andi.android.madegdk.model.TvSeries
 import andi.android.madegdk.model.TvSeriesCollection
 import andi.android.madegdk.ui.home.tvseries.adapter.TvSeriesAdapter
-import android.app.ActivityOptions
+import andi.android.madegdk.utils.isIndonesian
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -15,11 +14,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_tv_series.view.*
-import kotlinx.android.synthetic.main.item_movie.*
 import java.io.IOException
+import java.io.InputStream
 import java.nio.charset.StandardCharsets
 
-class TvSeriesFragment: Fragment() {
+class TvSeriesFragment : Fragment() {
 
     private lateinit var tvSeriesAdapter: TvSeriesAdapter
     private lateinit var tvSeriesCollection: TvSeriesCollection
@@ -35,21 +34,10 @@ class TvSeriesFragment: Fragment() {
         initTvSeries()
 
 
-        tvSeriesAdapter = TvSeriesAdapter(context, tvSeriesData){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val pairs: Array<android.util.Pair<View, String>?> = arrayOfNulls(1)
-                pairs[0] = android.util.Pair<View, String>(posterCV, getString(R.string.poster))
-                val activityOptions = ActivityOptions.makeSceneTransitionAnimation(
-                        activity, *pairs
-                )
-                val intent = Intent(context, TvSeriesDetailActivity::class.java)
-                intent.putExtra(extraTvSeries, it)
-                startActivity(intent, activityOptions.toBundle())
-            } else {
-                val intent = Intent(context, TvSeriesDetailActivity::class.java)
-                intent.putExtra(extraTvSeries, it)
-                startActivity(intent)
-            }
+        tvSeriesAdapter = TvSeriesAdapter(context, tvSeriesData) {
+            val intent = Intent(context, TvSeriesDetailActivity::class.java)
+            intent.putExtra(extraTvSeries, it)
+            startActivity(intent)
         }
         view.tvSeriesRV.adapter = tvSeriesAdapter
         view.tvSeriesRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -60,7 +48,7 @@ class TvSeriesFragment: Fragment() {
     private fun initTvSeries() {
         tvSeriesData.clear()
         for (i in 0 until tvSeriesCollection.tvSeries!!.size) {
-            val tvSeries = TvSeries (
+            val tvSeries = TvSeries(
                     tvSeriesCollection.tvSeries!![i].poster,
                     tvSeriesCollection.tvSeries!![i].title,
                     tvSeriesCollection.tvSeries!![i].date,
@@ -78,7 +66,12 @@ class TvSeriesFragment: Fragment() {
         val jsonString: String
 
         try {
-            val inputStream = context?.getAssets()?.open("tv_series.json")
+            val inputStream: InputStream?
+            if (isIndonesian()) {
+                inputStream = context?.getAssets()?.open("tv_series_indonesian.json")
+            } else {
+                inputStream = context?.getAssets()?.open("tv_series.json")
+            }
             val size = inputStream?.available()
             val buffer = ByteArray(size!!)
             inputStream.read(buffer)
