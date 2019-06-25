@@ -4,6 +4,7 @@ import andi.android.madegdk.R
 import andi.android.madegdk.ui.home.movie.MovieFragment
 import andi.android.madegdk.ui.home.tvseries.TvSeriesFragment
 import andi.android.madegdk.utils.isIndonesian
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
@@ -54,6 +55,13 @@ class HomeActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    @SuppressLint("PrivateResource")
+    private fun reopen() {
+        finish()
+        overridePendingTransition(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom)
+        startActivity(intent)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId) {
             R.id.language -> showChangeLanguageDialog()
@@ -81,10 +89,10 @@ class HomeActivity : AppCompatActivity() {
         mBuilder.setSingleChoiceItems(listItems, checkedItem) { dialogInterface, i ->
             if (i == 0) {
                 setLocale("en")
-                recreate()
+                reopen()
             } else if (i == 1) {
                 setLocale("in")
-                recreate()
+                reopen()
             }
             dialogInterface.dismiss()
         }

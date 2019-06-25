@@ -27,7 +27,7 @@ class TvSeriesDetailActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
         toolbar.setNavigationOnClickListener { finish() }
 
         val tvSeries = intent.getParcelableExtra<TvSeries>(extraMovie)
