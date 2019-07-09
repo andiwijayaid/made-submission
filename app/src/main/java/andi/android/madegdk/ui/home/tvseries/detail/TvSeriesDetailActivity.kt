@@ -1,9 +1,9 @@
-package andi.android.madegdk.ui.home.tvseries
+package andi.android.madegdk.ui.home.tvseries.detail
 
 import andi.android.madegdk.R
 import andi.android.madegdk.model.TvSeries
-import andi.android.madegdk.utils.convertRatingToFloat
 import andi.android.madegdk.utils.getDrawableId
+import andi.android.madegdk.utils.normalizeRating
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -32,11 +32,9 @@ class TvSeriesDetailActivity : AppCompatActivity() {
 
         val tvSeries = intent.getParcelableExtra<TvSeries>(extraMovie)
         titleTV.text = tvSeries.title
-        dateTV.text = tvSeries.date
-        ratingBar.rating = convertRatingToFloat(tvSeries.rating)
+        dateTV.text = tvSeries.firstAirDate
+        ratingBar.rating = normalizeRating(tvSeries.rating)
         overviewTV.text = "${tvSeries.overview}\n"
-        runtimeTV.text = tvSeries.runtime.toString()
-        numberOfEpsTV.text = tvSeries.numberOfEpisode.toString()
 
         Glide.with(this)
                 .load(getDrawableId(applicationContext, tvSeries.poster.toString()))

@@ -1,9 +1,9 @@
 package andi.android.madegdk.ui.home.tvseries.adapter
 
+import andi.android.madegdk.BuildConfig
 import andi.android.madegdk.R
 import andi.android.madegdk.model.TvSeries
-import andi.android.madegdk.utils.convertRatingToFloat
-import andi.android.madegdk.utils.getDrawableId
+import andi.android.madegdk.utils.normalizeRating
 import android.annotation.SuppressLint
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -16,8 +16,11 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 
 
-class TvSeriesAdapter(private val context: Context?, private var tvSeries: ArrayList<TvSeries>, private val listener: (TvSeries) -> Unit) :
+class TvSeriesAdapter(private val context: Context?, private val listener: (TvSeries) -> Unit) :
         RecyclerView.Adapter<TvSeriesViewHolder>() {
+
+    private val mData = ArrayList<TvSeries>()
+
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): TvSeriesViewHolder {
         return TvSeriesViewHolder(
                 LayoutInflater.from(p0.context).inflate(
@@ -28,12 +31,23 @@ class TvSeriesAdapter(private val context: Context?, private var tvSeries: Array
         )
     }
 
-    override fun getItemCount(): Int = tvSeries.size
+    override fun getItemCount(): Int = mData.size
 
     override fun onBindViewHolder(p0: TvSeriesViewHolder, p1: Int) {
         if (context != null) {
-            p0.bindItem(context, tvSeries[p1], listener)
+            p0.bindItem(context, mData[p1], listener)
         }
+    }
+
+    fun setTvSeries(tvSeries: ArrayList<TvSeries>) {
+        mData.clear()
+        mData.addAll(tvSeries)
+        notifyDataSetChanged()
+    }
+
+    fun addTvSeries(tvSeries: ArrayList<TvSeries>) {
+        mData.addAll(tvSeries)
+        notifyDataSetChanged()
     }
 
 }
@@ -48,12 +62,11 @@ class TvSeriesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     @SuppressLint("SetTextI18n")
     fun bindItem(context: Context, tvSeries: TvSeries, listener: (TvSeries) -> Unit) {
         titleTV.text = tvSeries.title
-        dateTV.text = tvSeries.date
-        runtimeTV.text = "${tvSeries.runtime} min"
+        dateTV.text = tvSeries.firstAirDate
         Glide.with(context)
-                .load(getDrawableId(context, tvSeries.poster))
+                .load("${BuildConfig.IMAGE_URL}t/p/w185${tvSeries.poster}")
                 .into(posterIV)
-        ratingBar.rating = convertRatingToFloat(tvSeries.rating)
+        ratingBar.rating = normalizeRating(tvSeries.rating)
 
         itemView.setOnClickListener {
             listener(tvSeries)

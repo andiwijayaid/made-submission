@@ -2,9 +2,10 @@ package andi.android.madegdk.ui.home.tvseries
 
 import andi.android.madegdk.R
 import andi.android.madegdk.model.TvSeries
-import andi.android.madegdk.model.TvSeriesCollection
 import andi.android.madegdk.ui.home.tvseries.adapter.TvSeriesAdapter
-import andi.android.madegdk.utils.isIndonesian
+import andi.android.madegdk.ui.home.tvseries.detail.TvSeriesDetailActivity
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -12,78 +13,75 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.gson.Gson
+import com.scwang.smartrefresh.layout.api.RefreshLayout
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_tv_series.view.*
-import java.io.IOException
-import java.io.InputStream
-import java.nio.charset.StandardCharsets
+import java.util.*
 
 class TvSeriesFragment : Fragment() {
 
     private lateinit var tvSeriesAdapter: TvSeriesAdapter
-    private lateinit var tvSeriesCollection: TvSeriesCollection
-    private var tvSeriesData: ArrayList<TvSeries> = arrayListOf()
-
     private val extraTvSeries = "EXTRA_TV_SERIES"
+
+    private lateinit var tvSeriesViewModel: TvSeriesViewModel
+    private lateinit var tvSeriesView: View
+    private var page = 1
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val view = inflater.inflate(R.layout.fragment_tv_series, container, false)
+        tvSeriesView = inflater.inflate(R.layout.fragment_tv_series, container, false)
 
-        readJson()
-        initTvSeries()
+        tvSeriesViewModel = ViewModelProviders.of(this).get(TvSeriesViewModel::class.java)
+        tvSeriesViewModel.setTvSeries(resources.getString(R.string.language_code), page)
+        showLoading(true)
+        tvSeriesViewModel.getTvSeries().observe(this, getTvSeries)
 
-
-        tvSeriesAdapter = TvSeriesAdapter(context, tvSeriesData) {
+        tvSeriesAdapter = TvSeriesAdapter(context) {
             val intent = Intent(context, TvSeriesDetailActivity::class.java)
             intent.putExtra(extraTvSeries, it)
             startActivity(intent)
         }
-        view.tvSeriesRV.adapter = tvSeriesAdapter
-        view.tvSeriesRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        tvSeriesAdapter.notifyDataSetChanged()
+        tvSeriesView.tvSeriesRV.adapter = tvSeriesAdapter
+        tvSeriesView.tvSeriesRV.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        return view
-    }
-
-    private fun initTvSeries() {
-        tvSeriesData.clear()
-        for (i in 0 until tvSeriesCollection.tvSeries!!.size) {
-            val tvSeries = TvSeries(
-                    tvSeriesCollection.tvSeries!![i].poster,
-                    tvSeriesCollection.tvSeries!![i].title,
-                    tvSeriesCollection.tvSeries!![i].date,
-                    tvSeriesCollection.tvSeries!![i].rating,
-                    tvSeriesCollection.tvSeries!![i].runtime,
-                    tvSeriesCollection.tvSeries!![i].numberOfEpisode,
-                    tvSeriesCollection.tvSeries!![i].language,
-                    tvSeriesCollection.tvSeries!![i].overview
-            )
-            tvSeriesData.add(tvSeries)
-        }
-    }
-
-    private fun readJson() {
-        val jsonString: String
-
-        try {
-            val inputStream: InputStream? = if (isIndonesian()) {
-                context?.assets?.open("tv_series_indonesian.json")
-            } else {
-                context?.assets?.open("tv_series.json")
+        tvSeriesView.refreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener{
+            override fun onLoadMore(refreshLayout: RefreshLayout) {
+                page += 1
+                tvSeriesViewModel.setTvSeries(resources.getString(R.string.language_code), page)
             }
-            val size = inputStream?.available()
-            val buffer = ByteArray(size!!)
-            inputStream.read(buffer)
-            inputStream.close()
 
-            jsonString = String(buffer, StandardCharsets.UTF_8)
+            override fun onRefresh(refreshLayout: RefreshLayout) {
+                page = 1
+                tvSeriesViewModel.setTvSeries(resources.getString(R.string.language_code), page)
+            }
 
-            val gson = Gson()
-            tvSeriesCollection = gson.fromJson(jsonString, TvSeriesCollection::class.java)
+        })
 
-        } catch (e: IOException) {
-            e.printStackTrace()
+        return tvSeriesView
+    }
+
+    private fun showLoading(state: Boolean) {
+        if (state) {
+            tvSeriesView.progressBar.visibility = View.VISIBLE
+        } else {
+            tvSeriesView.progressBar.visibility = View.GONE
         }
+    }
 
+    private val getTvSeries = Observer<ArrayList<TvSeries>> { tvSeries ->
+        if (tvSeries != null) {
+            if (page == 1) {
+                tvSeriesAdapter.setTvSeries(tvSeries)
+            } else {
+                tvSeriesAdapter.addTvSeries(tvSeries)
+            }
+            showLoading(false)
+            tvSeriesView.refreshLayout.finishRefresh(true)
+            tvSeriesView.refreshLayout.finishLoadMore(true)
+        } else {
+            showLoading(true)
+        }
     }
 }

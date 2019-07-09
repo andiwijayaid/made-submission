@@ -7,20 +7,18 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class TvSeries(
 
-        @SerializedName("poster")
+        @SerializedName("id")
+        var id: Int? = null,
+        @SerializedName("poster_path")
         val poster: String? = null,
-        @SerializedName("title")
+        @SerializedName("backdrop_path")
+        val backdrop: String? = null,
+        @SerializedName("original_name")
         val title: String? = null,
-        @SerializedName("date")
-        val date: String? = null,
-        @SerializedName("rating")
-        val rating: Int? = null,
-        @SerializedName("runtime")
-        val runtime: Int? = null,
-        @SerializedName("num_of_episode")
-        val numberOfEpisode: Int? = null,
-        @SerializedName("language")
-        val language: String? = null,
+        @SerializedName("first_air_date")
+        val firstAirDate: String? = null,
+        @SerializedName("vote_average")
+        val rating: Float? = null,
         @SerializedName("overview")
         val overview: String? = null
 

@@ -11,6 +11,11 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "API_URL", "\"https://api.themoviedb.org/\""
+        buildConfigField "String", "IMAGE_URL", "\"https://image.tmdb.org/\""
+        buildConfigField "String", "TOKEN", "\"edf6ba342b359b83a59218f69953b2d8\""
+
     }
     buildTypes {
         release {
@@ -34,6 +39,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
+
     // Gson
     implementation 'com.google.code.gson:gson:2.8.5'
     // Glide
@@ -43,4 +51,17 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:support-v4:28.0.0'
 
+    // GSON
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+
+    // Swipe Refresh Layout
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-30'
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-30'
+
+    // Spinner Kit - Progress Bar
+    implementation 'com.github.ybq:Android-SpinKit:1.2.0'
 }

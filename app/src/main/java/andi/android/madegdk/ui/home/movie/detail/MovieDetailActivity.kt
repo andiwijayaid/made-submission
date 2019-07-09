@@ -1,11 +1,8 @@
-package andi.android.madegdk.ui.home.movie
+package andi.android.madegdk.ui.home.movie.detail
 
 import andi.android.madegdk.R
 import andi.android.madegdk.model.Movie
-import andi.android.madegdk.utils.convertRatingToFloat
-import andi.android.madegdk.utils.convertToCurrency
 import andi.android.madegdk.utils.getDrawableId
-import andi.android.madegdk.utils.isZero
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -32,20 +29,7 @@ class MovieDetailActivity : AppCompatActivity() {
         titleTV.text = movie.title
         dateTV.text = movie.date
         overviewTV.text = movie.overview + "\n"
-        ratingBar.rating = convertRatingToFloat(movie.rating)
-        runtimeTV.text = movie.runtime.toString()
-
-        if (isZero(movie.budget)) {
-            budgetTV.text = getString(R.string.not_available_sign)
-        } else {
-            budgetTV.text = convertToCurrency(movie.budget)
-        }
-
-        if (isZero(movie.revenue)) {
-            revenueTV.text = getString(R.string.not_available_sign)
-        } else {
-            revenueTV.text = convertToCurrency(movie.revenue)
-        }
+//        ratingBar.rating = convertRatingToFloat(movie.rating)
 
         Glide.with(this)
                 .load(getDrawableId(applicationContext, movie.poster.toString()))

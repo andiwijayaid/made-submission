@@ -1,7 +1,6 @@
 package andi.android.madegdk.utils
 
 import android.content.Context
-
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
@@ -21,6 +20,13 @@ fun convertToCurrency(money: Long?): String {
 
 fun isZero(money: Long?): Boolean {
     return money == 0L
+}
+
+fun normalizeRating(rating: Float?): Float {
+    if (rating != null) {
+        return rating.div(2)
+    }
+    return 0F
 }
 
 fun convertRatingToFloat(rating: Int?): Float {

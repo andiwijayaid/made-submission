@@ -32,7 +32,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         setSupportActionBar(toolbar)
-//        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.elevation = 0f
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             appBar.outlineProvider = null
@@ -63,7 +63,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
+        when (item?.itemId) {
             R.id.language -> showChangeLanguageDialog()
         }
         return super.onOptionsItemSelected(item)
@@ -77,11 +77,10 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun showChangeLanguageDialog() {
-        val checkedItem: Int
-        if (isIndonesian()) {
-            checkedItem = 1
+        val checkedItem: Int = if (isIndonesian()) {
+            1
         } else {
-            checkedItem = 0
+            0
         }
         val listItems = arrayOf(getString(R.string.english), getString(R.string.indonesian))
         val mBuilder = AlertDialog.Builder(this@HomeActivity)
@@ -112,9 +111,9 @@ class HomeActivity : AppCompatActivity() {
         editor.apply()
     }
 
-    fun loadLocale() {
+    private fun loadLocale() {
         val sharedPreferences = getSharedPreferences("SETTINGS", Activity.MODE_PRIVATE)
-        val lang = sharedPreferences.getString("MY_LANG", Locale.getDefault().language)
+        val lang = sharedPreferences.getString("MY_LANG", Locale.getDefault().displayLanguage)
         setLocale(lang)
     }
 }

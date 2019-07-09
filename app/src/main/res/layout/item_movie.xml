@@ -58,15 +58,6 @@
                 android:textSize="12sp" />
 
             <TextView
-                android:id="@+id/runtimeTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/dateTV"
-                android:textStyle="bold"
-                android:text="@string/runtime"
-                android:textSize="12sp" />
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/ratingBar"
