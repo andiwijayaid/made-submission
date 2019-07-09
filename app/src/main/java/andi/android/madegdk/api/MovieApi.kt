@@ -1,9 +1,12 @@
 package andi.android.madegdk.api
 
+import andi.android.madegdk.response.MovieDetailResponse
 import andi.android.madegdk.response.MovieResponse
+import andi.android.madegdk.response.TvSeriesDetailResponse
 import andi.android.madegdk.response.TvSeriesResponse
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MovieApi {
@@ -21,4 +24,18 @@ interface MovieApi {
             @Query("language") language: String,
             @Query("page") page: Int
     ): Call<TvSeriesResponse>
+
+    @GET("3/movie/{id}")
+    fun getMovieDetail(
+            @Path("id") id: Int?,
+            @Query("api_key") apiKey: String,
+            @Query("language") language: String
+    ): Call<MovieDetailResponse>
+
+    @GET("3/tv/{id}")
+    fun getTvSeriesDetail(
+            @Path("id") id: Int?,
+            @Query("api_key") apiKey: String,
+            @Query("language") language: String
+    ): Call<TvSeriesDetailResponse>
 }

@@ -17,7 +17,8 @@
     <string name="min">min</string>
     <string name="movie">Movie</string>
     <string name="series">TV Series</string>
-    <string name="number_of_eps">Number of Eps.</string>
+    <string name="number_of_eps">No of Episode</string>
+    <string name="number_of_season">No of Season</string>
     <string name="_99">99</string>
     <string name="eps">eps</string>
     <string name="container">containter</string>

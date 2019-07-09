@@ -1,21 +1,33 @@
 package andi.android.madegdk.ui.home.tvseries.detail
 
+import andi.android.madegdk.BuildConfig
 import andi.android.madegdk.R
 import andi.android.madegdk.model.TvSeries
-import andi.android.madegdk.utils.getDrawableId
+import andi.android.madegdk.response.TvSeriesDetailResponse
 import andi.android.madegdk.utils.normalizeRating
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_tv_series_detail.*
 
-class TvSeriesDetailActivity : AppCompatActivity() {
+class TvSeriesDetailActivity : AppCompatActivity(), TvSeriesDetailContract.View {
+    override fun onTvSeriesDetailRetrieved(tvSeriesDetailResponse: TvSeriesDetailResponse) {
+        numberOfSeasonTV.text = tvSeriesDetailResponse.numberOfSeasons
+        numberOfEpsTV.text = tvSeriesDetailResponse.numberOfEpisodes
+
+        numberOfSeasonTV.visibility = View.VISIBLE
+        numberOfEpsTV.visibility = View.VISIBLE
+
+        numberOfSeasonPB.visibility = View.GONE
+        numberOfEpsPB.visibility = View.GONE
+    }
 
     private val extraMovie = "EXTRA_TV_SERIES"
+    private lateinit var presenter: TvSeriesDetailPresenter
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,15 +48,19 @@ class TvSeriesDetailActivity : AppCompatActivity() {
         ratingBar.rating = normalizeRating(tvSeries.rating)
         overviewTV.text = "${tvSeries.overview}\n"
 
+        numberOfSeasonTV.visibility = View.INVISIBLE
+        numberOfEpsTV.visibility = View.INVISIBLE
+
         Glide.with(this)
-                .load(getDrawableId(applicationContext, tvSeries.poster.toString()))
+                .load("${BuildConfig.IMAGE_URL}t/p/original${tvSeries.poster}")
                 .into(posterIV)
         Glide.with(this)
-                .load(getDrawableId(applicationContext, tvSeries.poster.toString()))
+                .load("${BuildConfig.IMAGE_URL}t/p/original${tvSeries.backdrop}")
                 .into(posterBackgroundIV)
 
-        watchBT.setOnClickListener { Toast.makeText(applicationContext, getString(R.string.watching), Toast.LENGTH_LONG).show() }
-
         posterBackgroundIV.animation = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
+
+        presenter = TvSeriesDetailPresenter(this)
+        presenter.getTvSeriesDetail(tvSeries.id, resources.getString(R.string.language_code))
     }
 }

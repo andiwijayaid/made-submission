@@ -57,7 +57,7 @@ class TvSeriesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val dateTV: TextView = view.findViewById(R.id.dateTV)
     private val posterIV: ImageView = view.findViewById(R.id.posterIV)
     private val ratingBar: RatingBar = view.findViewById(R.id.ratingBar)
-    private val runtimeTV: TextView = view.findViewById(R.id.runtimeTV)
+    private val runtimeTV: TextView = view.findViewById(R.id.numberOfSeasonTV)
 
     @SuppressLint("SetTextI18n")
     fun bindItem(context: Context, tvSeries: TvSeries, listener: (TvSeries) -> Unit) {
