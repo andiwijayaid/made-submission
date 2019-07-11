@@ -1,25 +1,18 @@
 package andi.android.madegdk.utils
 
-import android.content.Context
 import java.text.DecimalFormat
 import java.text.NumberFormat
-import java.util.*
 
-
-fun getDrawableId(context: Context, drawableName: String?): Int? {
-    return context.resources.getIdentifier(drawableName, "drawable", context.packageName)
-}
-
-fun convertToCurrency(money: Long?): String {
+fun convertToCurrency(money: String?): String {
     val nf = NumberFormat.getCurrencyInstance()
     val pattern = (nf as DecimalFormat).toPattern()
     val newPattern = pattern.replace("\u00A4", "").trim { it <= ' ' }
     val newFormat = DecimalFormat(newPattern)
-    return newFormat.format(money)
+    return newFormat.format(money?.toLong())
 }
 
-fun isZero(money: Long?): Boolean {
-    return money == 0L
+fun isZero(money: String?): Boolean {
+    return money == "0.00"
 }
 
 fun normalizeRating(rating: Float?): Float {
@@ -29,13 +22,10 @@ fun normalizeRating(rating: Float?): Float {
     return 0F
 }
 
-fun convertRatingToFloat(rating: Int?): Float {
-    if (rating != null) {
-        return rating * 5 / 100f
-    }
-    return 0F
+fun convertToRupiah(dollar: String): String {
+    return (dollar.toLong() * 14000).toString()
 }
 
-fun isIndonesian(): Boolean {
-    return Locale.getDefault().language == "in"
+fun isIndonesian(myLang: String): Boolean {
+    return myLang == "in"
 }

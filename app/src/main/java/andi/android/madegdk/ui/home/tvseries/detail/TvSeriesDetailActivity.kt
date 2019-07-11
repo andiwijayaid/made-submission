@@ -7,23 +7,34 @@ import andi.android.madegdk.response.TvSeriesDetailResponse
 import andi.android.madegdk.utils.normalizeRating
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_tv_series_detail.*
 
 class TvSeriesDetailActivity : AppCompatActivity(), TvSeriesDetailContract.View {
-    override fun onTvSeriesDetailRetrieved(tvSeriesDetailResponse: TvSeriesDetailResponse) {
-        numberOfSeasonTV.text = tvSeriesDetailResponse.numberOfSeasons
-        numberOfEpsTV.text = tvSeriesDetailResponse.numberOfEpisodes
+    override fun stopLoading() {
 
         numberOfSeasonTV.visibility = View.VISIBLE
         numberOfEpsTV.visibility = View.VISIBLE
 
-        numberOfSeasonPB.visibility = View.GONE
-        numberOfEpsPB.visibility = View.GONE
+        numberOfSeasonPB.visibility = View.INVISIBLE
+        numberOfEpsPB.visibility = View.INVISIBLE
+
+    }
+
+    override fun onFail() {
+        stopLoading()
+        Toast.makeText(applicationContext, resources.getString(R.string.check_your_connection), Toast.LENGTH_LONG).show()
+    }
+
+    override fun onTvSeriesDetailRetrieved(tvSeriesDetailResponse: TvSeriesDetailResponse) {
+        stopLoading()
+        numberOfSeasonTV.text = tvSeriesDetailResponse.numberOfSeasons
+        numberOfEpsTV.text = tvSeriesDetailResponse.numberOfEpisodes
     }
 
     private val extraMovie = "EXTRA_TV_SERIES"

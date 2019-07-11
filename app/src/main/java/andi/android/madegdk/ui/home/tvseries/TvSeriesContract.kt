@@ -10,6 +10,7 @@ interface TvSeriesContract {
 
     interface View {
         fun onTvSeriesRetrieved(tvSeries: ArrayList<TvSeries>?)
+        fun onFail()
     }
 
 }

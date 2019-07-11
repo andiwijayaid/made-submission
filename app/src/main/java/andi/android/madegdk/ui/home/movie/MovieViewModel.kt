@@ -1,11 +1,14 @@
 package andi.android.madegdk.ui.home.movie
 
 import andi.android.madegdk.model.Movie
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
 class MovieViewModel : ViewModel(), MovieContract.View {
+    override fun onFail() {
+        this.movies.postValue(null)
+    }
 
     private val movies = MutableLiveData<ArrayList<Movie>>()
 

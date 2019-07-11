@@ -6,18 +6,18 @@ import andi.android.madegdk.model.Movie
 import andi.android.madegdk.utils.normalizeRating
 import android.annotation.SuppressLint
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import com.bumptech.glide.Glide
 
 
 class MovieAdapter(private val context: Context?, private val listener: (Movie) -> Unit) :
-        RecyclerView.Adapter<MovieViewHolder>() {
+        androidx.recyclerview.widget.RecyclerView.Adapter<MovieViewHolder>() {
 
     private val mData = ArrayList<Movie>()
 
@@ -52,14 +52,16 @@ class MovieAdapter(private val context: Context?, private val listener: (Movie) 
 
 }
 
-class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class MovieViewHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
     private val titleTV: TextView = view.findViewById(R.id.titleTV)
     private val dateTV: TextView = view.findViewById(R.id.dateTV)
     private val posterIV: ImageView = view.findViewById(R.id.posterIV)
     private val ratingBar: RatingBar = view.findViewById(R.id.ratingBar)
+    private val itemParentCV: CardView = view.findViewById(R.id.itemParentCV)
 
     @SuppressLint("SetTextI18n")
     fun bindItem(context: Context, movie: Movie, listener: (Movie) -> Unit) {
+//        itemParentCV.animation = AnimationUtils.loadAnimation(context, R.anim.item_animation_slide_from_bottom)
         titleTV.text = movie.title
         dateTV.text = movie.date
         Glide.with(context)

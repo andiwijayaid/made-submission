@@ -1,11 +1,14 @@
 package andi.android.madegdk.ui.home.tvseries
 
 import andi.android.madegdk.model.TvSeries
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
 class TvSeriesViewModel : ViewModel(), TvSeriesContract.View {
+    override fun onFail() {
+        this.tvSeries.postValue(null)
+    }
 
     private val tvSeries = MutableLiveData<ArrayList<TvSeries>>()
 

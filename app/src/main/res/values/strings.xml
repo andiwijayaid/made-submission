@@ -26,4 +26,7 @@
     <string name="language">Language</string>
     <string name="english">English</string>
     <string name="indonesian">Indonesian</string>
+    <string name="check_your_connection">check your connection</string>
+    <string name="fail">fail</string>
+    <string name="not_available" translatable="false">NA</string>
 </resources>

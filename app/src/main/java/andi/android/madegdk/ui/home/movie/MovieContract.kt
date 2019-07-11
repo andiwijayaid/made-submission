@@ -10,6 +10,7 @@ interface MovieContract {
 
     interface View {
         fun onMoviesRetrieved(movies: ArrayList<Movie>?)
+        fun onFail()
     }
 
 }

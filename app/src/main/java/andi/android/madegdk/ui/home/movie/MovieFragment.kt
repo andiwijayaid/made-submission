@@ -4,19 +4,21 @@ import andi.android.madegdk.R
 import andi.android.madegdk.model.Movie
 import andi.android.madegdk.ui.home.movie.adapter.MovieAdapter
 import andi.android.madegdk.ui.home.movie.detail.MovieDetailActivity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import kotlinx.android.synthetic.main.fragment_movie.*
 import kotlinx.android.synthetic.main.fragment_movie.view.*
-import java.util.*
 
 class MovieFragment : Fragment() {
 
@@ -43,7 +45,7 @@ class MovieFragment : Fragment() {
         }
         movieAdapter.notifyDataSetChanged()
         movieView.movieRV?.adapter = movieAdapter
-        movieView.movieRV?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        movieView.movieRV?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
         movieView.refreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {
@@ -61,26 +63,28 @@ class MovieFragment : Fragment() {
         return movieView
     }
 
-    private fun showLoading(state: Boolean) {
-        if (state) {
-            movieView.progressBar.visibility = View.VISIBLE
-        } else {
-            movieView.progressBar.visibility = View.GONE
-        }
-    }
-
     private val getMovies = Observer<ArrayList<Movie>> { movies ->
+        showLoading(false)
+        movieView.refreshLayout.finishRefresh(true)
+        movieView.refreshLayout.finishLoadMore(true)
         if (movies != null) {
             if (page == 1) {
                 movieAdapter.setMovies(movies)
             } else {
                 movieAdapter.addMovies(movies)
             }
-            showLoading(false)
-            movieView.refreshLayout.finishRefresh(true)
-            movieView.refreshLayout.finishLoadMore(true)
+            onFailLL.visibility = View.GONE
         } else {
-            showLoading(true)
+            onFailLL.visibility = View.VISIBLE
+            Toast.makeText(context, resources.getString(R.string.check_your_connection), Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun showLoading(state: Boolean) {
+        if (state) {
+            movieView.progressBar.visibility = View.VISIBLE
+        } else {
+            movieView.progressBar.visibility = View.GONE
         }
     }
 }

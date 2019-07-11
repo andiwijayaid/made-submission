@@ -14,6 +14,7 @@ class TvSeriesDetailPresenter(val view: TvSeriesDetailContract.View) : TvSeriesD
                 .enqueue(object : retrofit2.Callback<TvSeriesDetailResponse> {
                     override fun onFailure(call: Call<TvSeriesDetailResponse>, t: Throwable) {
                         Log.d("M Fail", t.message)
+                        view.onFail()
                     }
 
                     override fun onResponse(call: Call<TvSeriesDetailResponse>, response: Response<TvSeriesDetailResponse>) {
@@ -22,7 +23,6 @@ class TvSeriesDetailPresenter(val view: TvSeriesDetailContract.View) : TvSeriesD
                                 response.body()?.numberOfSeasons
                         )
                         view.onTvSeriesDetailRetrieved(aTvSeries)
-                        Log.d("RES", aTvSeries.toString())
                     }
 
                 })

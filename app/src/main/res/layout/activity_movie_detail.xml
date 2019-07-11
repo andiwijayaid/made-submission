@@ -7,7 +7,7 @@
     android:background="@android:color/white"
     tools:context=".ui.home.tvseries.detail.TvSeriesDetailActivity">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -34,7 +34,7 @@
             app:layout_constraintTop_toTopOf="@id/parent"
             app:layout_constraintVertical_bias="0.0" />
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
             app:layout_constraintTop_toTopOf="@+id/view"
             app:layout_constraintVertical_bias="0.0" />
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/cardView3"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -68,9 +68,9 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/posterCV"
             android:layout_width="124dp"
             android:layout_height="190dp"
@@ -94,7 +94,7 @@
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/poster_a_start_is_born" />
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/titleTV"
@@ -215,6 +215,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:text="@string/not_available_sign"
             android:textColor="@android:color/black"
             app:layout_constraintBottom_toBottomOf="@+id/cardView3"
             app:layout_constraintEnd_toEndOf="@+id/cardView3"
@@ -260,7 +261,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
-            android:text="@string/budget"
+            android:text="@string/not_available"
             app:layout_constraintBottom_toBottomOf="@+id/currencySign1TV"
             app:layout_constraintStart_toEndOf="@+id/currencySign1TV"
             app:layout_constraintTop_toTopOf="@+id/currencySign1TV"
@@ -301,7 +302,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
-            android:text="@string/revenue"
+            android:text="@string/not_available"
             app:layout_constraintBottom_toBottomOf="@+id/currencySign2TV"
             app:layout_constraintStart_toEndOf="@+id/currencySign1TV"
             app:layout_constraintTop_toTopOf="@+id/currencySign2TV"
@@ -325,7 +326,7 @@
             android:id="@+id/numberOfSeasonTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/_99"
+            android:text="@string/not_available"
             android:textSize="36sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/textView4"
@@ -344,6 +345,6 @@
             app:layout_constraintTop_toBottomOf="@+id/textView4"
             app:layout_constraintVertical_bias="0.8" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

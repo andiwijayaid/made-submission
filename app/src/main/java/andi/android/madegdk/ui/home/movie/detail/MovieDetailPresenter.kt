@@ -14,6 +14,7 @@ class MovieDetailPresenter(val view: MovieDetailContract.View) : MovieDetailCont
                 .enqueue(object : retrofit2.Callback<MovieDetailResponse> {
                     override fun onFailure(call: Call<MovieDetailResponse>, t: Throwable) {
                         Log.d("M Fail", t.message)
+                        view.onFail()
                     }
 
                     override fun onResponse(call: Call<MovieDetailResponse>, response: Response<MovieDetailResponse>) {
@@ -23,7 +24,6 @@ class MovieDetailPresenter(val view: MovieDetailContract.View) : MovieDetailCont
                                 response.body()?.runtime
                         )
                         view.onMovieDetailRetrieved(movie)
-                        Log.d("RES", movie.toString())
                     }
 
                 })

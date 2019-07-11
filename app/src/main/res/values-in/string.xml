@@ -27,4 +27,6 @@
     <string name="language">Bahasa</string>
     <string name="english">Inggris</string>
     <string name="indonesian">Indonesia</string>
+    <string name="check_your_connection">cek konseksi Anda</string>
+    <string name="fail">gagal</string>
 </resources>

@@ -10,6 +10,8 @@ interface TvSeriesDetailContract {
 
     interface View {
         fun onTvSeriesDetailRetrieved(tvSeriesDetailResponse: TvSeriesDetailResponse)
+        fun onFail()
+        fun stopLoading()
     }
 
 }

@@ -6,18 +6,18 @@ import andi.android.madegdk.model.TvSeries
 import andi.android.madegdk.utils.normalizeRating
 import android.annotation.SuppressLint
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import com.bumptech.glide.Glide
 
 
 class TvSeriesAdapter(private val context: Context?, private val listener: (TvSeries) -> Unit) :
-        RecyclerView.Adapter<TvSeriesViewHolder>() {
+        androidx.recyclerview.widget.RecyclerView.Adapter<TvSeriesViewHolder>() {
 
     private val mData = ArrayList<TvSeries>()
 
@@ -52,15 +52,16 @@ class TvSeriesAdapter(private val context: Context?, private val listener: (TvSe
 
 }
 
-class TvSeriesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class TvSeriesViewHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
     private val titleTV: TextView = view.findViewById(R.id.titleTV)
     private val dateTV: TextView = view.findViewById(R.id.dateTV)
     private val posterIV: ImageView = view.findViewById(R.id.posterIV)
     private val ratingBar: RatingBar = view.findViewById(R.id.ratingBar)
-    private val runtimeTV: TextView = view.findViewById(R.id.numberOfSeasonTV)
+    private val itemParentCV: CardView = view.findViewById(R.id.itemParentCV)
 
     @SuppressLint("SetTextI18n")
     fun bindItem(context: Context, tvSeries: TvSeries, listener: (TvSeries) -> Unit) {
+//        itemParentCV.animation = AnimationUtils.loadAnimation(context, R.anim.item_animation_slide_from_bottom)
         titleTV.text = tvSeries.title
         dateTV.text = tvSeries.firstAirDate
         Glide.with(context)

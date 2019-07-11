@@ -15,11 +15,11 @@ class TvSeriesPresenter(val view: TvSeriesContract.View) : TvSeriesContract.Pres
         ).enqueue(object : retrofit2.Callback<TvSeriesResponse> {
             override fun onFailure(call: Call<TvSeriesResponse>, t: Throwable) {
                 Log.d("M Fail", t.message)
+                view.onFail()
             }
 
             override fun onResponse(call: Call<TvSeriesResponse>, response: Response<TvSeriesResponse>) {
                 view.onTvSeriesRetrieved(response.body()?.tvSeries)
-                Log.d("RES", response.body().toString())
             }
 
         })

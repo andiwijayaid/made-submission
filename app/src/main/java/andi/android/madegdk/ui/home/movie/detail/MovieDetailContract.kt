@@ -10,5 +10,6 @@ interface MovieDetailContract {
 
     interface View {
         fun onMovieDetailRetrieved(movieDetailResponse: MovieDetailResponse)
+        fun onFail()
     }
 }
