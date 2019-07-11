@@ -4,20 +4,18 @@ import andi.android.madegdk.BuildConfig
 import andi.android.madegdk.R
 import andi.android.madegdk.model.Movie
 import andi.android.madegdk.utils.normalizeRating
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
-import androidx.cardview.widget.CardView
+import android.view.animation.AnimationUtils
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.item_movie.view.*
 
 
 class MovieAdapter(private val context: Context?, private val listener: (Movie) -> Unit) :
-        androidx.recyclerview.widget.RecyclerView.Adapter<MovieViewHolder>() {
+        RecyclerView.Adapter<MovieViewHolder>() {
 
     private val mData = ArrayList<Movie>()
 
@@ -52,22 +50,16 @@ class MovieAdapter(private val context: Context?, private val listener: (Movie) 
 
 }
 
-class MovieViewHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
-    private val titleTV: TextView = view.findViewById(R.id.titleTV)
-    private val dateTV: TextView = view.findViewById(R.id.dateTV)
-    private val posterIV: ImageView = view.findViewById(R.id.posterIV)
-    private val ratingBar: RatingBar = view.findViewById(R.id.ratingBar)
-    private val itemParentCV: CardView = view.findViewById(R.id.itemParentCV)
+class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    @SuppressLint("SetTextI18n")
     fun bindItem(context: Context, movie: Movie, listener: (Movie) -> Unit) {
-//        itemParentCV.animation = AnimationUtils.loadAnimation(context, R.anim.item_animation_slide_from_bottom)
-        titleTV.text = movie.title
-        dateTV.text = movie.date
+        itemView.itemParentCV.animation = AnimationUtils.loadAnimation(context, R.anim.item_animation_slide_from_bottom)
+        itemView.titleTV.text = movie.title
+        itemView.dateTV.text = movie.date
         Glide.with(context)
                 .load("${BuildConfig.IMAGE_URL}t/p/w185${movie.poster}")
-                .into(posterIV)
-        ratingBar.rating = normalizeRating(movie.rating)
+                .into(itemView.posterIV)
+        itemView.ratingBar.rating = normalizeRating(movie.rating)
 
         itemView.setOnClickListener {
             listener(movie)

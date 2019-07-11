@@ -22,7 +22,7 @@ class LanguageManager(context: Context) {
         editor = sharedPreferences.edit()
     }
 
-    fun setLocale(lang: String) {
+    fun setLocale(lang: String?) {
         val locale = Locale(lang)
         Locale.setDefault(locale)
         val config = Configuration()
@@ -38,7 +38,7 @@ class LanguageManager(context: Context) {
         setLocale(lang)
     }
 
-    fun getMyLang(): String {
+    fun getMyLang(): String? {
         val myLang = sharedPreferences.getString(MY_LANG, Locale.getDefault().displayLanguage)
         return myLang
     }

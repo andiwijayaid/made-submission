@@ -26,6 +26,6 @@ fun convertToRupiah(dollar: String): String {
     return (dollar.toLong() * 14000).toString()
 }
 
-fun isIndonesian(myLang: String): Boolean {
+fun isIndonesian(myLang: String?): Boolean {
     return myLang == "in"
 }

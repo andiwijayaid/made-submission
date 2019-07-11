@@ -6,9 +6,6 @@ import andi.android.madegdk.ui.home.tvseries.TvSeriesFragment
 import andi.android.madegdk.utils.LanguageManager
 import andi.android.madegdk.utils.isIndonesian
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Context
-import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
@@ -19,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_home.*
-import java.util.*
 
 
 class HomeActivity : AppCompatActivity() {
@@ -100,23 +96,5 @@ class HomeActivity : AppCompatActivity() {
         }
         val mDialog = mBuilder.create()
         mDialog.show()
-    }
-
-    private fun setLocale(lang: String?) {
-        val locale = Locale(lang)
-        Locale.setDefault(locale)
-        val config = Configuration()
-        config.setLocale(locale)
-        baseContext.resources.updateConfiguration(config, baseContext.resources.getDisplayMetrics())
-
-        val editor = getSharedPreferences("SETTINGS", Context.MODE_PRIVATE).edit()
-        editor.putString("MY_LANG", lang)
-        editor.apply()
-    }
-
-    private fun loadLocale() {
-        val sharedPreferences = getSharedPreferences("SETTINGS", Activity.MODE_PRIVATE)
-        val lang = sharedPreferences.getString("MY_LANG", Locale.getDefault().displayLanguage)
-        languageManager.setLocale(lang)
     }
 }

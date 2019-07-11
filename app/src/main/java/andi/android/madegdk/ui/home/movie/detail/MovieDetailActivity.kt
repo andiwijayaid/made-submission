@@ -66,7 +66,8 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailContract.View {
         titleTV.text = movie.title
         dateTV.text = movie.date
         if (movie.overview != ""){
-            overviewTV.text = movie.overview + "\n"
+            overviewTV.text = String.format(resources.getString(R.string.overview_format), movie.overview)
+//            overviewTV.text = movie.overview + "\n"
         }
         ratingBar.rating = normalizeRating(movie.rating)
 

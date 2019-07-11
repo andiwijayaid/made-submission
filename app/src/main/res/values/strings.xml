@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">POPFlix</string>
     <string name="language_code">en-US</string>
     <string name="popcorn">popcorn</string>
@@ -29,4 +29,5 @@
     <string name="check_your_connection">check your connection</string>
     <string name="fail">fail</string>
     <string name="not_available" translatable="false">NA</string>
+    <string name="overview_format" tools:ignore="MissingTranslation">%1$s\n</string>
 </resources>
