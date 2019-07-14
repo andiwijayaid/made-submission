@@ -5,38 +5,18 @@ import andi.android.madegdk.R
 import andi.android.madegdk.model.Movie
 import andi.android.madegdk.response.MovieDetailResponse
 import andi.android.madegdk.utils.*
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_movie_detail.*
 
-class MovieDetailActivity : AppCompatActivity(), MovieDetailContract.View {
-    override fun onFail() {
-        stopLoading()
-        Toast.makeText(applicationContext, resources.getString(R.string.check_your_connection), Toast.LENGTH_LONG).show()
-    }
-
-    override fun onMovieDetailRetrieved(movieDetailResponse: MovieDetailResponse) {
-        if (isIndonesian(languageManager.getMyLang())) {
-            movieDetailResponse.budget = convertToRupiah(movieDetailResponse.budget.toString())
-            movieDetailResponse.revenue = convertToRupiah(movieDetailResponse.revenue.toString())
-        }
-        movieDetailResponse.budget = convertToCurrency(movieDetailResponse.budget)
-        movieDetailResponse.revenue = convertToCurrency(movieDetailResponse.revenue)
-        if (!isZero(movieDetailResponse.budget)) {
-            budgetTV.text = movieDetailResponse.budget
-        }
-        if (!isZero(movieDetailResponse.revenue)) {
-            revenueTV.text = movieDetailResponse.revenue
-        }
-        numberOfSeasonTV.text = movieDetailResponse.runtime.toString()
-        stopLoading()
-    }
+class MovieDetailActivity : AppCompatActivity() {
 
     private fun stopLoading() {
         budgetTV.visibility = View.VISIBLE
@@ -50,24 +30,23 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailContract.View {
 
     private val extraMovie = "EXTRA_MOVIE"
 
-    private lateinit var presenter: MovieDetailPresenter
     private lateinit var languageManager: LanguageManager
 
-    @SuppressLint("SetTextI18n")
+    private lateinit var movieDetailViewModel: MovieDetailViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_movie_detail)
-
         languageManager = LanguageManager(this)
+        languageManager.loadLocale()
+        setContentView(R.layout.activity_movie_detail)
 
         initUI()
 
         val movie = intent.getParcelableExtra<Movie>(extraMovie)
         titleTV.text = movie.title
         dateTV.text = movie.date
-        if (movie.overview != ""){
+        if (movie.overview != "") {
             overviewTV.text = String.format(resources.getString(R.string.overview_format), movie.overview)
-//            overviewTV.text = movie.overview + "\n"
         }
         ratingBar.rating = normalizeRating(movie.rating)
 
@@ -84,8 +63,11 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailContract.View {
 
         posterBackgroundIV.animation = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
 
-        presenter = MovieDetailPresenter(this)
-        presenter.getMovieDetail(movie.id, resources.getString(R.string.language_code))
+        movieDetailViewModel = ViewModelProviders.of(this).get(MovieDetailViewModel::class.java)
+        if (!movieDetailViewModel.isMovieRetrieved()) {
+            movieDetailViewModel.setMovie(movie.id, resources.getString(R.string.language_code))
+        }
+        movieDetailViewModel.getMovie()?.observe(this, getMovie)
 
     }
 
@@ -100,4 +82,30 @@ class MovieDetailActivity : AppCompatActivity(), MovieDetailContract.View {
             finish()
         }
     }
+
+    private val getMovie = Observer<MovieDetailResponse> {
+        if (it != null) {
+            var mBudget = it.budget
+            var mRevenue = it.revenue
+            if (isIndonesian(languageManager.getMyLang())) {
+                mBudget = convertToRupiah(it.budget.toString())
+                mRevenue = convertToRupiah(it.revenue.toString())
+            }
+            mBudget = convertToCurrency(mBudget)
+            mRevenue = convertToCurrency(mRevenue)
+            if (!isZero(it.budget)) {
+                budgetTV.text = mBudget
+            }
+            if (!isZero(it.revenue)) {
+                revenueTV.text = mRevenue
+            }
+
+            numberOfSeasonTV.text = it.runtime.toString()
+            stopLoading()
+        } else {
+            stopLoading()
+            Toast.makeText(applicationContext, resources.getString(R.string.check_your_connection), Toast.LENGTH_LONG).show()
+        }
+    }
+
 }

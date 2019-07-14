@@ -34,11 +34,6 @@ class TvSeriesFragment : Fragment() {
 
         tvSeriesView = inflater.inflate(R.layout.fragment_tv_series, container, false)
 
-        tvSeriesViewModel = ViewModelProviders.of(this).get(TvSeriesViewModel::class.java)
-        tvSeriesViewModel.setTvSeries(resources.getString(R.string.language_code), page)
-        showLoading(true)
-        tvSeriesViewModel.getTvSeries().observe(this, getTvSeries)
-
         tvSeriesAdapter = TvSeriesAdapter(context) {
             val intent = Intent(context, TvSeriesDetailActivity::class.java)
             intent.putExtra(extraTvSeries, it)
@@ -47,6 +42,13 @@ class TvSeriesFragment : Fragment() {
         tvSeriesAdapter.notifyDataSetChanged()
         tvSeriesView.tvSeriesRV.adapter = tvSeriesAdapter
         tvSeriesView.tvSeriesRV.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+
+        tvSeriesViewModel = ViewModelProviders.of(this).get(TvSeriesViewModel::class.java)
+        if (tvSeriesViewModel.countRetrievedTvSeries() == null) {
+            tvSeriesViewModel.setTvSeries(resources.getString(R.string.language_code), page)
+            showLoading(true)
+        }
+        tvSeriesViewModel.getTvSeries().observe(this, getTvSeries)
 
         tvSeriesView.refreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {

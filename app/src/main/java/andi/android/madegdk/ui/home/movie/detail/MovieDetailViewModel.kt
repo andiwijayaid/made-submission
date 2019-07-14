@@ -4,17 +4,21 @@ import andi.android.madegdk.BuildConfig
 import andi.android.madegdk.api.ApiConfig
 import andi.android.madegdk.response.MovieDetailResponse
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import retrofit2.Call
 import retrofit2.Response
 
-class MovieDetailPresenter(val view: MovieDetailContract.View) : MovieDetailContract.Presenter {
+class MovieDetailViewModel : ViewModel() {
 
-    override fun getMovieDetail(id: Int?, languageCode: String) {
+    private var movieDetailResponse = MutableLiveData<MovieDetailResponse>()
+
+    fun setMovie(id: Int?, languageCode: String) {
         ApiConfig().instance().getMovieDetail(id, BuildConfig.TOKEN, languageCode)
                 .enqueue(object : retrofit2.Callback<MovieDetailResponse> {
                     override fun onFailure(call: Call<MovieDetailResponse>, t: Throwable) {
                         Log.d("M Fail", t.message)
-                        view.onFail()
+                        movieDetailResponse.postValue(null)
                     }
 
                     override fun onResponse(call: Call<MovieDetailResponse>, response: Response<MovieDetailResponse>) {
@@ -23,10 +27,17 @@ class MovieDetailPresenter(val view: MovieDetailContract.View) : MovieDetailCont
                                 response.body()?.revenue,
                                 response.body()?.runtime
                         )
-                        view.onMovieDetailRetrieved(movie)
+                        movieDetailResponse.postValue(movie)
                     }
 
                 })
     }
 
+    fun getMovie(): MutableLiveData<MovieDetailResponse>? {
+        return movieDetailResponse
+    }
+
+    fun isMovieRetrieved(): Boolean {
+        return movieDetailResponse.value != null
+    }
 }

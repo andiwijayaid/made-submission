@@ -53,7 +53,7 @@ class MovieAdapter(private val context: Context?, private val listener: (Movie) 
 class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     fun bindItem(context: Context, movie: Movie, listener: (Movie) -> Unit) {
-        itemView.itemParentCV.animation = AnimationUtils.loadAnimation(context, R.anim.item_animation_slide_from_bottom)
+        itemView.itemParentCV.animation = AnimationUtils.loadAnimation(context, R.anim.item_animation_slide_from_left)
         itemView.titleTV.text = movie.title
         itemView.dateTV.text = movie.date
         Glide.with(context)

@@ -12,11 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.home.tvseries.detail.TvSeriesDetailActivity"
-            android:screenOrientation="portrait" />
+            android:name=".ui.home.tvseries.detail.TvSeriesDetailActivity" />
         <activity
-            android:name=".ui.home.movie.detail.MovieDetailActivity"
-            android:screenOrientation="portrait" />
+            android:name=".ui.home.movie.detail.MovieDetailActivity" />
         <activity android:name=".ui.home.HomeActivity" />
         <activity
             android:name=".ui.launcher.MainActivity"

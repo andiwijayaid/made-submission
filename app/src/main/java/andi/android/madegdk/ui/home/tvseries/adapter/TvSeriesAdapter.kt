@@ -53,7 +53,7 @@ class TvSeriesAdapter(private val context: Context?, private val listener: (TvSe
 class TvSeriesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     fun bindItem(context: Context, tvSeries: TvSeries, listener: (TvSeries) -> Unit) {
-        itemView.itemParentCV.animation = AnimationUtils.loadAnimation(context, R.anim.item_animation_slide_from_bottom)
+        itemView.itemParentCV.animation = AnimationUtils.loadAnimation(context, R.anim.item_animation_slide_from_right)
         itemView.titleTV.text = tvSeries.title
         itemView.dateTV.text = tvSeries.firstAirDate
         Glide.with(context)

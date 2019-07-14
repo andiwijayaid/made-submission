@@ -29,14 +29,11 @@ class MovieFragment : Fragment() {
     private lateinit var movieView: View
     private var page = 1
 
+    private lateinit var movies: ArrayList<Movie>
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         movieView = inflater.inflate(R.layout.fragment_movie, container, false)
-
-        movieViewModel = ViewModelProviders.of(this).get(MovieViewModel::class.java)
-        movieViewModel.setMovies(resources.getString(R.string.language_code), page)
-        showLoading(true)
-        movieViewModel.getMovies().observe(this, getMovies)
 
         movieAdapter = MovieAdapter(context) {
             val intent = Intent(context, MovieDetailActivity::class.java)
@@ -46,6 +43,13 @@ class MovieFragment : Fragment() {
         movieAdapter.notifyDataSetChanged()
         movieView.movieRV?.adapter = movieAdapter
         movieView.movieRV?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+
+        movieViewModel = ViewModelProviders.of(this).get(MovieViewModel::class.java)
+        if (movieViewModel.countRetrievedMovies() == null) {
+            movieViewModel.setMovies(resources.getString(R.string.language_code), page)
+            showLoading(true)
+        }
+        movieViewModel.getMovies().observe(this, getMovies)
 
         movieView.refreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {
@@ -57,13 +61,13 @@ class MovieFragment : Fragment() {
                 page = 1
                 movieViewModel.setMovies(resources.getString(R.string.language_code), page)
             }
-
         })
 
         return movieView
     }
 
     private val getMovies = Observer<ArrayList<Movie>> { movies ->
+        this.movies = movies
         showLoading(false)
         movieView.refreshLayout.finishRefresh(true)
         movieView.refreshLayout.finishLoadMore(true)
