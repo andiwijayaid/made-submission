@@ -1,4 +1,4 @@
-package andi.android.madegdk.ui.home.movie.adapter
+package andi.android.madegdk.ui.home.favorite.movie.adapter
 
 import andi.android.madegdk.BuildConfig
 import andi.android.madegdk.R
@@ -15,14 +15,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_movie.view.*
 
+class FavoriteMovieAdapter(private val context: Context?, private val listener: (Movie) -> Unit) :
+        RecyclerView.Adapter<FavoriteMovieViewHolder>() {
 
-class MovieAdapter(private val context: Context?, private val listener: (Movie) -> Unit) :
-        RecyclerView.Adapter<MovieViewHolder>() {
 
     private val mData = ArrayList<Movie>()
 
-    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MovieViewHolder {
-        return MovieViewHolder(
+    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): FavoriteMovieViewHolder {
+        return FavoriteMovieViewHolder(
                 context,
                 LayoutInflater.from(p0.context).inflate(
                         R.layout.item_movie,
@@ -34,7 +34,7 @@ class MovieAdapter(private val context: Context?, private val listener: (Movie) 
 
     override fun getItemCount(): Int = mData.size
 
-    override fun onBindViewHolder(p0: MovieViewHolder, p1: Int) {
+    override fun onBindViewHolder(p0: FavoriteMovieViewHolder, p1: Int) {
         if (context != null) {
             p0.bindItem(context, mData[p1], listener)
         }
@@ -46,14 +46,9 @@ class MovieAdapter(private val context: Context?, private val listener: (Movie) 
         notifyDataSetChanged()
     }
 
-    fun addMovies(movies: ArrayList<Movie>) {
-        mData.addAll(movies)
-        notifyDataSetChanged()
-    }
-
 }
 
-class MovieViewHolder(context: Context?, view: View) : RecyclerView.ViewHolder(view) {
+class FavoriteMovieViewHolder(context: Context?, view: View) : RecyclerView.ViewHolder(view) {
 
     private val favoriteMovieHelper = FavoriteMovieHelper.getInstance(context)
 
@@ -70,9 +65,7 @@ class MovieViewHolder(context: Context?, view: View) : RecyclerView.ViewHolder(v
             listener(movie)
         }
         itemView.favoriteBT.setOnClickListener {
-            val aMovie = Movie(movie.movieId, movie.poster, movie.backdrop, movie.title, movie.date, movie.rating, movie.overview)
-//            Log.d("ID", mMovie.tvSeriesId.toString())
-            favoriteMovieHelper?.insertMovieFavorite(aMovie)
+//            favoriteMovieHelper?.insertMovieFavorite(movie.movieId.toString())
             Log.d("FAV", favoriteMovieHelper?.getAllFavoriteMovies().toString())
         }
     }

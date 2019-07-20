@@ -1,8 +1,14 @@
 package andi.android.madegdk.database
 
+import andi.android.madegdk.database.DatabaseContract.FavoriteTvSeriesColumn.Companion.BACKDROP
+import andi.android.madegdk.database.DatabaseContract.FavoriteTvSeriesColumn.Companion.FIRST_AIR_DATE
+import andi.android.madegdk.database.DatabaseContract.FavoriteTvSeriesColumn.Companion.OVERVIEW
+import andi.android.madegdk.database.DatabaseContract.FavoriteTvSeriesColumn.Companion.POSTER
+import andi.android.madegdk.database.DatabaseContract.FavoriteTvSeriesColumn.Companion.RATING
 import andi.android.madegdk.database.DatabaseContract.FavoriteTvSeriesColumn.Companion.TABLE_FAVORITE_TV_SERIES
+import andi.android.madegdk.database.DatabaseContract.FavoriteTvSeriesColumn.Companion.TITLE
 import andi.android.madegdk.database.DatabaseContract.FavoriteTvSeriesColumn.Companion.TV_SERIES_ID
-import andi.android.madegdk.model.Favorite
+import andi.android.madegdk.model.TvSeries
 import android.content.ContentValues
 import android.content.Context
 import android.database.SQLException
@@ -44,9 +50,9 @@ class FavoriteTvSeriesHelper(context: Context?) {
         }
     }
 
-    fun getAllFavoriteTvSeries(): ArrayList<Favorite> {
+    fun getAllFavoriteTvSeries(): ArrayList<TvSeries> {
 
-        val arrayList = ArrayList<Favorite>()
+        val arrayList = ArrayList<TvSeries>()
         val cursor = database.query(DATABASE_TABLE_TV_SERIES, null,
                 null,
                 null,
@@ -57,11 +63,17 @@ class FavoriteTvSeriesHelper(context: Context?) {
         cursor.moveToFirst()
         if (cursor.count > 0) {
             do {
-                val favorite = Favorite(
-                        cursor.getInt(cursor.getColumnIndexOrThrow(_ID)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(TV_SERIES_ID))
+                val tvSeries = TvSeries(
+                        cursor.getInt(cursor.getColumnIndexOrThrow(TV_SERIES_ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(POSTER)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(BACKDROP)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(TITLE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(FIRST_AIR_DATE)),
+                        cursor.getFloat(cursor.getColumnIndexOrThrow(RATING)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(OVERVIEW)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(_ID))
                 )
-                arrayList.add(favorite)
+                arrayList.add(tvSeries)
                 cursor.moveToNext()
             } while (!cursor.isAfterLast)
         }
@@ -70,9 +82,15 @@ class FavoriteTvSeriesHelper(context: Context?) {
         return arrayList
     }
 
-    fun insertNote(favoriteId: String): Long {
+    fun insertTvSeries(tvSeries: TvSeries): Long {
         val args = ContentValues()
-        args.put(TV_SERIES_ID, favoriteId)
+        args.put(TV_SERIES_ID, tvSeries.tvSeriesId)
+        args.put(POSTER, tvSeries.poster)
+        args.put(BACKDROP, tvSeries.backdrop)
+        args.put(TITLE, tvSeries.title)
+        args.put(FIRST_AIR_DATE, tvSeries.firstAirDate)
+        args.put(RATING, tvSeries.rating)
+        args.put(OVERVIEW, tvSeries.overview)
         return database.insert(DATABASE_TABLE_TV_SERIES, null, args)
     }
 

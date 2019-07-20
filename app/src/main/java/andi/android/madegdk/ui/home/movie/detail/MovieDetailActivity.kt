@@ -65,7 +65,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
         movieDetailViewModel = ViewModelProviders.of(this).get(MovieDetailViewModel::class.java)
         if (!movieDetailViewModel.isMovieRetrieved()) {
-            movieDetailViewModel.setMovie(movie.id, resources.getString(R.string.language_code))
+            movieDetailViewModel.setMovie(movie.movieId, resources.getString(R.string.language_code))
         }
         movieDetailViewModel.getMovie()?.observe(this, getMovie)
 

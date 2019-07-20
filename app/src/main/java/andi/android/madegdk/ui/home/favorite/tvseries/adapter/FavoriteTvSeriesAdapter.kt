@@ -1,4 +1,4 @@
-package andi.android.madegdk.ui.home.tvseries.adapter
+package andi.android.madegdk.ui.home.favorite.tvseries.adapter
 
 import andi.android.madegdk.BuildConfig
 import andi.android.madegdk.R
@@ -15,17 +15,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_tv_series.view.*
 
+class FavoriteTvSeriesAdapter(private val context: Context?, private val listener: (TvSeries) -> Unit) :
+        RecyclerView.Adapter<FavoriteTvSeriesViewHolder>() {
 
-class TvSeriesAdapter(private val context: Context?, private val listener: (TvSeries) -> Unit) :
-        RecyclerView.Adapter<TvSeriesViewHolder>() {
 
     private val mData = ArrayList<TvSeries>()
 
-    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): TvSeriesViewHolder {
-        return TvSeriesViewHolder(
+    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): FavoriteTvSeriesViewHolder {
+        return FavoriteTvSeriesViewHolder(
                 context,
                 LayoutInflater.from(p0.context).inflate(
-                        R.layout.item_tv_series,
+                        R.layout.item_movie,
                         p0,
                         false
                 )
@@ -34,31 +34,26 @@ class TvSeriesAdapter(private val context: Context?, private val listener: (TvSe
 
     override fun getItemCount(): Int = mData.size
 
-    override fun onBindViewHolder(p0: TvSeriesViewHolder, p1: Int) {
+    override fun onBindViewHolder(p0: FavoriteTvSeriesViewHolder, p1: Int) {
         if (context != null) {
             p0.bindItem(context, mData[p1], listener)
         }
     }
 
-    fun setTvSeries(tvSeries: ArrayList<TvSeries>) {
+    fun setMovies(movies: ArrayList<TvSeries>) {
         mData.clear()
-        mData.addAll(tvSeries)
-        notifyDataSetChanged()
-    }
-
-    fun addTvSeries(tvSeries: ArrayList<TvSeries>) {
-        mData.addAll(tvSeries)
+        mData.addAll(movies)
         notifyDataSetChanged()
     }
 
 }
 
-class TvSeriesViewHolder(context: Context?, view: View) : RecyclerView.ViewHolder(view) {
+class FavoriteTvSeriesViewHolder(context: Context?, view: View) : RecyclerView.ViewHolder(view) {
 
     private val favoriteTvSeriesHelper = FavoriteTvSeriesHelper.getInstance(context)
 
     fun bindItem(context: Context, tvSeries: TvSeries, listener: (TvSeries) -> Unit) {
-        itemView.itemParentCV.animation = AnimationUtils.loadAnimation(context, R.anim.item_animation_slide_from_right)
+        itemView.itemParentCV.animation = AnimationUtils.loadAnimation(context, R.anim.item_animation_slide_from_left)
         itemView.titleTV.text = tvSeries.title
         itemView.dateTV.text = tvSeries.firstAirDate
         Glide.with(context)
@@ -69,10 +64,8 @@ class TvSeriesViewHolder(context: Context?, view: View) : RecyclerView.ViewHolde
         itemView.setOnClickListener {
             listener(tvSeries)
         }
-
         itemView.favoriteBT.setOnClickListener {
-            val aTvSeries = TvSeries(tvSeries.tvSeriesId, tvSeries.poster, tvSeries.backdrop, tvSeries.title, tvSeries.firstAirDate, tvSeries.rating, tvSeries.overview)
-            favoriteTvSeriesHelper?.insertTvSeries(aTvSeries)
+
             Log.d("FAV", favoriteTvSeriesHelper?.getAllFavoriteTvSeries().toString())
         }
     }

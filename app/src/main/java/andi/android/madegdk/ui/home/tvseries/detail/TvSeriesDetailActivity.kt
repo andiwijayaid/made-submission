@@ -70,7 +70,7 @@ class TvSeriesDetailActivity : AppCompatActivity() {
 
         tvSeriesDetailViewModel = ViewModelProviders.of(this).get(TvSeriesDetailViewModel::class.java)
         if (!tvSeriesDetailViewModel.isTvSeriesRetrieved()) {
-            tvSeriesDetailViewModel.setTvSeries(tvSeries.id, resources.getString(R.string.language_code))
+            tvSeriesDetailViewModel.setTvSeries(tvSeries.tvSeriesId, resources.getString(R.string.language_code))
         }
         tvSeriesDetailViewModel.getTvSeries()?.observe(this, getTvSeries)
     }
