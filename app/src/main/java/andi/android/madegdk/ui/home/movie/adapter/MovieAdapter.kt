@@ -2,9 +2,11 @@ package andi.android.madegdk.ui.home.movie.adapter
 
 import andi.android.madegdk.BuildConfig
 import andi.android.madegdk.R
+import andi.android.madegdk.database.FavoriteMovieHelper
 import andi.android.madegdk.model.Movie
 import andi.android.madegdk.utils.normalizeRating
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +23,7 @@ class MovieAdapter(private val context: Context?, private val listener: (Movie) 
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MovieViewHolder {
         return MovieViewHolder(
+                context,
                 LayoutInflater.from(p0.context).inflate(
                         R.layout.item_movie,
                         p0,
@@ -50,7 +53,9 @@ class MovieAdapter(private val context: Context?, private val listener: (Movie) 
 
 }
 
-class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class MovieViewHolder(context: Context?, view: View) : RecyclerView.ViewHolder(view) {
+
+    private val favoriteMovieHelper = FavoriteMovieHelper.getInstance(context)
 
     fun bindItem(context: Context, movie: Movie, listener: (Movie) -> Unit) {
         itemView.itemParentCV.animation = AnimationUtils.loadAnimation(context, R.anim.item_animation_slide_from_left)
@@ -63,6 +68,10 @@ class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         itemView.setOnClickListener {
             listener(movie)
+        }
+        itemView.favoriteBT.setOnClickListener {
+            favoriteMovieHelper?.insertMovieFavorite(movie.id.toString())
+            Log.d("FAV", favoriteMovieHelper?.getAllFavoriteMovies().toString())
         }
     }
 }

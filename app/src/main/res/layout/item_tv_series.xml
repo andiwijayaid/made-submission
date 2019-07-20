@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemParentCV"
     android:layout_width="match_parent"
     android:layout_height="130dp"
-    android:id="@+id/itemParentCV"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="@dimen/card_view_radius"
-    android:elevation="@dimen/card_view_elevation"
-    android:layout_marginBottom="@dimen/margin_within_object"
     android:layout_marginLeft="@dimen/margin_within_object"
     android:layout_marginRight="@dimen/margin_within_object"
+    android:layout_marginBottom="@dimen/margin_within_object"
+    android:elevation="@dimen/card_view_elevation"
+    app:cardCornerRadius="@dimen/card_view_radius"
     tools:targetApi="lollipop">
 
     <LinearLayout
-        android:padding="@dimen/padding_from_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_from_frame">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/posterCV"
-            android:elevation="@dimen/card_view_elevation"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            app:cardCornerRadius="@dimen/card_view_radius"
-            android:layout_weight="0.8">
+            android:layout_weight="0.8"
+            android:elevation="@dimen/card_view_elevation"
+            app:cardCornerRadius="@dimen/card_view_radius">
 
             <ImageView
                 android:id="@+id/posterIV"
@@ -47,9 +47,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title"
-                android:textStyle="bold"
                 android:textColor="@android:color/black"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/dateTV"
@@ -71,9 +71,29 @@
                 style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
                 android:progressTint="@color/yellow_gold"
-                android:secondaryProgressTint="@color/yellow_orange"
-                android:layout_alignParentBottom="true" />
+                android:secondaryProgressTint="@color/yellow_orange" />
+
+            <com.sackcentury.shinebuttonlib.ShineButton
+                android:id="@+id/favoriteBT"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:src="@android:color/darker_gray"
+                app:allow_random_color="false"
+                app:big_shine_color="#FF6666"
+                app:btn_color="@android:color/darker_gray"
+                app:btn_fill_color="#FF6666"
+                app:click_animation_duration="200"
+                app:enable_flashing="false"
+                app:shine_animation_duration="1500"
+                app:shine_count="8"
+                app:shine_turn_angle="10"
+                app:siShape="@raw/like"
+                app:small_shine_color="#CC9999"
+                app:small_shine_offset_angle="20" />
 
         </RelativeLayout>
 

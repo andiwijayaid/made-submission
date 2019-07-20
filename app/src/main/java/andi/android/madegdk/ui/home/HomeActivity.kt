@@ -1,6 +1,7 @@
 package andi.android.madegdk.ui.home
 
 import andi.android.madegdk.R
+import andi.android.madegdk.ui.home.favorite.FavoriteFragment
 import andi.android.madegdk.ui.home.movie.MovieFragment
 import andi.android.madegdk.ui.home.tvseries.TvSeriesFragment
 import andi.android.madegdk.utils.LanguageManager
@@ -10,20 +11,17 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_home.*
 
-
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var homeViewPagerAdapter: HomeViewPagerAdapter
     private lateinit var languageManager: LanguageManager
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         languageManager = LanguageManager(this)
@@ -37,10 +35,9 @@ class HomeActivity : AppCompatActivity() {
             appBar.outlineProvider = null
         }
 
-        homeViewPagerAdapter = HomeViewPagerAdapter(supportFragmentManager)
         setupViewPager(viewPager)
         tabLayout.setupWithViewPager(viewPager)
-
+        viewPager.offscreenPageLimit = 2
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -68,13 +65,6 @@ class HomeActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun setupViewPager(viewPager: ViewPager) {
-        val homeViewPagerAdapter = HomeViewPagerAdapter(supportFragmentManager)
-        homeViewPagerAdapter.addFragment(MovieFragment(), getString(R.string.movie))
-        homeViewPagerAdapter.addFragment(TvSeriesFragment(), getString(R.string.series))
-        viewPager.adapter = homeViewPagerAdapter
-    }
-
     private fun showChangeLanguageDialog() {
         val checkedItem: Int = if (isIndonesian(languageManager.getMyLang())) {
             1
@@ -96,5 +86,13 @@ class HomeActivity : AppCompatActivity() {
         }
         val mDialog = mBuilder.create()
         mDialog.show()
+    }
+
+    private fun setupViewPager(viewPager: ViewPager) {
+        homeViewPagerAdapter = HomeViewPagerAdapter(supportFragmentManager)
+        homeViewPagerAdapter.addFragment(MovieFragment(), getString(R.string.movie))
+        homeViewPagerAdapter.addFragment(TvSeriesFragment(), getString(R.string.series))
+        homeViewPagerAdapter.addFragment(FavoriteFragment(), getString(R.string.favorite))
+        viewPager.adapter = homeViewPagerAdapter
     }
 }

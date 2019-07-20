@@ -2,9 +2,11 @@ package andi.android.madegdk.ui.home.tvseries.adapter
 
 import andi.android.madegdk.BuildConfig
 import andi.android.madegdk.R
+import andi.android.madegdk.database.FavoriteTvSeriesHelper
 import andi.android.madegdk.model.TvSeries
 import andi.android.madegdk.utils.normalizeRating
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +23,7 @@ class TvSeriesAdapter(private val context: Context?, private val listener: (TvSe
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): TvSeriesViewHolder {
         return TvSeriesViewHolder(
+                context,
                 LayoutInflater.from(p0.context).inflate(
                         R.layout.item_tv_series,
                         p0,
@@ -50,7 +53,9 @@ class TvSeriesAdapter(private val context: Context?, private val listener: (TvSe
 
 }
 
-class TvSeriesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class TvSeriesViewHolder(context: Context?, view: View) : RecyclerView.ViewHolder(view) {
+
+    private val favoriteTvSeriesHelper = FavoriteTvSeriesHelper.getInstance(context)
 
     fun bindItem(context: Context, tvSeries: TvSeries, listener: (TvSeries) -> Unit) {
         itemView.itemParentCV.animation = AnimationUtils.loadAnimation(context, R.anim.item_animation_slide_from_right)
@@ -63,6 +68,11 @@ class TvSeriesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         itemView.setOnClickListener {
             listener(tvSeries)
+        }
+
+        itemView.favoriteBT.setOnClickListener {
+            favoriteTvSeriesHelper?.insertNote(tvSeries.id.toString())
+            Log.d("FAV", favoriteTvSeriesHelper?.getAllFavoriteTvSeries().toString())
         }
     }
 }
