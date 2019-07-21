@@ -42,8 +42,12 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_below="@id/toolbar"
-            android:background="@color/colorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:tabPaddingBottom="-10dp"
+            app:tabPaddingStart="18dp"
+            app:tabPaddingEnd="18dp"
+            app:tabSelectedTextColor="@android:color/white"
+            app:tabTextColor="@color/unactive"
             app:tabIndicatorFullWidth="false" />
 
     </com.google.android.material.appbar.AppBarLayout>

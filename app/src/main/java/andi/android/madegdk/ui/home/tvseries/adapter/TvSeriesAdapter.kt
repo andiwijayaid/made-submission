@@ -16,7 +16,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_tv_series.view.*
 
 
-class TvSeriesAdapter(private val context: Context?, private val listener: (TvSeries) -> Unit) :
+class TvSeriesAdapter(private val context: Context?, private val listener: (TvSeries, Boolean, Int) -> Unit) :
         RecyclerView.Adapter<TvSeriesViewHolder>() {
 
     private val mData = ArrayList<TvSeries>()
@@ -51,13 +51,17 @@ class TvSeriesAdapter(private val context: Context?, private val listener: (TvSe
         notifyDataSetChanged()
     }
 
+    fun updateItem(position: Int) {
+        notifyItemChanged(position)
+    }
+
 }
 
 class TvSeriesViewHolder(context: Context?, view: View) : RecyclerView.ViewHolder(view) {
 
     private val favoriteTvSeriesHelper = FavoriteTvSeriesHelper.getInstance(context)
 
-    fun bindItem(context: Context, tvSeries: TvSeries, listener: (TvSeries) -> Unit) {
+    fun bindItem(context: Context, tvSeries: TvSeries, listener: (TvSeries, Boolean, Int) -> Unit) {
         itemView.itemParentCV.animation = AnimationUtils.loadAnimation(context, R.anim.item_animation_slide_from_right)
         itemView.titleTV.text = tvSeries.title
         itemView.dateTV.text = tvSeries.firstAirDate
@@ -67,13 +71,21 @@ class TvSeriesViewHolder(context: Context?, view: View) : RecyclerView.ViewHolde
         itemView.ratingBar.rating = normalizeRating(tvSeries.rating)
 
         itemView.setOnClickListener {
-            listener(tvSeries)
+            listener(tvSeries, itemView.favoriteBT.isChecked, layoutPosition)
         }
 
         itemView.favoriteBT.setOnClickListener {
-            val aTvSeries = TvSeries(tvSeries.tvSeriesId, tvSeries.poster, tvSeries.backdrop, tvSeries.title, tvSeries.firstAirDate, tvSeries.rating, tvSeries.overview)
-            favoriteTvSeriesHelper?.insertTvSeries(aTvSeries)
-            Log.d("FAV", favoriteTvSeriesHelper?.getAllFavoriteTvSeries().toString())
+            if (itemView.favoriteBT.isChecked) {
+                val aTvSeries = TvSeries(tvSeries.tvSeriesId, tvSeries.poster, tvSeries.backdrop, tvSeries.title, tvSeries.firstAirDate, tvSeries.rating, tvSeries.overview)
+                favoriteTvSeriesHelper?.insertTvSeries(aTvSeries)
+                Log.d("FAV", favoriteTvSeriesHelper?.getAllFavoriteTvSeries().toString())
+            } else {
+                favoriteTvSeriesHelper?.deleteNote(tvSeries.tvSeriesId)
+                Log.d("FAV", favoriteTvSeriesHelper?.getAllFavoriteTvSeries().toString())
+            }
+        }
+        if (favoriteTvSeriesHelper != null) {
+            itemView.favoriteBT.isChecked = favoriteTvSeriesHelper.isFavorite(tvSeries.tvSeriesId)
         }
     }
 }

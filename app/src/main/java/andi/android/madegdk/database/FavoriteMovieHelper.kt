@@ -89,12 +89,23 @@ class FavoriteMovieHelper(context: Context?) {
         args.put(BACKDROP, movie.backdrop)
         args.put(TITLE, movie.title)
         args.put(DATE, movie.date)
-        args.put(RATING, movie.date)
+        args.put(RATING, movie.rating)
         args.put(OVERVIEW, movie.overview)
         return database.insert(DATABASE_TABLE_MOVIE, null, args)
     }
 
-    fun deleteMovieFavorite(id: Int): Int {
-        return database.delete(TABLE_FAVORITE_MOVIE, "$_ID = '$id'", null)
+    fun deleteMovieFavorite(movieId: Int?): Int {
+        return database.delete(TABLE_FAVORITE_MOVIE, "$MOVIE_ID = '$movieId'", null)
+    }
+
+    fun isFavorite(movieId: Int?): Boolean {
+        val query = "SELECT * FROM $TABLE_FAVORITE_MOVIE WHERE $MOVIE_ID = $movieId"
+        val cursor = database.rawQuery(query, null)
+        if (cursor.count > 0) {
+            cursor.close()
+            return true
+        }
+        cursor.close()
+        return false
     }
 }

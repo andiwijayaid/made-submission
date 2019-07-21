@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.item_tv_series.view.*
+import kotlinx.android.synthetic.main.item_favorite.view.*
 
 class FavoriteTvSeriesAdapter(private val context: Context?, private val listener: (TvSeries) -> Unit) :
         RecyclerView.Adapter<FavoriteTvSeriesViewHolder>() {
@@ -23,9 +23,8 @@ class FavoriteTvSeriesAdapter(private val context: Context?, private val listene
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): FavoriteTvSeriesViewHolder {
         return FavoriteTvSeriesViewHolder(
-                context,
                 LayoutInflater.from(p0.context).inflate(
-                        R.layout.item_movie,
+                        R.layout.item_favorite,
                         p0,
                         false
                 )
@@ -48,25 +47,17 @@ class FavoriteTvSeriesAdapter(private val context: Context?, private val listene
 
 }
 
-class FavoriteTvSeriesViewHolder(context: Context?, view: View) : RecyclerView.ViewHolder(view) {
-
-    private val favoriteTvSeriesHelper = FavoriteTvSeriesHelper.getInstance(context)
+class FavoriteTvSeriesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     fun bindItem(context: Context, tvSeries: TvSeries, listener: (TvSeries) -> Unit) {
         itemView.itemParentCV.animation = AnimationUtils.loadAnimation(context, R.anim.item_animation_slide_from_left)
         itemView.titleTV.text = tvSeries.title
-        itemView.dateTV.text = tvSeries.firstAirDate
         Glide.with(context)
                 .load("${BuildConfig.IMAGE_URL}t/p/w185${tvSeries.poster}")
                 .into(itemView.posterIV)
         itemView.ratingBar.rating = normalizeRating(tvSeries.rating)
-
         itemView.setOnClickListener {
             listener(tvSeries)
-        }
-        itemView.favoriteBT.setOnClickListener {
-
-            Log.d("FAV", favoriteTvSeriesHelper?.getAllFavoriteTvSeries().toString())
         }
     }
 }

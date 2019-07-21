@@ -94,7 +94,18 @@ class FavoriteTvSeriesHelper(context: Context?) {
         return database.insert(DATABASE_TABLE_TV_SERIES, null, args)
     }
 
-    fun deleteNote(id: Int): Int {
-        return database.delete(TABLE_FAVORITE_TV_SERIES, "$_ID = '$id'", null)
+    fun deleteNote(tvSeriesId: Int?): Int {
+        return database.delete(TABLE_FAVORITE_TV_SERIES, "$TV_SERIES_ID = '$tvSeriesId'", null)
+    }
+
+    fun isFavorite(tvSeriesId: Int?): Boolean {
+        val query = "SELECT * FROM $TABLE_FAVORITE_TV_SERIES WHERE $TV_SERIES_ID = $tvSeriesId"
+        val cursor = database.rawQuery(query, null)
+        if (cursor.count > 0) {
+            cursor.close()
+            return true
+        }
+        cursor.close()
+        return false
     }
 }

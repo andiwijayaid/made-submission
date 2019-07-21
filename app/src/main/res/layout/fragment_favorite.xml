@@ -12,7 +12,11 @@
         android:background="@color/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:tabIndicatorFullWidth="false"
-        app:tabMode="scrollable" />
+        app:tabPaddingStart="18dp"
+        app:tabPaddingEnd="10dp"
+        app:tabIndicatorHeight="0dp"
+        app:tabTextColor="@color/unactive"
+        app:tabSelectedTextColor="@android:color/black" />
 
     <FrameLayout
         android:id="@+id/frameLayout"

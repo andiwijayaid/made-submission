@@ -24,6 +24,9 @@ class MovieFragment : Fragment() {
 
     private lateinit var movieAdapter: MovieAdapter
     private val extraMovie = "EXTRA_MOVIE"
+    private val extraPosition = "EXTRA_POSITION"
+    private val extraIsFavorite = "IS_FAVORITE"
+    private val REQUEST_FAVORITE = 888
 
     private lateinit var movieViewModel: MovieViewModel
     private lateinit var movieView: View
@@ -35,10 +38,12 @@ class MovieFragment : Fragment() {
 
         movieView = inflater.inflate(R.layout.fragment_movie, container, false)
 
-        movieAdapter = MovieAdapter(context) {
+        movieAdapter = MovieAdapter(context) { movie: Movie, isFavorite: Boolean, position: Int ->
             val intent = Intent(context, MovieDetailActivity::class.java)
-            intent.putExtra(extraMovie, it)
-            startActivity(intent)
+            intent.putExtra(extraMovie, movie)
+            intent.putExtra(extraPosition, position)
+            intent.putExtra(extraIsFavorite, isFavorite)
+            startActivityForResult(intent, REQUEST_FAVORITE)
         }
         movieAdapter.notifyDataSetChanged()
         movieView.movieRV?.adapter = movieAdapter
@@ -64,6 +69,16 @@ class MovieFragment : Fragment() {
         })
 
         return movieView
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (data != null) {
+            if (requestCode == REQUEST_FAVORITE) {
+                val position = data.getIntExtra(extraPosition, 0)
+                movieAdapter.updateItem(position)
+            }
+        }
     }
 
     private val getMovies = Observer<ArrayList<Movie>> { movies ->

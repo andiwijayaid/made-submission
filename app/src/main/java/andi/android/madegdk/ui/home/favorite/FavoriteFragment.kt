@@ -4,6 +4,7 @@ import andi.android.madegdk.R
 import andi.android.madegdk.ui.home.favorite.movie.FavoriteMovieFragment
 import andi.android.madegdk.ui.home.favorite.tvseries.FavoriteTvSeriesFragment
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ class FavoriteFragment : Fragment() {
     private lateinit var favoriteView: View
     private lateinit var favoriteMovieFragment: FavoriteMovieFragment
     private lateinit var favoriteTvSeriesFragment: FavoriteTvSeriesFragment
+    private lateinit var activeFragment: Fragment
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -23,11 +25,20 @@ class FavoriteFragment : Fragment() {
 
         favoriteMovieFragment = FavoriteMovieFragment()
         favoriteTvSeriesFragment = FavoriteTvSeriesFragment()
-        selectFragment(favoriteMovieFragment)
+        activeFragment = favoriteMovieFragment
+        selectFragment(activeFragment)
         setupTabLayout()
         bindWidgetWithEvent()
 
         return favoriteView
+    }
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (isVisibleToUser) {
+            Log.d("VIS", "FavoriteFragment")
+            selectFragment(activeFragment)
+        }
     }
 
     private fun bindWidgetWithEvent() {
@@ -54,6 +65,7 @@ class FavoriteFragment : Fragment() {
         val fragmentTransaction = childFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frameLayout, fragment)
         fragmentTransaction.commit()
+        activeFragment = fragment
     }
 
     private fun setupTabLayout() {

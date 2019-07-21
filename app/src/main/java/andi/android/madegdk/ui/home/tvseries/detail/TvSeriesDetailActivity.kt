@@ -2,11 +2,14 @@ package andi.android.madegdk.ui.home.tvseries.detail
 
 import andi.android.madegdk.BuildConfig
 import andi.android.madegdk.R
+import andi.android.madegdk.database.FavoriteTvSeriesHelper
 import andi.android.madegdk.model.TvSeries
 import andi.android.madegdk.response.TvSeriesDetailResponse
 import andi.android.madegdk.utils.LanguageManager
 import andi.android.madegdk.utils.normalizeRating
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
@@ -29,6 +32,12 @@ class TvSeriesDetailActivity : AppCompatActivity() {
     }
 
     private val extraMovie = "EXTRA_TV_SERIES"
+    private val extraPosition = "EXTRA_POSITION"
+    private val extraIsFavorite = "IS_FAVORITE"
+
+    private val RESULT_FAVORITE = 998
+
+    private var position = -1
 
     private lateinit var languageManager: LanguageManager
 
@@ -47,6 +56,8 @@ class TvSeriesDetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
         toolbar.setNavigationOnClickListener { finish() }
+
+        position = intent.getIntExtra(extraPosition, position)
 
         val tvSeries = intent.getParcelableExtra<TvSeries>(extraMovie)
         titleTV.text = tvSeries.title
@@ -68,11 +79,26 @@ class TvSeriesDetailActivity : AppCompatActivity() {
 
         posterBackgroundIV.animation = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
 
+        favoriteBT.isChecked = intent.getBooleanExtra(extraIsFavorite, true)
+
         tvSeriesDetailViewModel = ViewModelProviders.of(this).get(TvSeriesDetailViewModel::class.java)
         if (!tvSeriesDetailViewModel.isTvSeriesRetrieved()) {
             tvSeriesDetailViewModel.setTvSeries(tvSeries.tvSeriesId, resources.getString(R.string.language_code))
         }
         tvSeriesDetailViewModel.getTvSeries()?.observe(this, getTvSeries)
+
+        val favoriteTvSeriesHelper = FavoriteTvSeriesHelper.getInstance(applicationContext)
+        favoriteBT.setOnClickListener {
+            if (favoriteBT.isChecked) {
+                val aTvSeries = TvSeries(tvSeries.tvSeriesId, tvSeries.poster, tvSeries.backdrop, tvSeries.title, tvSeries.firstAirDate, tvSeries.rating, tvSeries.overview)
+                favoriteTvSeriesHelper?.insertTvSeries(aTvSeries)
+                Log.d("FAV", favoriteTvSeriesHelper?.getAllFavoriteTvSeries().toString())
+            } else {
+                favoriteTvSeriesHelper?.deleteNote(tvSeries.tvSeriesId)
+                Log.d("FAV", favoriteTvSeriesHelper?.getAllFavoriteTvSeries().toString())
+            }
+            sendResult()
+        }
     }
 
     private val getTvSeries = Observer<TvSeriesDetailResponse> {
@@ -84,5 +110,11 @@ class TvSeriesDetailActivity : AppCompatActivity() {
             stopLoading()
             Toast.makeText(applicationContext, resources.getString(R.string.check_your_connection), Toast.LENGTH_LONG).show()
         }
+    }
+
+    fun sendResult() {
+        val intent = Intent()
+        intent.putExtra(extraPosition, position)
+        setResult(RESULT_FAVORITE, intent)
     }
 }

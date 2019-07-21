@@ -35,23 +35,23 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
         private val SQL_CREATE_TABLE_FAVORITE_MOVIE = String.format("CREATE TABLE $TABLE_FAVORITE_MOVIE"
                 + " ($_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 " $MOVIE_ID TEXT NOT NULL," +
-                " $POSTER TEXT NOT NULL," +
-                " $BACKDROP TEXT NOT NULL," +
+                " $POSTER TEXT," +
+                " $BACKDROP TEXT," +
                 " $TITLE TEXT NOT NULL," +
-                " $DATE TEXT NOT NULL," +
-                " $RATING REAL NOT NULL," +
-                " $OVERVIEW TEXT NOT NULL)"
+                " $DATE TEXT," +
+                " $RATING REAL," +
+                " $OVERVIEW TEXT)"
         )
 
         private val SQL_CREATE_TABLE_FAVORITE_TV_SERIES = String.format("CREATE TABLE $TABLE_FAVORITE_TV_SERIES"
                 + " ($_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 " $TV_SERIES_ID TEXT NOT NULL," +
-                " $POSTER TEXT NOT NULL," +
-                " $BACKDROP TEXT NOT NULL," +
+                " $POSTER TEXT," +
+                " $BACKDROP TEXT," +
                 " $TITLE TEXT NOT NULL," +
-                " $FIRST_AIR_DATE TEXT NOT NULL," +
-                " $RATING TEXT NOT NULL," +
-                " $OVERVIEW TEXT NOT NULL)"
+                " $FIRST_AIR_DATE TEXT," +
+                " $RATING REAL," +
+                " $OVERVIEW TEXT)"
         )
     }
 

@@ -2,10 +2,13 @@ package andi.android.madegdk.ui.home.movie.detail
 
 import andi.android.madegdk.BuildConfig
 import andi.android.madegdk.R
+import andi.android.madegdk.database.FavoriteMovieHelper
 import andi.android.madegdk.model.Movie
 import andi.android.madegdk.response.MovieDetailResponse
 import andi.android.madegdk.utils.*
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
@@ -29,6 +32,12 @@ class MovieDetailActivity : AppCompatActivity() {
     }
 
     private val extraMovie = "EXTRA_MOVIE"
+    private val extraPosition = "EXTRA_POSITION"
+    private val extraIsFavorite = "IS_FAVORITE"
+
+    private val RESULT_FAVORITE = 998
+
+    private var position = -1
 
     private lateinit var languageManager: LanguageManager
 
@@ -41,6 +50,8 @@ class MovieDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_movie_detail)
 
         initUI()
+
+        position = intent.getIntExtra(extraPosition, position)
 
         val movie = intent.getParcelableExtra<Movie>(extraMovie)
         titleTV.text = movie.title
@@ -63,12 +74,26 @@ class MovieDetailActivity : AppCompatActivity() {
 
         posterBackgroundIV.animation = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
 
+        favoriteBT.isChecked = intent.getBooleanExtra(extraIsFavorite, true)
+
         movieDetailViewModel = ViewModelProviders.of(this).get(MovieDetailViewModel::class.java)
         if (!movieDetailViewModel.isMovieRetrieved()) {
             movieDetailViewModel.setMovie(movie.movieId, resources.getString(R.string.language_code))
         }
         movieDetailViewModel.getMovie()?.observe(this, getMovie)
 
+        val favoriteMovieHelper = FavoriteMovieHelper.getInstance(applicationContext)
+        favoriteBT.setOnClickListener {
+            if (favoriteBT.isChecked) {
+                val aMovie = Movie(movie.movieId, movie.poster, movie.backdrop, movie.title, movie.date, movie.rating, movie.overview)
+                favoriteMovieHelper?.insertMovieFavorite(aMovie)
+                Log.d("FAV", favoriteMovieHelper?.getAllFavoriteMovies().toString())
+            } else {
+                favoriteMovieHelper?.deleteMovieFavorite(movie.movieId)
+                Log.d("FAV", favoriteMovieHelper?.getAllFavoriteMovies().toString())
+            }
+            sendResult()
+        }
     }
 
     private fun initUI() {
@@ -108,4 +133,9 @@ class MovieDetailActivity : AppCompatActivity() {
         }
     }
 
+    fun sendResult() {
+        val intent = Intent()
+        intent.putExtra(extraPosition, position)
+        setResult(RESULT_FAVORITE, intent)
+    }
 }

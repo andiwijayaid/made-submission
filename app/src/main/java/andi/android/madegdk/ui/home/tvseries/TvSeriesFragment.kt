@@ -25,6 +25,9 @@ class TvSeriesFragment : Fragment() {
 
     private lateinit var tvSeriesAdapter: TvSeriesAdapter
     private val extraTvSeries = "EXTRA_TV_SERIES"
+    private val extraPosition = "EXTRA_POSITION"
+    private val extraIsFavorite = "IS_FAVORITE"
+    private val REQUEST_FAVORITE = 888
 
     private lateinit var tvSeriesViewModel: TvSeriesViewModel
     private lateinit var tvSeriesView: View
@@ -34,10 +37,12 @@ class TvSeriesFragment : Fragment() {
 
         tvSeriesView = inflater.inflate(R.layout.fragment_tv_series, container, false)
 
-        tvSeriesAdapter = TvSeriesAdapter(context) {
+        tvSeriesAdapter = TvSeriesAdapter(context) { tvSeries: TvSeries, isFavorite: Boolean, position: Int ->
             val intent = Intent(context, TvSeriesDetailActivity::class.java)
-            intent.putExtra(extraTvSeries, it)
-            startActivity(intent)
+            intent.putExtra(extraTvSeries, tvSeries)
+            intent.putExtra(extraPosition, position)
+            intent.putExtra(extraIsFavorite, isFavorite)
+            startActivityForResult(intent, REQUEST_FAVORITE)
         }
         tvSeriesAdapter.notifyDataSetChanged()
         tvSeriesView.tvSeriesRV.adapter = tvSeriesAdapter
@@ -64,6 +69,16 @@ class TvSeriesFragment : Fragment() {
         })
 
         return tvSeriesView
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (data != null) {
+            if (requestCode == REQUEST_FAVORITE) {
+                val position = data.getIntExtra(extraPosition, 0)
+                tvSeriesAdapter.updateItem(position)
+            }
+        }
     }
 
     private val getTvSeries = Observer<ArrayList<TvSeries>> { tvSeries ->

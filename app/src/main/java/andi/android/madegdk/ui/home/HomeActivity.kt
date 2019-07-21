@@ -9,12 +9,14 @@ import andi.android.madegdk.utils.isIndonesian
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
@@ -38,6 +40,21 @@ class HomeActivity : AppCompatActivity() {
         setupViewPager(viewPager)
         tabLayout.setupWithViewPager(viewPager)
         viewPager.offscreenPageLimit = 2
+
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            override fun onTabReselected(p0: TabLayout.Tab?) {
+                Log.d("AV", "onTabReselected")
+            }
+
+            override fun onTabUnselected(p0: TabLayout.Tab?) {
+                Log.d("AV", "onTabUnselected")
+            }
+
+            override fun onTabSelected(p0: TabLayout.Tab?) {
+                Log.d("AV", "onTabSelected ")
+            }
+
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
