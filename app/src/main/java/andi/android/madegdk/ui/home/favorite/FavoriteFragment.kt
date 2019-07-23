@@ -4,7 +4,6 @@ import andi.android.madegdk.R
 import andi.android.madegdk.ui.home.favorite.movie.FavoriteMovieFragment
 import andi.android.madegdk.ui.home.favorite.tvseries.FavoriteTvSeriesFragment
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +17,7 @@ class FavoriteFragment : Fragment() {
     private lateinit var favoriteMovieFragment: FavoriteMovieFragment
     private lateinit var favoriteTvSeriesFragment: FavoriteTvSeriesFragment
     private lateinit var activeFragment: Fragment
+    private var currentTabPosition = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -36,18 +36,27 @@ class FavoriteFragment : Fragment() {
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if (isVisibleToUser) {
-            Log.d("VIS", "FavoriteFragment")
-            selectFragment(activeFragment)
+            if (currentTabPosition == 0) {
+                favoriteMovieFragment.setData()
+                favoriteMovieFragment.favoriteMovieAdapter.notifyDataSetChanged()
+            } else {
+                favoriteTvSeriesFragment.setData()
+                favoriteTvSeriesFragment.favoriteTvSeriesAdapter.notifyDataSetChanged()
+            }
         }
     }
 
     private fun bindWidgetWithEvent() {
         favoriteView.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+
             override fun onTabReselected(p0: TabLayout.Tab?) {}
 
             override fun onTabUnselected(p0: TabLayout.Tab?) {}
 
             override fun onTabSelected(p0: TabLayout.Tab?) {
+                if (p0 != null) {
+                    currentTabPosition = p0.position
+                }
                 setCurrentTabFragment(p0?.position)
             }
 

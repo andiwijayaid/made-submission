@@ -5,11 +5,13 @@ import andi.android.madegdk.R
 import andi.android.madegdk.database.FavoriteTvSeriesHelper
 import andi.android.madegdk.model.TvSeries
 import andi.android.madegdk.response.TvSeriesDetailResponse
+import andi.android.madegdk.ui.home.favorite.tvseries.FavoriteTvSeriesFragment.Companion.EXTRA_IS_REMOVED
+import andi.android.madegdk.ui.home.favorite.tvseries.FavoriteTvSeriesFragment.Companion.EXTRA_POSITION
+import andi.android.madegdk.ui.home.favorite.tvseries.FavoriteTvSeriesFragment.Companion.EXTRA_TV_SERIES
 import andi.android.madegdk.utils.LanguageManager
 import andi.android.madegdk.utils.normalizeRating
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
@@ -31,11 +33,9 @@ class TvSeriesDetailActivity : AppCompatActivity() {
 
     }
 
-    private val extraMovie = "EXTRA_TV_SERIES"
-    private val extraPosition = "EXTRA_POSITION"
-    private val extraIsFavorite = "IS_FAVORITE"
-
-    private val RESULT_FAVORITE = 998
+    companion object {
+        const val RESULT_FAVORITE = 998
+    }
 
     private var position = -1
 
@@ -57,9 +57,9 @@ class TvSeriesDetailActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
         toolbar.setNavigationOnClickListener { finish() }
 
-        position = intent.getIntExtra(extraPosition, position)
+        position = intent.getIntExtra(EXTRA_POSITION, position)
 
-        val tvSeries = intent.getParcelableExtra<TvSeries>(extraMovie)
+        val tvSeries = intent.getParcelableExtra<TvSeries>(EXTRA_TV_SERIES)
         titleTV.text = tvSeries.title
         dateTV.text = tvSeries.firstAirDate
         ratingBar.rating = normalizeRating(tvSeries.rating)
@@ -79,25 +79,37 @@ class TvSeriesDetailActivity : AppCompatActivity() {
 
         posterBackgroundIV.animation = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
 
-        favoriteBT.isChecked = intent.getBooleanExtra(extraIsFavorite, true)
-
         tvSeriesDetailViewModel = ViewModelProviders.of(this).get(TvSeriesDetailViewModel::class.java)
         if (!tvSeriesDetailViewModel.isTvSeriesRetrieved()) {
             tvSeriesDetailViewModel.setTvSeries(tvSeries.tvSeriesId, resources.getString(R.string.language_code))
         }
         tvSeriesDetailViewModel.getTvSeries()?.observe(this, getTvSeries)
 
+        checkFavoriteState(tvSeries.tvSeriesId)
+
         val favoriteTvSeriesHelper = FavoriteTvSeriesHelper.getInstance(applicationContext)
         favoriteBT.setOnClickListener {
             if (favoriteBT.isChecked) {
                 val aTvSeries = TvSeries(tvSeries.tvSeriesId, tvSeries.poster, tvSeries.backdrop, tvSeries.title, tvSeries.firstAirDate, tvSeries.rating, tvSeries.overview)
                 favoriteTvSeriesHelper?.insertTvSeries(aTvSeries)
-                Log.d("FAV", favoriteTvSeriesHelper?.getAllFavoriteTvSeries().toString())
             } else {
-                favoriteTvSeriesHelper?.deleteNote(tvSeries.tvSeriesId)
-                Log.d("FAV", favoriteTvSeriesHelper?.getAllFavoriteTvSeries().toString())
+                favoriteTvSeriesHelper?.deleteTvSeries(tvSeries.tvSeriesId)
             }
             sendResult()
+        }
+    }
+
+    private fun sendResult() {
+        val intent = Intent()
+        intent.putExtra(EXTRA_POSITION, position)
+        intent.putExtra(EXTRA_IS_REMOVED, !favoriteBT.isChecked)
+        setResult(RESULT_FAVORITE, intent)
+    }
+
+    private fun checkFavoriteState(tvSeriesId: Int?) {
+        val favoriteTvSeriesHelper = FavoriteTvSeriesHelper.getInstance(applicationContext)
+        if (favoriteTvSeriesHelper != null) {
+            favoriteBT.isChecked = favoriteTvSeriesHelper.isFavorite(tvSeriesId)
         }
     }
 
@@ -110,11 +122,5 @@ class TvSeriesDetailActivity : AppCompatActivity() {
             stopLoading()
             Toast.makeText(applicationContext, resources.getString(R.string.check_your_connection), Toast.LENGTH_LONG).show()
         }
-    }
-
-    fun sendResult() {
-        val intent = Intent()
-        intent.putExtra(extraPosition, position)
-        setResult(RESULT_FAVORITE, intent)
     }
 }

@@ -1,6 +1,8 @@
 package andi.android.madegdk.ui.home
 
 import andi.android.madegdk.R
+import andi.android.madegdk.database.FavoriteMovieHelper
+import andi.android.madegdk.database.FavoriteTvSeriesHelper
 import andi.android.madegdk.ui.home.favorite.FavoriteFragment
 import andi.android.madegdk.ui.home.movie.MovieFragment
 import andi.android.madegdk.ui.home.tvseries.TvSeriesFragment
@@ -16,7 +18,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
@@ -24,7 +25,17 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var homeViewPagerAdapter: HomeViewPagerAdapter
     private lateinit var languageManager: LanguageManager
 
+    private var favoriteTvSeriesHelper: FavoriteTvSeriesHelper? = null
+    private var favoriteMovieHelper: FavoriteMovieHelper? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("HomeActivity", "masuk")
+        favoriteTvSeriesHelper = FavoriteTvSeriesHelper.getInstance(applicationContext)
+        favoriteMovieHelper = FavoriteMovieHelper.getInstance(applicationContext)
+
+        favoriteTvSeriesHelper?.open()
+        favoriteMovieHelper?.open()
+
         super.onCreate(savedInstanceState)
         languageManager = LanguageManager(this)
         languageManager.loadLocale()
@@ -40,21 +51,6 @@ class HomeActivity : AppCompatActivity() {
         setupViewPager(viewPager)
         tabLayout.setupWithViewPager(viewPager)
         viewPager.offscreenPageLimit = 2
-
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-            override fun onTabReselected(p0: TabLayout.Tab?) {
-                Log.d("AV", "onTabReselected")
-            }
-
-            override fun onTabUnselected(p0: TabLayout.Tab?) {
-                Log.d("AV", "onTabUnselected")
-            }
-
-            override fun onTabSelected(p0: TabLayout.Tab?) {
-                Log.d("AV", "onTabSelected ")
-            }
-
-        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -71,6 +67,8 @@ class HomeActivity : AppCompatActivity() {
     @SuppressLint("PrivateResource")
     private fun reopen() {
         finish()
+        favoriteMovieHelper?.close()
+        favoriteTvSeriesHelper?.close()
         overridePendingTransition(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom)
         startActivity(intent)
     }

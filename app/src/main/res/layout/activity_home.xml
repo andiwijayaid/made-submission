@@ -48,6 +48,7 @@
             app:tabPaddingEnd="18dp"
             app:tabSelectedTextColor="@android:color/white"
             app:tabTextColor="@color/unactive"
+            app:tabTextAppearance="@style/MainTab"
             app:tabIndicatorFullWidth="false" />
 
     </com.google.android.material.appbar.AppBarLayout>

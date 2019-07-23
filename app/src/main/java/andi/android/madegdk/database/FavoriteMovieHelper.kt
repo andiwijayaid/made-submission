@@ -18,13 +18,13 @@ import android.provider.BaseColumns._ID
 
 class FavoriteMovieHelper(context: Context?) {
 
-    val DATABASE_TABLE_MOVIE = TABLE_FAVORITE_MOVIE
-    private lateinit var database: SQLiteDatabase
     private var databaseHelper = DatabaseHelper(context)
+    private lateinit var database: SQLiteDatabase
 
     companion object {
 
         private var INSTANCE: FavoriteMovieHelper? = null
+
         fun getInstance(context: Context?): FavoriteMovieHelper? {
             if (INSTANCE == null) {
                 synchronized(SQLiteOpenHelper::class.java) {
@@ -40,25 +40,24 @@ class FavoriteMovieHelper(context: Context?) {
 
     @Throws(SQLException::class)
     fun open() {
-        database = databaseHelper.getWritableDatabase()
+        database = databaseHelper.writableDatabase
     }
 
     fun close() {
         databaseHelper.close()
-        if (database.isOpen) {
+        if (database.isOpen)
             database.close()
-        }
     }
 
     fun getAllFavoriteMovies(): ArrayList<Movie> {
 
         val arrayList = ArrayList<Movie>()
-        val cursor = database.query(DATABASE_TABLE_MOVIE, null,
+        val cursor = database.query(TABLE_FAVORITE_MOVIE, null,
                 null,
                 null,
                 null,
                 null,
-                _ID + " ASC",
+                "$_ID ASC",
                 null)
         cursor.moveToFirst()
         if (cursor.count > 0) {
@@ -70,8 +69,7 @@ class FavoriteMovieHelper(context: Context?) {
                         cursor.getString(cursor.getColumnIndexOrThrow(TITLE)),
                         cursor.getString(cursor.getColumnIndexOrThrow(DATE)),
                         cursor.getFloat(cursor.getColumnIndexOrThrow(RATING)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(OVERVIEW)),
-                        cursor.getInt(cursor.getColumnIndexOrThrow(_ID))
+                        cursor.getString(cursor.getColumnIndexOrThrow(OVERVIEW))
                 )
                 arrayList.add(movie)
                 cursor.moveToNext()
@@ -91,7 +89,7 @@ class FavoriteMovieHelper(context: Context?) {
         args.put(DATE, movie.date)
         args.put(RATING, movie.rating)
         args.put(OVERVIEW, movie.overview)
-        return database.insert(DATABASE_TABLE_MOVIE, null, args)
+        return database.insert(TABLE_FAVORITE_MOVIE, null, args)
     }
 
     fun deleteMovieFavorite(movieId: Int?): Int {

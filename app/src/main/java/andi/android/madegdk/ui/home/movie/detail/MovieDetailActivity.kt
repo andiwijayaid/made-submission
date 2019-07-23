@@ -5,10 +5,12 @@ import andi.android.madegdk.R
 import andi.android.madegdk.database.FavoriteMovieHelper
 import andi.android.madegdk.model.Movie
 import andi.android.madegdk.response.MovieDetailResponse
+import andi.android.madegdk.ui.home.favorite.movie.FavoriteMovieFragment.Companion.EXTRA_IS_REMOVED
+import andi.android.madegdk.ui.home.favorite.movie.FavoriteMovieFragment.Companion.EXTRA_MOVIE
+import andi.android.madegdk.ui.home.favorite.movie.FavoriteMovieFragment.Companion.EXTRA_POSITION
 import andi.android.madegdk.utils.*
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
@@ -31,11 +33,9 @@ class MovieDetailActivity : AppCompatActivity() {
         numberOfSeasonPB.visibility = View.GONE
     }
 
-    private val extraMovie = "EXTRA_MOVIE"
-    private val extraPosition = "EXTRA_POSITION"
-    private val extraIsFavorite = "IS_FAVORITE"
-
-    private val RESULT_FAVORITE = 998
+    companion object {
+        const val RESULT_FAVORITE = 998
+    }
 
     private var position = -1
 
@@ -51,9 +51,9 @@ class MovieDetailActivity : AppCompatActivity() {
 
         initUI()
 
-        position = intent.getIntExtra(extraPosition, position)
+        position = intent.getIntExtra(EXTRA_POSITION, position)
 
-        val movie = intent.getParcelableExtra<Movie>(extraMovie)
+        val movie = intent.getParcelableExtra<Movie>(EXTRA_MOVIE)
         titleTV.text = movie.title
         dateTV.text = movie.date
         if (movie.overview != "") {
@@ -74,25 +74,37 @@ class MovieDetailActivity : AppCompatActivity() {
 
         posterBackgroundIV.animation = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
 
-        favoriteBT.isChecked = intent.getBooleanExtra(extraIsFavorite, true)
-
         movieDetailViewModel = ViewModelProviders.of(this).get(MovieDetailViewModel::class.java)
         if (!movieDetailViewModel.isMovieRetrieved()) {
             movieDetailViewModel.setMovie(movie.movieId, resources.getString(R.string.language_code))
         }
         movieDetailViewModel.getMovie()?.observe(this, getMovie)
 
+        checkFavoriteState(movie.movieId)
+
         val favoriteMovieHelper = FavoriteMovieHelper.getInstance(applicationContext)
         favoriteBT.setOnClickListener {
             if (favoriteBT.isChecked) {
                 val aMovie = Movie(movie.movieId, movie.poster, movie.backdrop, movie.title, movie.date, movie.rating, movie.overview)
                 favoriteMovieHelper?.insertMovieFavorite(aMovie)
-                Log.d("FAV", favoriteMovieHelper?.getAllFavoriteMovies().toString())
             } else {
                 favoriteMovieHelper?.deleteMovieFavorite(movie.movieId)
-                Log.d("FAV", favoriteMovieHelper?.getAllFavoriteMovies().toString())
             }
             sendResult()
+        }
+    }
+
+    private fun sendResult() {
+        val intent = Intent()
+        intent.putExtra(EXTRA_POSITION, position)
+        intent.putExtra(EXTRA_IS_REMOVED, !favoriteBT.isChecked)
+        setResult(RESULT_FAVORITE, intent)
+    }
+
+    private fun checkFavoriteState(movieId: Int?) {
+        val favoriteMovieHelper = FavoriteMovieHelper.getInstance(applicationContext)
+        if (favoriteMovieHelper != null) {
+            favoriteBT.isChecked = favoriteMovieHelper.isFavorite(movieId)
         }
     }
 
@@ -131,11 +143,5 @@ class MovieDetailActivity : AppCompatActivity() {
             stopLoading()
             Toast.makeText(applicationContext, resources.getString(R.string.check_your_connection), Toast.LENGTH_LONG).show()
         }
-    }
-
-    fun sendResult() {
-        val intent = Intent()
-        intent.putExtra(extraPosition, position)
-        setResult(RESULT_FAVORITE, intent)
     }
 }

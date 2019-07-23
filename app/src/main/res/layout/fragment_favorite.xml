@@ -16,7 +16,7 @@
         app:tabPaddingEnd="10dp"
         app:tabIndicatorHeight="0dp"
         app:tabTextColor="@color/unactive"
-        app:tabSelectedTextColor="@android:color/black" />
+        app:tabSelectedTextColor="@color/yellow_orange" />
 
     <FrameLayout
         android:id="@+id/frameLayout"

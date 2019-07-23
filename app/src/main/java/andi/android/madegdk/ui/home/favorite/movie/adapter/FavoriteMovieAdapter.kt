@@ -5,7 +5,6 @@ import andi.android.madegdk.R
 import andi.android.madegdk.model.Movie
 import andi.android.madegdk.utils.normalizeRating
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_favorite.view.*
 
-class FavoriteMovieAdapter(private val context: Context?, private val listener: (Movie) -> Unit) :
+class FavoriteMovieAdapter(private val context: Context?, private val listener: (Movie, Int) -> Unit) :
         RecyclerView.Adapter<FavoriteMovieViewHolder>() {
 
 
@@ -38,17 +37,26 @@ class FavoriteMovieAdapter(private val context: Context?, private val listener: 
         }
     }
 
+    fun getMovies(): ArrayList<Movie> {
+        return mData
+    }
+
     fun setMovies(movies: ArrayList<Movie>) {
         mData.clear()
         mData.addAll(movies)
         notifyDataSetChanged()
     }
 
+    fun deleteMovie(position: Int) {
+        mData.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
 }
 
 class FavoriteMovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    fun bindItem(context: Context, movie: Movie, listener: (Movie) -> Unit) {
+    fun bindItem(context: Context, movie: Movie, listener: (Movie, Int) -> Unit) {
         Glide.with(context)
                 .load("${BuildConfig.IMAGE_URL}t/p/w185${movie.poster}")
                 .into(itemView.posterIV)
@@ -56,8 +64,7 @@ class FavoriteMovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         itemView.titleTV.text = movie.title
         itemView.ratingBar.rating = normalizeRating(movie.rating)
         itemView.setOnClickListener {
-            listener(movie)
-            Log.d("A", movie.poster)
+            listener(movie, layoutPosition)
         }
     }
 }

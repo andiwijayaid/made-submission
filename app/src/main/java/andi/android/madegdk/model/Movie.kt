@@ -20,15 +20,4 @@ data class Movie(
         var rating: Float? = null,
         @SerializedName("overview")
         var overview: String? = null
-) : Parcelable {
-        constructor(
-                movieId: Int?,
-                poster: String?,
-                backdrop: String?,
-                title: String?,
-                date: String?,
-                rating: Float?,
-                overview: String?,
-                id: Int
-        ): this(movieId, poster, backdrop, title, date, rating, overview)
-}
+) : Parcelable

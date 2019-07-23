@@ -18,7 +18,6 @@ import android.provider.BaseColumns._ID
 
 class FavoriteTvSeriesHelper(context: Context?) {
 
-    val DATABASE_TABLE_TV_SERIES = TABLE_FAVORITE_TV_SERIES
     private lateinit var database: SQLiteDatabase
     private var databaseHelper = DatabaseHelper(context)
 
@@ -40,7 +39,7 @@ class FavoriteTvSeriesHelper(context: Context?) {
 
     @Throws(SQLException::class)
     fun open() {
-        database = databaseHelper.getWritableDatabase()
+        database = databaseHelper.writableDatabase
     }
 
     fun close() {
@@ -53,12 +52,12 @@ class FavoriteTvSeriesHelper(context: Context?) {
     fun getAllFavoriteTvSeries(): ArrayList<TvSeries> {
 
         val arrayList = ArrayList<TvSeries>()
-        val cursor = database.query(DATABASE_TABLE_TV_SERIES, null,
+        val cursor = database.query(TABLE_FAVORITE_TV_SERIES, null,
                 null,
                 null,
                 null,
                 null,
-                _ID + " ASC",
+                "$_ID ASC",
                 null)
         cursor.moveToFirst()
         if (cursor.count > 0) {
@@ -70,8 +69,7 @@ class FavoriteTvSeriesHelper(context: Context?) {
                         cursor.getString(cursor.getColumnIndexOrThrow(TITLE)),
                         cursor.getString(cursor.getColumnIndexOrThrow(FIRST_AIR_DATE)),
                         cursor.getFloat(cursor.getColumnIndexOrThrow(RATING)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(OVERVIEW)),
-                        cursor.getInt(cursor.getColumnIndexOrThrow(_ID))
+                        cursor.getString(cursor.getColumnIndexOrThrow(OVERVIEW))
                 )
                 arrayList.add(tvSeries)
                 cursor.moveToNext()
@@ -91,10 +89,10 @@ class FavoriteTvSeriesHelper(context: Context?) {
         args.put(FIRST_AIR_DATE, tvSeries.firstAirDate)
         args.put(RATING, tvSeries.rating)
         args.put(OVERVIEW, tvSeries.overview)
-        return database.insert(DATABASE_TABLE_TV_SERIES, null, args)
+        return database.insert(TABLE_FAVORITE_TV_SERIES, null, args)
     }
 
-    fun deleteNote(tvSeriesId: Int?): Int {
+    fun deleteTvSeries(tvSeriesId: Int?): Int {
         return database.delete(TABLE_FAVORITE_TV_SERIES, "$TV_SERIES_ID = '$tvSeriesId'", null)
     }
 
