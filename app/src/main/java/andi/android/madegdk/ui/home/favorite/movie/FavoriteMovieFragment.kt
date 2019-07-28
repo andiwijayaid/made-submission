@@ -4,6 +4,7 @@ import andi.android.madegdk.R
 import andi.android.madegdk.database.DatabaseContract.FavoriteMoviesColumn.Companion.CONTENT_URI
 import andi.android.madegdk.helper.mapFavoriteMovieCursorToArrayList
 import andi.android.madegdk.model.Movie
+import andi.android.madegdk.provider.DataObserver
 import andi.android.madegdk.ui.home.favorite.movie.adapter.FavoriteMovieAdapter
 import andi.android.madegdk.ui.home.movie.detail.MovieDetailActivity
 import android.content.Context
@@ -75,15 +76,6 @@ class FavoriteMovieFragment : Fragment(), LoadFavoriteMoviesCallback {
         return favoriteMovieView
     }
 
-    class DataObserver(handler: Handler, private val context: Context?) : ContentObserver(handler) {
-        override fun onChange(selfChange: Boolean) {
-            super.onChange(selfChange)
-            if (context != null) {
-                LoadFavoriteMoviesAsync(context, context as LoadFavoriteMoviesCallback).execute()
-            }
-        }
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelableArrayList(EXTRA_STATE, favoriteMovieAdapter.getMovies())
@@ -103,9 +95,9 @@ class FavoriteMovieFragment : Fragment(), LoadFavoriteMoviesCallback {
         }
     }
 
-    private class LoadFavoriteMoviesAsync(context: Context, callback: LoadFavoriteMoviesCallback) : AsyncTask<Void, Void, Cursor>() {
-        private val weakContext: WeakReference<Context> = WeakReference(context)
-        private val weakCallback: WeakReference<LoadFavoriteMoviesCallback> = WeakReference(callback)
+    class LoadFavoriteMoviesAsync(context: Context?, callback: LoadFavoriteMoviesCallback) : AsyncTask<Void, Void, Cursor>() {
+        private val weakContext = WeakReference(context)
+        private val weakCallback = WeakReference(callback)
 
         override fun doInBackground(vararg params: Void?): Cursor? {
             val context = weakContext.get()

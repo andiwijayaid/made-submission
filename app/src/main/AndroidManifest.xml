@@ -32,14 +32,7 @@
         </activity>
 
         <provider
-            android:name=".provider.FavoriteMovieProvider"
-            android:authorities="andi.android.madegdk"
-            android:exported="true"
-            android:readPermission="andi.android.madegdk.READ_DATABASE"
-            android:writePermission="andi.android.madegdk.WRITE_DATABASE" />
-
-        <provider
-            android:name=".provider.FavoriteTvSeriesProvider"
+            android:name=".provider.FavoriteProvider"
             android:authorities="andi.android.madegdk"
             android:exported="true"
             android:readPermission="andi.android.madegdk.READ_DATABASE"

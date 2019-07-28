@@ -40,9 +40,9 @@ class FavoriteTvSeriesAdapter(private val context: Context?, private val listene
         return mData
     }
 
-    fun setTvSeries(movies: ArrayList<TvSeries>) {
+    fun setTvSeries(tvSeries: ArrayList<TvSeries>) {
         mData.clear()
-        mData.addAll(movies)
+        mData.addAll(tvSeries)
         notifyDataSetChanged()
     }
 

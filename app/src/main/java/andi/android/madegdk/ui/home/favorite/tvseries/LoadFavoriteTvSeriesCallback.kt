@@ -4,5 +4,5 @@ import android.database.Cursor
 
 interface LoadFavoriteTvSeriesCallback {
     fun preExecute()
-    fun postExecute(favoriteTvSeries: Cursor?)
+    fun postExecute(favoriteTvSeries: Cursor)
 }

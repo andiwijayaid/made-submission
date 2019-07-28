@@ -2,6 +2,8 @@ package andi.android.madegdk.ui.home.tvseries.detail
 
 import andi.android.madegdk.BuildConfig
 import andi.android.madegdk.R
+import andi.android.madegdk.database.DatabaseContract
+import andi.android.madegdk.database.DatabaseContract.FavoriteTvSeriesColumn.Companion.CONTENT_URI
 import andi.android.madegdk.database.FavoriteTvSeriesHelper
 import andi.android.madegdk.model.TvSeries
 import andi.android.madegdk.response.TvSeriesDetailResponse
@@ -10,6 +12,7 @@ import andi.android.madegdk.ui.home.favorite.tvseries.FavoriteTvSeriesFragment.C
 import andi.android.madegdk.ui.home.favorite.tvseries.FavoriteTvSeriesFragment.Companion.EXTRA_TV_SERIES
 import andi.android.madegdk.utils.LanguageManager
 import andi.android.madegdk.utils.normalizeRating
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -23,14 +26,13 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_tv_series_detail.*
 
 class TvSeriesDetailActivity : AppCompatActivity() {
-    private fun stopLoading() {
 
+    private fun stopLoading() {
         numberOfSeasonTV.visibility = View.VISIBLE
         numberOfEpsTV.visibility = View.VISIBLE
 
         numberOfSeasonPB.visibility = View.INVISIBLE
         numberOfEpsPB.visibility = View.INVISIBLE
-
     }
 
     companion object {
@@ -87,13 +89,20 @@ class TvSeriesDetailActivity : AppCompatActivity() {
 
         checkFavoriteState(tvSeries.tvSeriesId)
 
-        val favoriteTvSeriesHelper = FavoriteTvSeriesHelper.getInstance(applicationContext)
         favoriteBT.setOnClickListener {
             if (favoriteBT.isChecked) {
-                val aTvSeries = TvSeries(tvSeries.tvSeriesId, tvSeries.poster, tvSeries.backdrop, tvSeries.title, tvSeries.firstAirDate, tvSeries.rating, tvSeries.overview)
-                favoriteTvSeriesHelper?.insertTvSeries(aTvSeries)
+                val contentValues = ContentValues()
+                contentValues.put(DatabaseContract.FavoriteTvSeriesColumn.TV_SERIES_ID, tvSeries.tvSeriesId)
+                contentValues.put(DatabaseContract.FavoriteTvSeriesColumn.POSTER, tvSeries.poster)
+                contentValues.put(DatabaseContract.FavoriteTvSeriesColumn.BACKDROP, tvSeries.backdrop)
+                contentValues.put(DatabaseContract.FavoriteTvSeriesColumn.TITLE, tvSeries.title)
+                contentValues.put(DatabaseContract.FavoriteTvSeriesColumn.FIRST_AIR_DATE, tvSeries.firstAirDate)
+                contentValues.put(DatabaseContract.FavoriteTvSeriesColumn.RATING, tvSeries.rating)
+                contentValues.put(DatabaseContract.FavoriteTvSeriesColumn.OVERVIEW, tvSeries.overview)
+                contentResolver.insert(CONTENT_URI, contentValues)
             } else {
-                favoriteTvSeriesHelper?.deleteTvSeries(tvSeries.tvSeriesId)
+//                favoriteTvSeriesHelper?.deleteTvSeries(tvSeries.tvSeriesId)
+                contentResolver.delete(intent.data, null, null)
             }
             sendResult()
         }

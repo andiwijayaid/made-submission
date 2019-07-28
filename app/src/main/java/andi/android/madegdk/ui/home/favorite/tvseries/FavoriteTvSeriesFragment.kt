@@ -2,15 +2,15 @@ package andi.android.madegdk.ui.home.favorite.tvseries
 
 import andi.android.madegdk.R
 import andi.android.madegdk.database.DatabaseContract.FavoriteTvSeriesColumn.Companion.CONTENT_URI
-import andi.android.madegdk.database.FavoriteTvSeriesHelper
 import andi.android.madegdk.helper.mapFavoriteTvSeriesCursorToArrayList
 import andi.android.madegdk.model.TvSeries
+import andi.android.madegdk.provider.DataObserver
 import andi.android.madegdk.ui.home.favorite.tvseries.adapter.FavoriteTvSeriesAdapter
 import andi.android.madegdk.ui.home.tvseries.detail.TvSeriesDetailActivity
 import android.content.Context
 import android.content.Intent
-import android.database.ContentObserver
 import android.database.Cursor
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
@@ -24,17 +24,8 @@ import kotlinx.android.synthetic.main.fragment_favorite_tv_series.view.*
 import java.lang.ref.WeakReference
 
 class FavoriteTvSeriesFragment : Fragment(), LoadFavoriteTvSeriesCallback {
-    override fun preExecute() {
-        activity?.runOnUiThread { favoriteTvSeriesView.progressBar.visibility = View.VISIBLE }
-    }
 
-    override fun postExecute(favoriteTvSeries: Cursor?) {
-        favoriteTvSeriesView.progressBar.visibility = View.GONE
-        val listFavoriteTvSeries = mapFavoriteTvSeriesCursorToArrayList(favoriteTvSeries)
-        if (favoriteTvSeries != null) {
-            favoriteTvSeriesAdapter.setTvSeries(listFavoriteTvSeries)
-        }
-    }
+    private lateinit var favoriteTvSeriesView: View
 
     companion object {
         const val EXTRA_TV_SERIES = "EXTRA_TV_SERIES"
@@ -43,21 +34,12 @@ class FavoriteTvSeriesFragment : Fragment(), LoadFavoriteTvSeriesCallback {
         const val REQUEST_FAVORITE = 888
         const val EXTRA_STATE = "EXTRA_STATE"
 
-        class DataObserver(handler: Handler, internal val context: Context?) : ContentObserver(handler) {
-            override fun onChange(selfChange: Boolean) {
-                super.onChange(selfChange)
-                context?.let { LoadFavoriteTvSeriesAsync(it, context as LoadFavoriteTvSeriesCallback).execute() }
-            }
-        }
+        private lateinit var handlerThread: HandlerThread
     }
 
-    private lateinit var favoriteTvSeriesView: View
-
-    lateinit var favoriteTvSeriesAdapter: FavoriteTvSeriesAdapter
-    private var favoriteTvSeriesHelper: FavoriteTvSeriesHelper? = null
     private var mSavedInstanceState: Bundle? = null
 
-    private lateinit var handlerThread: HandlerThread
+    lateinit var favoriteTvSeriesAdapter: FavoriteTvSeriesAdapter
     private lateinit var myObserver: DataObserver
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -67,21 +49,21 @@ class FavoriteTvSeriesFragment : Fragment(), LoadFavoriteTvSeriesCallback {
         if (savedInstanceState != null) {
             mSavedInstanceState = savedInstanceState
         }
-        favoriteTvSeriesHelper = FavoriteTvSeriesHelper.getInstance(context)
-        favoriteTvSeriesHelper?.open()
+
+        favoriteTvSeriesAdapter = FavoriteTvSeriesAdapter(context) { tvSeries: TvSeries, position: Int ->
+            val intent = Intent(context, TvSeriesDetailActivity::class.java)
+            val uri = Uri.parse("$CONTENT_URI/${favoriteTvSeriesAdapter.getTvSeries()[position].tvSeriesId}")
+            intent.data = uri
+            intent.putExtra(EXTRA_TV_SERIES, tvSeries)
+            intent.putExtra(EXTRA_POSITION, position)
+            startActivityForResult(intent, REQUEST_FAVORITE)
+        }
 
         handlerThread = HandlerThread("DataObserver")
         handlerThread.start()
         val handler = Handler(handlerThread.looper)
         myObserver = DataObserver(handler, context)
         context?.contentResolver?.registerContentObserver(CONTENT_URI, true, myObserver)
-
-        favoriteTvSeriesAdapter = FavoriteTvSeriesAdapter(context) { tvSeries: TvSeries, position: Int ->
-            val intent = Intent(context, TvSeriesDetailActivity::class.java)
-            intent.putExtra(EXTRA_TV_SERIES, tvSeries)
-            intent.putExtra(EXTRA_POSITION, position)
-            startActivityForResult(intent, REQUEST_FAVORITE)
-        }
 
         favoriteTvSeriesView.favoriteTvSeriesRV.layoutManager = GridLayoutManager(context, 3)
         favoriteTvSeriesAdapter.notifyDataSetChanged()
@@ -97,6 +79,18 @@ class FavoriteTvSeriesFragment : Fragment(), LoadFavoriteTvSeriesCallback {
         outState.putParcelableArrayList(EXTRA_STATE, favoriteTvSeriesAdapter.getTvSeries())
     }
 
+    override fun preExecute() {
+        activity?.runOnUiThread { favoriteTvSeriesView.progressBar.visibility = View.VISIBLE }
+    }
+
+    override fun postExecute(favoriteTvSeries: Cursor) {
+        favoriteTvSeriesView.progressBar.visibility = View.GONE
+        val listFavoriteTvSeries = mapFavoriteTvSeriesCursorToArrayList(favoriteTvSeries)
+        if (listFavoriteTvSeries.size > 0) {
+            favoriteTvSeriesAdapter.setTvSeries(listFavoriteTvSeries)
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (data != null) {
@@ -108,12 +102,13 @@ class FavoriteTvSeriesFragment : Fragment(), LoadFavoriteTvSeriesCallback {
         }
     }
 
-    private class LoadFavoriteTvSeriesAsync(context: Context?, callback: LoadFavoriteTvSeriesCallback) : AsyncTask<Void, Void, Cursor?>() {
+    class LoadFavoriteTvSeriesAsync(context: Context?, callback: LoadFavoriteTvSeriesCallback) : AsyncTask<Void, Void, Cursor>() {
         private val weakContext = WeakReference(context)
         private val weakCallback = WeakReference(callback)
 
         override fun doInBackground(vararg params: Void?): Cursor? {
-            return weakContext.get()?.applicationContext?.contentResolver?.query(
+            val context = weakContext.get()
+            return context?.contentResolver?.query(
                     CONTENT_URI,
                     null,
                     null,
@@ -121,16 +116,15 @@ class FavoriteTvSeriesFragment : Fragment(), LoadFavoriteTvSeriesCallback {
                     null)
         }
 
-        override fun onPreExecute() {
-            super.onPreExecute()
-            weakCallback.get()?.preExecute()
-        }
-
-        override fun onPostExecute(result: Cursor?) {
+        override fun onPostExecute(result: Cursor) {
             super.onPostExecute(result)
             weakCallback.get()?.postExecute(result)
         }
 
+        override fun onPreExecute() {
+            super.onPreExecute()
+            weakCallback.get()?.preExecute()
+        }
     }
 
     fun setData() {

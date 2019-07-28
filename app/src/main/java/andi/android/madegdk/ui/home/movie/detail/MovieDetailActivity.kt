@@ -18,7 +18,6 @@ import andi.android.madegdk.ui.home.favorite.movie.FavoriteMovieFragment.Compani
 import andi.android.madegdk.ui.home.favorite.movie.FavoriteMovieFragment.Companion.EXTRA_POSITION
 import andi.android.madegdk.utils.*
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -92,7 +91,6 @@ class MovieDetailActivity : AppCompatActivity() {
 
         checkFavoriteState(movie.movieId)
 
-        val favoriteMovieHelper = FavoriteMovieHelper.getInstance(applicationContext)
         favoriteBT.setOnClickListener {
             if (favoriteBT.isChecked) {
                 val contentValues = ContentValues()
@@ -106,7 +104,6 @@ class MovieDetailActivity : AppCompatActivity() {
 
                 contentResolver.insert(CONTENT_URI, contentValues)
             } else {
-//                favoriteMovieHelper?.deleteMovieFavorite(movie.movieId)
                 contentResolver.delete(intent.data, null, null)
             }
             sendResult()
