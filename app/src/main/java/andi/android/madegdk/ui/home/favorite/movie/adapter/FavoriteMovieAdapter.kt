@@ -16,7 +16,6 @@ import kotlinx.android.synthetic.main.item_favorite.view.*
 class FavoriteMovieAdapter(private val context: Context?, private val listener: (Movie, Int) -> Unit) :
         RecyclerView.Adapter<FavoriteMovieViewHolder>() {
 
-
     private val mData = ArrayList<Movie>()
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): FavoriteMovieViewHolder {

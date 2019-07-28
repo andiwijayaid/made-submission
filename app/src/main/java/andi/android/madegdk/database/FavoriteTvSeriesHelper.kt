@@ -11,6 +11,7 @@ import andi.android.madegdk.database.DatabaseContract.FavoriteTvSeriesColumn.Com
 import andi.android.madegdk.model.TvSeries
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -105,5 +106,42 @@ class FavoriteTvSeriesHelper(context: Context?) {
         }
         cursor.close()
         return false
+    }
+
+    fun queryByIdProvider(id: String): Cursor {
+        return database.query(
+                TABLE_FAVORITE_TV_SERIES,
+                null,
+                "$_ID = ?",
+                arrayOf(id),
+                null,
+                null,
+                null,
+                null
+        )
+    }
+
+    fun queryProvider(): Cursor {
+        return database.query(
+                TABLE_FAVORITE_TV_SERIES,
+                null,
+                null,
+                null,
+                null,
+                null,
+                "$_ID ASC"
+        )
+    }
+
+    fun insertProvider(values: ContentValues): Long {
+        return database.insert(TABLE_FAVORITE_TV_SERIES, null, values)
+    }
+
+    fun updateProvider(id: String, values: ContentValues?): Int {
+        return database.update(TABLE_FAVORITE_TV_SERIES, values, "$_ID = ?", arrayOf(id))
+    }
+
+    fun deleteProvider(id: String): Int {
+        return database.delete(TABLE_FAVORITE_TV_SERIES, "$_ID = ?", arrayOf(id))
     }
 }

@@ -1,8 +1,8 @@
 package andi.android.madegdk.ui.home.favorite.movie
 
-import andi.android.madegdk.model.Movie
+import android.database.Cursor
 
 interface LoadFavoriteMoviesCallback {
     fun preExecute()
-    fun postExecute(favoriteMovies: ArrayList<Movie>?)
+    fun postExecute(favoriteMovies: Cursor)
 }

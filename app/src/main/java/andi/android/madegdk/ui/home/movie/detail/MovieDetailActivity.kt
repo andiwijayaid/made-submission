@@ -2,6 +2,14 @@ package andi.android.madegdk.ui.home.movie.detail
 
 import andi.android.madegdk.BuildConfig
 import andi.android.madegdk.R
+import andi.android.madegdk.database.DatabaseContract.FavoriteMoviesColumn.Companion.BACKDROP
+import andi.android.madegdk.database.DatabaseContract.FavoriteMoviesColumn.Companion.CONTENT_URI
+import andi.android.madegdk.database.DatabaseContract.FavoriteMoviesColumn.Companion.DATE
+import andi.android.madegdk.database.DatabaseContract.FavoriteMoviesColumn.Companion.MOVIE_ID
+import andi.android.madegdk.database.DatabaseContract.FavoriteMoviesColumn.Companion.OVERVIEW
+import andi.android.madegdk.database.DatabaseContract.FavoriteMoviesColumn.Companion.POSTER
+import andi.android.madegdk.database.DatabaseContract.FavoriteMoviesColumn.Companion.RATING
+import andi.android.madegdk.database.DatabaseContract.FavoriteMoviesColumn.Companion.TITLE
 import andi.android.madegdk.database.FavoriteMovieHelper
 import andi.android.madegdk.model.Movie
 import andi.android.madegdk.response.MovieDetailResponse
@@ -9,6 +17,8 @@ import andi.android.madegdk.ui.home.favorite.movie.FavoriteMovieFragment.Compani
 import andi.android.madegdk.ui.home.favorite.movie.FavoriteMovieFragment.Companion.EXTRA_MOVIE
 import andi.android.madegdk.ui.home.favorite.movie.FavoriteMovieFragment.Companion.EXTRA_POSITION
 import andi.android.madegdk.utils.*
+import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -85,10 +95,19 @@ class MovieDetailActivity : AppCompatActivity() {
         val favoriteMovieHelper = FavoriteMovieHelper.getInstance(applicationContext)
         favoriteBT.setOnClickListener {
             if (favoriteBT.isChecked) {
-                val aMovie = Movie(movie.movieId, movie.poster, movie.backdrop, movie.title, movie.date, movie.rating, movie.overview)
-                favoriteMovieHelper?.insertMovieFavorite(aMovie)
+                val contentValues = ContentValues()
+                contentValues.put(MOVIE_ID, movie.movieId)
+                contentValues.put(POSTER, movie.poster)
+                contentValues.put(BACKDROP, movie.backdrop)
+                contentValues.put(TITLE, movie.title)
+                contentValues.put(DATE, movie.date)
+                contentValues.put(RATING, movie.rating)
+                contentValues.put(OVERVIEW, movie.overview)
+
+                contentResolver.insert(CONTENT_URI, contentValues)
             } else {
-                favoriteMovieHelper?.deleteMovieFavorite(movie.movieId)
+//                favoriteMovieHelper?.deleteMovieFavorite(movie.movieId)
+                contentResolver.delete(intent.data, null, null)
             }
             sendResult()
         }

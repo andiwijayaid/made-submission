@@ -16,7 +16,6 @@ import kotlinx.android.synthetic.main.item_favorite.view.*
 class FavoriteTvSeriesAdapter(private val context: Context?, private val listener: (TvSeries, Int) -> Unit) :
         RecyclerView.Adapter<FavoriteTvSeriesViewHolder>() {
 
-
     private val mData = ArrayList<TvSeries>()
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): FavoriteTvSeriesViewHolder {

@@ -1,8 +1,6 @@
 package andi.android.madegdk.ui.home
 
 import andi.android.madegdk.R
-import andi.android.madegdk.database.FavoriteMovieHelper
-import andi.android.madegdk.database.FavoriteTvSeriesHelper
 import andi.android.madegdk.ui.home.favorite.FavoriteFragment
 import andi.android.madegdk.ui.home.movie.MovieFragment
 import andi.android.madegdk.ui.home.tvseries.TvSeriesFragment
@@ -11,7 +9,6 @@ import andi.android.madegdk.utils.isIndonesian
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
@@ -25,16 +22,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var homeViewPagerAdapter: HomeViewPagerAdapter
     private lateinit var languageManager: LanguageManager
 
-    private var favoriteTvSeriesHelper: FavoriteTvSeriesHelper? = null
-    private var favoriteMovieHelper: FavoriteMovieHelper? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("HomeActivity", "masuk")
-        favoriteTvSeriesHelper = FavoriteTvSeriesHelper.getInstance(applicationContext)
-        favoriteMovieHelper = FavoriteMovieHelper.getInstance(applicationContext)
-
-        favoriteTvSeriesHelper?.open()
-        favoriteMovieHelper?.open()
 
         super.onCreate(savedInstanceState)
         languageManager = LanguageManager(this)
@@ -67,8 +55,6 @@ class HomeActivity : AppCompatActivity() {
     @SuppressLint("PrivateResource")
     private fun reopen() {
         finish()
-        favoriteMovieHelper?.close()
-        favoriteTvSeriesHelper?.close()
         overridePendingTransition(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom)
         startActivity(intent)
     }

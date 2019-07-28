@@ -1,14 +1,20 @@
 package andi.android.madegdk.ui.home.favorite.movie
 
 import andi.android.madegdk.R
-import andi.android.madegdk.database.FavoriteMovieHelper
+import andi.android.madegdk.database.DatabaseContract.FavoriteMoviesColumn.Companion.CONTENT_URI
+import andi.android.madegdk.helper.mapFavoriteMovieCursorToArrayList
 import andi.android.madegdk.model.Movie
 import andi.android.madegdk.ui.home.favorite.movie.adapter.FavoriteMovieAdapter
 import andi.android.madegdk.ui.home.movie.detail.MovieDetailActivity
+import android.content.Context
 import android.content.Intent
+import android.database.ContentObserver
+import android.database.Cursor
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
+import android.os.HandlerThread
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,18 +23,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_favorite_movie.view.*
 import java.lang.ref.WeakReference
 
-class FavoriteMovieFragment : Fragment(), LoadFavoriteMoviesCallback {
-    override fun preExecute() {
-        activity?.runOnUiThread { favoriteMovieView.progressBar.visibility = View.VISIBLE }
-    }
 
-    override fun postExecute(favoriteMovies: ArrayList<Movie>?) {
-        favoriteMovieView.progressBar.visibility = View.INVISIBLE
-        if (favoriteMovies != null) {
-            favoriteMovieAdapter.setMovies(favoriteMovies)
-//            setData(favoriteMovies)
-        }
-    }
+class FavoriteMovieFragment : Fragment(), LoadFavoriteMoviesCallback {
 
     private lateinit var favoriteMovieView: View
 
@@ -38,26 +34,37 @@ class FavoriteMovieFragment : Fragment(), LoadFavoriteMoviesCallback {
         const val EXTRA_IS_REMOVED = "IS_REMOVED"
         const val REQUEST_FAVORITE = 888
         const val EXTRA_STATE = "EXTRA_STATE"
+
+        private lateinit var handlerThread: HandlerThread
     }
 
-    lateinit var favoriteMovieAdapter: FavoriteMovieAdapter
-    private var favoriteMovieHelper: FavoriteMovieHelper? = null
-    private lateinit var favoriteMovies: ArrayList<Movie>
     private var mSavedInstanceState: Bundle? = null
+
+    lateinit var favoriteMovieAdapter: FavoriteMovieAdapter
+    private lateinit var myObserver: DataObserver
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        favoriteMovieHelper = FavoriteMovieHelper.getInstance(context)
-        favoriteMovieHelper?.open()
-
         favoriteMovieView = inflater.inflate(R.layout.fragment_favorite_movie, container, false)
+
+        if (savedInstanceState != null) {
+            mSavedInstanceState = savedInstanceState
+        }
 
         favoriteMovieAdapter = FavoriteMovieAdapter(context) { movie: Movie, position: Int ->
             val intent = Intent(context, MovieDetailActivity::class.java)
+            val uri = Uri.parse("$CONTENT_URI/${favoriteMovieAdapter.getMovies()[position].movieId}")
+            intent.data = uri
             intent.putExtra(EXTRA_MOVIE, movie)
             intent.putExtra(EXTRA_POSITION, position)
             startActivityForResult(intent, REQUEST_FAVORITE)
         }
+
+        handlerThread = HandlerThread("DataObserver")
+        handlerThread.start()
+        val handler = Handler(handlerThread.looper)
+        myObserver = DataObserver(handler, context)
+        context?.contentResolver?.registerContentObserver(CONTENT_URI, true, myObserver)
 
         favoriteMovieView.favoriteMovieRV.layoutManager = GridLayoutManager(context, 3)
         favoriteMovieAdapter.notifyDataSetChanged()
@@ -68,29 +75,57 @@ class FavoriteMovieFragment : Fragment(), LoadFavoriteMoviesCallback {
         return favoriteMovieView
     }
 
+    class DataObserver(handler: Handler, private val context: Context?) : ContentObserver(handler) {
+        override fun onChange(selfChange: Boolean) {
+            super.onChange(selfChange)
+            if (context != null) {
+                LoadFavoriteMoviesAsync(context, context as LoadFavoriteMoviesCallback).execute()
+            }
+        }
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelableArrayList(EXTRA_STATE, favoriteMovieAdapter.getMovies())
     }
 
-    private class LoadFavoriteMoviesAsync(favoriteMovieHelper: FavoriteMovieHelper?, callback: LoadFavoriteMoviesCallback) : AsyncTask<Void, Void, ArrayList<Movie>>() {
-        private val weakFavoriteMovieHelper = WeakReference(favoriteMovieHelper)
-        private val weakCallback = WeakReference(callback)
+    override fun preExecute() {
+        activity?.runOnUiThread {
+            favoriteMovieView.progressBar.visibility = View.VISIBLE
+        }
+    }
 
-        override fun doInBackground(vararg params: Void?): ArrayList<Movie>? {
-            return weakFavoriteMovieHelper.get()?.getAllFavoriteMovies()
+    override fun postExecute(favoriteMovies: Cursor) {
+        favoriteMovieView.progressBar.visibility = View.INVISIBLE
+        val listFavoriteMovies = mapFavoriteMovieCursorToArrayList(favoriteMovies)
+        if (listFavoriteMovies.size > 0) {
+            favoriteMovieAdapter.setMovies(listFavoriteMovies)
+        }
+    }
+
+    private class LoadFavoriteMoviesAsync(context: Context, callback: LoadFavoriteMoviesCallback) : AsyncTask<Void, Void, Cursor>() {
+        private val weakContext: WeakReference<Context> = WeakReference(context)
+        private val weakCallback: WeakReference<LoadFavoriteMoviesCallback> = WeakReference(callback)
+
+        override fun doInBackground(vararg params: Void?): Cursor? {
+            val context = weakContext.get()
+            return context?.contentResolver?.query(
+                    CONTENT_URI,
+                    null,
+                    null,
+                    null,
+                    null)
+        }
+
+        override fun onPostExecute(result: Cursor) {
+            super.onPostExecute(result)
+            weakCallback.get()?.postExecute(result)
         }
 
         override fun onPreExecute() {
             super.onPreExecute()
             weakCallback.get()?.preExecute()
         }
-
-        override fun onPostExecute(result: ArrayList<Movie>?) {
-            super.onPostExecute(result)
-            weakCallback.get()?.postExecute(result)
-        }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -106,12 +141,12 @@ class FavoriteMovieFragment : Fragment(), LoadFavoriteMoviesCallback {
 
     fun setData() {
         if (mSavedInstanceState == null) {
-            Log.d("ASD", "ASD")
-            LoadFavoriteMoviesAsync(favoriteMovieHelper, this).execute()
+            context?.let { LoadFavoriteMoviesAsync(it, this).execute() }
         } else {
-            Log.d("DSA", "DSA")
-            favoriteMovies = mSavedInstanceState!!.getParcelableArrayList(EXTRA_STATE)
-            favoriteMovieAdapter.setMovies(favoriteMovies)
+            val favoriteMovies = mSavedInstanceState!!.getParcelableArrayList<Movie>(EXTRA_STATE)
+            if (favoriteMovies != null) {
+                favoriteMovieAdapter.setMovies(favoriteMovies)
+            }
         }
     }
 

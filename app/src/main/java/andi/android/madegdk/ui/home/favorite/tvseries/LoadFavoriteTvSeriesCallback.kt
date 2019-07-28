@@ -1,8 +1,8 @@
 package andi.android.madegdk.ui.home.favorite.tvseries
 
-import andi.android.madegdk.model.TvSeries
+import android.database.Cursor
 
 interface LoadFavoriteTvSeriesCallback {
     fun preExecute()
-    fun postExecute(favoriteTvSeries: ArrayList<TvSeries>?)
+    fun postExecute(favoriteTvSeries: Cursor?)
 }
