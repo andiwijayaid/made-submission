@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_movie.view.*
 
 
-class MovieAdapter(private val context: Context?, private val listener: (Movie) -> Unit) :
+class MovieAdapter(private val context: Context?, private val listener: (Movie, Int) -> Unit) :
         RecyclerView.Adapter<MovieViewHolder>() {
 
     private val mData = ArrayList<Movie>()
@@ -37,6 +37,10 @@ class MovieAdapter(private val context: Context?, private val listener: (Movie) 
         }
     }
 
+    fun getMovies(): ArrayList<Movie> {
+        return mData
+    }
+
     fun setMovies(movies: ArrayList<Movie>) {
         mData.clear()
         mData.addAll(movies)
@@ -52,7 +56,7 @@ class MovieAdapter(private val context: Context?, private val listener: (Movie) 
 
 class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    fun bindItem(context: Context, movie: Movie, listener: (Movie) -> Unit) {
+    fun bindItem(context: Context, movie: Movie, listener: (Movie, Int) -> Unit) {
         itemView.itemParentCV.animation = AnimationUtils.loadAnimation(context, R.anim.item_animation_slide_from_left)
         itemView.titleTV.text = movie.title
         itemView.dateTV.text = movie.date
@@ -62,7 +66,7 @@ class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         itemView.ratingBar.rating = normalizeRating(movie.rating)
 
         itemView.setOnClickListener {
-            listener(movie)
+            listener(movie, layoutPosition)
         }
     }
 }

@@ -30,4 +30,5 @@
     <string name="indonesian">Indonesia</string>
     <string name="check_your_connection">cek konseksi Anda</string>
     <string name="fail">gagal</string>
+    <string name="no_favorite">Tidak ada favorit</string>
 </resources>

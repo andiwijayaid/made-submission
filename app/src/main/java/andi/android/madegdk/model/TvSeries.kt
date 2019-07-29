@@ -11,7 +11,6 @@ import andi.android.madegdk.database.DatabaseContract.FavoriteTvSeriesColumn.Com
 import andi.android.madegdk.database.DatabaseContract.FavoriteTvSeriesColumn.Companion.TITLE
 import andi.android.madegdk.database.DatabaseContract.FavoriteTvSeriesColumn.Companion.TV_SERIES_ID
 import android.database.Cursor
-import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize

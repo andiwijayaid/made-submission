@@ -1,10 +1,12 @@
 package andi.android.madegdk.ui.home.tvseries
 
 import andi.android.madegdk.R
+import andi.android.madegdk.database.DatabaseContract.FavoriteTvSeriesColumn.Companion.CONTENT_URI
 import andi.android.madegdk.model.TvSeries
 import andi.android.madegdk.ui.home.tvseries.adapter.TvSeriesAdapter
 import andi.android.madegdk.ui.home.tvseries.detail.TvSeriesDetailActivity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -34,11 +36,14 @@ class TvSeriesFragment : Fragment() {
 
         tvSeriesView = inflater.inflate(R.layout.fragment_tv_series, container, false)
 
-        tvSeriesAdapter = TvSeriesAdapter(context) {
+        tvSeriesAdapter = TvSeriesAdapter(context) { tvSeries: TvSeries, position: Int ->
             val intent = Intent(context, TvSeriesDetailActivity::class.java)
-            intent.putExtra(extraTvSeries, it)
+            val uri = Uri.parse("$CONTENT_URI/${tvSeriesAdapter.getTvSeries()[position].tvSeriesId}")
+            intent.data = uri
+            intent.putExtra(extraTvSeries, tvSeries)
             startActivity(intent)
         }
+
         tvSeriesAdapter.notifyDataSetChanged()
         tvSeriesView.tvSeriesRV.adapter = tvSeriesAdapter
         tvSeriesView.tvSeriesRV.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)

@@ -11,7 +11,6 @@ import andi.android.madegdk.database.DatabaseContract.FavoriteMoviesColumn.Compa
 import andi.android.madegdk.database.DatabaseContract.FavoriteMoviesColumn.Companion.RATING
 import andi.android.madegdk.database.DatabaseContract.FavoriteMoviesColumn.Companion.TITLE
 import android.database.Cursor
-import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize

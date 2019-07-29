@@ -1,10 +1,12 @@
 package andi.android.madegdk.ui.home.movie
 
 import andi.android.madegdk.R
+import andi.android.madegdk.database.DatabaseContract.FavoriteMoviesColumn.Companion.CONTENT_URI
 import andi.android.madegdk.model.Movie
 import andi.android.madegdk.ui.home.movie.adapter.MovieAdapter
 import andi.android.madegdk.ui.home.movie.detail.MovieDetailActivity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -35,11 +37,14 @@ class MovieFragment : Fragment() {
 
         movieView = inflater.inflate(R.layout.fragment_movie, container, false)
 
-        movieAdapter = MovieAdapter(context) {
+        movieAdapter = MovieAdapter(context) { movie: Movie, position: Int ->
             val intent = Intent(context, MovieDetailActivity::class.java)
-            intent.putExtra(extraMovie, it)
+            val uri = Uri.parse("$CONTENT_URI/${movieAdapter.getMovies()[position].movieId}")
+            intent.data = uri
+            intent.putExtra(extraMovie, movie)
             startActivity(intent)
         }
+        
         movieAdapter.notifyDataSetChanged()
         movieView.movieRV?.adapter = movieAdapter
         movieView.movieRV?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)

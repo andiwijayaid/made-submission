@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_tv_series.view.*
 
 
-class TvSeriesAdapter(private val context: Context?, private val listener: (TvSeries) -> Unit) :
+class TvSeriesAdapter(private val context: Context?, private val listener: (TvSeries, Int) -> Unit) :
         RecyclerView.Adapter<TvSeriesViewHolder>() {
 
     private val mData = ArrayList<TvSeries>()
@@ -37,6 +37,10 @@ class TvSeriesAdapter(private val context: Context?, private val listener: (TvSe
         }
     }
 
+    fun getTvSeries(): ArrayList<TvSeries> {
+        return mData
+    }
+
     fun setTvSeries(tvSeries: ArrayList<TvSeries>) {
         mData.clear()
         mData.addAll(tvSeries)
@@ -52,7 +56,7 @@ class TvSeriesAdapter(private val context: Context?, private val listener: (TvSe
 
 class TvSeriesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    fun bindItem(context: Context, tvSeries: TvSeries, listener: (TvSeries) -> Unit) {
+    fun bindItem(context: Context, tvSeries: TvSeries, listener: (TvSeries, Int) -> Unit) {
         itemView.itemParentCV.animation = AnimationUtils.loadAnimation(context, R.anim.item_animation_slide_from_right)
         itemView.titleTV.text = tvSeries.title
         itemView.dateTV.text = tvSeries.firstAirDate
@@ -62,7 +66,7 @@ class TvSeriesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         itemView.ratingBar.rating = normalizeRating(tvSeries.rating)
 
         itemView.setOnClickListener {
-            listener(tvSeries)
+            listener(tvSeries, layoutPosition)
         }
     }
 }

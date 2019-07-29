@@ -20,6 +20,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import kotlinx.android.synthetic.main.fragment_favorite_tv_series.*
 import kotlinx.android.synthetic.main.fragment_favorite_tv_series.view.*
 import java.lang.ref.WeakReference
 
@@ -88,6 +89,8 @@ class FavoriteTvSeriesFragment : Fragment(), LoadFavoriteTvSeriesCallback {
         val listFavoriteTvSeries = mapFavoriteTvSeriesCursorToArrayList(favoriteTvSeries)
         if (listFavoriteTvSeries.size > 0) {
             favoriteTvSeriesAdapter.setTvSeries(listFavoriteTvSeries)
+        } else {
+            noFavoriteLL.visibility = View.VISIBLE
         }
     }
 

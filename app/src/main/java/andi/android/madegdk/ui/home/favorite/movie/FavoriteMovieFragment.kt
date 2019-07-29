@@ -9,7 +9,6 @@ import andi.android.madegdk.ui.home.favorite.movie.adapter.FavoriteMovieAdapter
 import andi.android.madegdk.ui.home.movie.detail.MovieDetailActivity
 import android.content.Context
 import android.content.Intent
-import android.database.ContentObserver
 import android.database.Cursor
 import android.net.Uri
 import android.os.AsyncTask
@@ -21,6 +20,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import kotlinx.android.synthetic.main.fragment_favorite_movie.*
 import kotlinx.android.synthetic.main.fragment_favorite_movie.view.*
 import java.lang.ref.WeakReference
 
@@ -91,7 +91,21 @@ class FavoriteMovieFragment : Fragment(), LoadFavoriteMoviesCallback {
         favoriteMovieView.progressBar.visibility = View.INVISIBLE
         val listFavoriteMovies = mapFavoriteMovieCursorToArrayList(favoriteMovies)
         if (listFavoriteMovies.size > 0) {
+            noFavoriteLL.visibility = View.GONE
             favoriteMovieAdapter.setMovies(listFavoriteMovies)
+        } else {
+            noFavoriteLL.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (data != null) {
+            val isRemoved = data.getBooleanExtra(EXTRA_IS_REMOVED, false)
+            if (requestCode == REQUEST_FAVORITE && isRemoved) {
+                val position = data.getIntExtra(EXTRA_POSITION, 0)
+                favoriteMovieAdapter.deleteMovie(position)
+            }
         }
     }
 
@@ -117,17 +131,6 @@ class FavoriteMovieFragment : Fragment(), LoadFavoriteMoviesCallback {
         override fun onPreExecute() {
             super.onPreExecute()
             weakCallback.get()?.preExecute()
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (data != null) {
-            val isRemoved = data.getBooleanExtra(EXTRA_IS_REMOVED, false)
-            if (requestCode == REQUEST_FAVORITE && isRemoved) {
-                val position = data.getIntExtra(EXTRA_POSITION, 0)
-                favoriteMovieAdapter.deleteMovie(position)
-            }
         }
     }
 

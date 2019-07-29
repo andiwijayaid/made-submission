@@ -64,8 +64,8 @@ class FavoriteTvSeriesHelper(context: Context?) {
         return database.update(TABLE_FAVORITE_TV_SERIES, values, "$_ID = ?", arrayOf(id))
     }
 
-    fun deleteProvider(id: String): Int {
-        return database.delete(TABLE_FAVORITE_TV_SERIES, "$TV_SERIES_ID = ?", arrayOf(id))
+    fun deleteProvider(movieId: String): Int {
+        return database.delete(TABLE_FAVORITE_TV_SERIES, "$TV_SERIES_ID = '$movieId'", null)
     }
 
     companion object {

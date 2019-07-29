@@ -2,9 +2,7 @@ package andi.android.madegdk.provider
 
 import andi.android.madegdk.database.DatabaseContract
 import andi.android.madegdk.database.DatabaseContract.Companion.AUTHORITY
-import andi.android.madegdk.database.DatabaseContract.FavoriteMoviesColumn.Companion.CONTENT_URI
 import andi.android.madegdk.database.DatabaseContract.FavoriteMoviesColumn.Companion.TABLE_FAVORITE_MOVIE
-import andi.android.madegdk.database.DatabaseContract.FavoriteTvSeriesColumn.Companion.CONTENT_URI
 import andi.android.madegdk.database.DatabaseContract.FavoriteTvSeriesColumn.Companion.TABLE_FAVORITE_TV_SERIES
 import andi.android.madegdk.database.FavoriteMovieHelper
 import andi.android.madegdk.database.FavoriteTvSeriesHelper
@@ -68,10 +66,12 @@ class FavoriteProvider : ContentProvider() {
         favoriteTvSeriesHelper?.open()
         val added: Long?
         if (sUriMatcher.match(uri) == FAVORITE_MOVIE) {
+            Log.d("MOVIE", "INSERT, $context")
             added = values?.let { favoriteMovieHelper?.insertProvider(it) }
 //            context?.contentResolver?.notifyChange(DatabaseContract.FavoriteMoviesColumn.CONTENT_URI, DataObserver(Handler(), context))
             return Uri.parse("${DatabaseContract.FavoriteMoviesColumn.CONTENT_URI}/$added")
         } else if (sUriMatcher.match(uri) == FAVORITE_TV_SERIES) {
+            Log.d("TV", "INSERT, $context")
             added = values?.let { favoriteTvSeriesHelper?.insertProvider(it) }
             context?.contentResolver?.notifyChange(DatabaseContract.FavoriteTvSeriesColumn.CONTENT_URI, DataObserver(Handler(), context))
             return Uri.parse("${DatabaseContract.FavoriteTvSeriesColumn.CONTENT_URI}/$added")
@@ -93,15 +93,30 @@ class FavoriteProvider : ContentProvider() {
     }
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
-        Log.d("MOVIE", "delete")
+//        Log.d("MOVIE", "delete")
+//        favoriteMovieHelper?.open()
+//        favoriteTvSeriesHelper?.open()
+//        val deleted = when (sUriMatcher.match(uri)) {
+//            FAVORITE_MOVIE_ID -> favoriteMovieHelper?.deleteProvider(uri.lastPathSegment)
+//            FAVORITE_TV_SERIES_ID -> favoriteTvSeriesHelper!!.deleteProvider(uri.lastPathSegment)
+//            else -> 0
+//        }
+////        context?.contentResolver?.notifyChange(CONTENT_URI, DataObserver(Handler(), context))
+//        return deleted!!
         favoriteMovieHelper?.open()
         favoriteTvSeriesHelper?.open()
-        val deleted = when (sUriMatcher.match(uri)) {
-            FAVORITE_MOVIE_ID -> favoriteMovieHelper?.deleteProvider(uri.lastPathSegment)
-            FAVORITE_TV_SERIES_ID -> favoriteTvSeriesHelper!!.deleteProvider(uri.lastPathSegment)
-            else -> 0
+        val deleted: Int?
+        if (sUriMatcher.match(uri) == FAVORITE_MOVIE_ID) {
+            Log.d("MOVIE", "DELETE, $context")
+            deleted = favoriteMovieHelper?.deleteProvider(uri.lastPathSegment)
+//            context?.contentResolver?.notifyChange(DatabaseContract.FavoriteMoviesColumn.CONTENT_URI, DataObserver(Handler(), context))
+            return deleted!!
+        } else if (sUriMatcher.match(uri) == FAVORITE_TV_SERIES_ID) {
+            Log.d("TV", "DELETE, $context")
+            deleted = favoriteTvSeriesHelper!!.deleteProvider(uri.lastPathSegment)
+//            context?.contentResolver?.notifyChange(DatabaseContract.FavoriteTvSeriesColumn.CONTENT_URI, DataObserver(Handler(), context))
+            return deleted!!
         }
-//        context?.contentResolver?.notifyChange(CONTENT_URI, FavoriteMovieFragment.DataObserver(Handler(), context))
-        return deleted!!
+        return 0
     }
 }
