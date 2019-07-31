@@ -1,42 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeActivity">
-
-    <View
-        android:id="@+id/asd"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@color/colorPrimary" />
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            app:contentInsetStart="0dp">
-
-            <TextView
-                android:id="@+id/toolbarTitleTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_within_object"
-                android:layout_marginTop="18dp"
-                android:fontFamily="@font/the_blacklist"
-                android:text="@string/app_name"
-                android:textColor="@android:color/white"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-        </androidx.appcompat.widget.Toolbar>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
@@ -54,18 +26,10 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout
-        android:id="@+id/containerFL"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -3,24 +3,48 @@ package andi.android.madegdk.ui.home
 import andi.android.madegdk.R
 import andi.android.madegdk.ui.home.favorite.FavoriteFragment
 import andi.android.madegdk.ui.home.movie.MovieFragment
+import andi.android.madegdk.ui.home.search.SearchFragment
 import andi.android.madegdk.ui.home.tvseries.TvSeriesFragment
 import andi.android.madegdk.utils.LanguageManager
 import andi.android.madegdk.utils.isIndonesian
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_home.*
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        movieSearchListener?.sendQueryToSearchMovieFragment(query)
+        tvSeriesSearchListener?.sendQueryToSearchTvSeriesFragment(query)
+        return false
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+//        movieSearchListener?.sendQueryToSearchMovieFragment(newText)
+        return false
+    }
+
+    interface MovieSearchListener {
+        fun sendQueryToSearchMovieFragment(query: String?)
+    }
+
+    interface TvSeriesSearchListener {
+        fun sendQueryToSearchTvSeriesFragment(query: String?)
+    }
 
     private lateinit var homeViewPagerAdapter: HomeViewPagerAdapter
     private lateinit var languageManager: LanguageManager
+    private var movieSearchListener: MovieSearchListener? = null
+    private var tvSeriesSearchListener: TvSeriesSearchListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -39,6 +63,15 @@ class HomeActivity : AppCompatActivity() {
         setupViewPager(viewPager)
         tabLayout.setupWithViewPager(viewPager)
         viewPager.offscreenPageLimit = 2
+
+    }
+
+    fun setMovieQueryListener(movieSearchListener: MovieSearchListener) {
+        this.movieSearchListener = movieSearchListener
+    }
+
+    fun setTvSeriesQueryListener(tvSeriesSearchListener: TvSeriesSearchListener) {
+        this.tvSeriesSearchListener = tvSeriesSearchListener
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -49,6 +82,22 @@ class HomeActivity : AppCompatActivity() {
             menu?.getItem(0)?.icon = ContextCompat.getDrawable(this, R.drawable.ic_english)
         }
 
+        val menuSearch = menu?.findItem(R.id.search)
+        val searchView = menuSearch?.actionView as SearchView
+        searchView.setOnQueryTextListener(this)
+        searchView.setOnSearchClickListener {
+            viewPager.visibility = View.GONE
+            tabLayout.visibility = View.GONE
+            containerFL.visibility = View.VISIBLE
+            showSearch()
+        }
+        searchView.setOnCloseListener {
+            removeSearch()
+            viewPager.visibility = View.VISIBLE
+            tabLayout.visibility = View.VISIBLE
+            containerFL.visibility = View.GONE
+            false
+        }
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -66,7 +115,25 @@ class HomeActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    private lateinit var searchFragment: SearchFragment
+
+    private fun showSearch() {
+        searchFragment = SearchFragment()
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.containerFL, searchFragment, "FRAGMENT_SEARCH")
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+    }
+
+    private fun removeSearch() {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.remove(searchFragment).commitNowAllowingStateLoss()
+    }
+
     private fun showChangeLanguageDialog() {
+        Log.d("menu", "lang")
         val checkedItem: Int = if (isIndonesian(languageManager.getMyLang())) {
             1
         } else {

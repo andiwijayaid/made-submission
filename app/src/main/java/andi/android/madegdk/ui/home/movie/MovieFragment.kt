@@ -25,7 +25,9 @@ import kotlinx.android.synthetic.main.fragment_movie.view.*
 class MovieFragment : Fragment() {
 
     private lateinit var movieAdapter: MovieAdapter
-    private val extraMovie = "EXTRA_MOVIE"
+    companion object {
+        const val extraMovie = "EXTRA_MOVIE"
+    }
 
     private lateinit var movieViewModel: MovieViewModel
     private lateinit var movieView: View

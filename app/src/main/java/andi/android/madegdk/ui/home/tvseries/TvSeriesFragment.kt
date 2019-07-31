@@ -26,11 +26,14 @@ import java.util.*
 class TvSeriesFragment : Fragment() {
 
     private lateinit var tvSeriesAdapter: TvSeriesAdapter
-    private val extraTvSeries = "EXTRA_TV_SERIES"
 
     private lateinit var tvSeriesViewModel: TvSeriesViewModel
     private lateinit var tvSeriesView: View
     private var page = 1
+
+    companion object {
+        const val extraTvSeries = "EXTRA_TV_SERIES"
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -65,7 +68,6 @@ class TvSeriesFragment : Fragment() {
                 page = 1
                 tvSeriesViewModel.setTvSeries(resources.getString(R.string.language_code), page)
             }
-
         })
 
         return tvSeriesView

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/onFailLL"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_fileName="no_internet_connection.json"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/check_your_connection"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlAccentColor="@android:color/white"
+        app:srlEnableHeaderTranslationContent="true"
+        app:srlEnableLoadMore="true"
+        app:srlPrimaryColor="@color/colorPrimary">
+
+        <com.scwang.smartrefresh.header.BezierCircleHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/movieRV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/progressBar"
+        style="@style/SpinKitView.DoubleBounce"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:SpinKit_Color="@android:color/white" />
+
+</RelativeLayout>

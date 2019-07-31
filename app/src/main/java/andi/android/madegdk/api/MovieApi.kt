@@ -18,11 +18,25 @@ interface MovieApi {
             @Query("page") page: Int
     ): Call<MovieResponse>
 
+    @GET("3/search/movie")
+    fun searchMovies(
+            @Query("api_key") apiKey: String,
+            @Query("language") language: String,
+            @Query("query") query: String?
+    ): Call<MovieResponse>
+
     @GET("3/discover/tv")
     fun getTvSeries(
             @Query("api_key") apiKey: String,
             @Query("language") language: String,
             @Query("page") page: Int
+    ): Call<TvSeriesResponse>
+
+    @GET("3/search/tv")
+    fun searchTvSeries(
+            @Query("api_key") apiKey: String,
+            @Query("language") language: String,
+            @Query("query") query: String?
     ): Call<TvSeriesResponse>
 
     @GET("3/movie/{id}")

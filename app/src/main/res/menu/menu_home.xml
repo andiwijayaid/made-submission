@@ -7,6 +7,13 @@
         android:icon="@drawable/ic_english"
         android:orderInCategory="100"
         android:title="@string/language"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_search"
+        android:title="Search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom" />
 
 </menu>
