@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_search_tv_series.view.*
+import kotlinx.android.synthetic.main.fragment_search_tv_series.view.notFoundLL
 
 class SearchTvSeriesFragment : Fragment(), HomeActivity.TvSeriesSearchListener {
     override fun sendQueryToSearchTvSeriesFragment(query: String?) {
@@ -72,6 +73,9 @@ class SearchTvSeriesFragment : Fragment(), HomeActivity.TvSeriesSearchListener {
         searchTvSeriesView.refreshLayout.finishRefresh(true)
         searchTvSeriesView.refreshLayout.finishLoadMore(true)
         if (tvSeries != null) {
+            if (tvSeries.size == 0) {
+                searchTvSeriesView.notFoundLL.visibility = View.VISIBLE
+            }
             tvSeriesAdapter.setTvSeries(tvSeries)
             searchTvSeriesView.onFailLL.visibility = View.GONE
         } else {

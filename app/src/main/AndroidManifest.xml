@@ -3,6 +3,7 @@
     package="andi.android.madegdk">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <permission
         android:name="andi.android.madegdk.READ_DATABASE"
         android:protectionLevel="normal" />
@@ -17,6 +18,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver android:name=".widget.FavoriteMovieWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/favorite_movie_widget_info" />
+        </receiver>
+
         <activity android:name=".ui.home.tvseries.detail.TvSeriesDetailActivity" />
         <activity android:name=".ui.home.movie.detail.MovieDetailActivity" />
         <activity android:name=".ui.home.HomeActivity" />
@@ -37,6 +48,10 @@
             android:exported="true"
             android:readPermission="andi.android.madegdk.READ_DATABASE"
             android:writePermission="andi.android.madegdk.WRITE_DATABASE" />
+
+        <service
+            android:name=".widget.StackFavoriteMovieWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>
