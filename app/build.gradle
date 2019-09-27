@@ -29,6 +29,10 @@ android {
     }
 }
 
+ext {
+    work_manager_version = '1.0.1'
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -68,4 +72,7 @@ dependencies {
     // Lottie
     implementation 'com.airbnb.android:lottie:2.8.0'
     implementation 'com.sackcentury:shinebutton:1.0.0'
+
+    // Work manager
+    implementation "android.arch.work:work-runtime-ktx:$work_manager_version"
 }

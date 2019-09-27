@@ -31,4 +31,8 @@
     <string name="check_your_connection">cek konseksi Anda</string>
     <string name="fail">gagal</string>
     <string name="no_favorite">Tidak ada favorit</string>
+    <string name="seven_morning_notif_title">Halo Popflixer</string>
+    <string name="seven_morning_notif_message">Jangan lewatkan tontonan mu, ambil popcorn mu sekarang!</string>
+    <string name="eight_morning_notif_title">Spesial hari ini</string>
+    <string name="eight_morning_notif_message">Tontonan hari ini sudah rilis untuk kamu</string>
 </resources>

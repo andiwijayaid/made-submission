@@ -1,6 +1,8 @@
 package andi.android.madegdk.ui.home
 
 import andi.android.madegdk.R
+import andi.android.madegdk.reminder.EightInTheMorningReminder
+import andi.android.madegdk.reminder.SevenInTheMorningReminder
 import andi.android.madegdk.ui.home.favorite.FavoriteFragment
 import andi.android.madegdk.ui.home.movie.MovieFragment
 import andi.android.madegdk.ui.home.search.SearchFragment
@@ -8,6 +10,7 @@ import andi.android.madegdk.ui.home.tvseries.TvSeriesFragment
 import andi.android.madegdk.utils.LanguageManager
 import andi.android.madegdk.utils.isIndonesian
 import android.annotation.SuppressLint
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -46,6 +49,9 @@ class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private var movieSearchListener: MovieSearchListener? = null
     private var tvSeriesSearchListener: TvSeriesSearchListener? = null
 
+    private lateinit var sevenInTheMorningReminder: SevenInTheMorningReminder
+    private lateinit var eightInTheMorningReminder: EightInTheMorningReminder
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -64,6 +70,17 @@ class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         tabLayout.setupWithViewPager(viewPager)
         viewPager.offscreenPageLimit = 2
 
+        sevenInTheMorningReminder = SevenInTheMorningReminder()
+        eightInTheMorningReminder = EightInTheMorningReminder()
+
+        if (sevenInTheMorningReminder.isAlarmSet(this)) {
+            setAlarm()
+        }
+    }
+
+    private fun setAlarm() {
+        sevenInTheMorningReminder.setRepeatingAlarm(applicationContext)
+        eightInTheMorningReminder.setRepeatingAlarm(applicationContext)
     }
 
     fun setMovieQueryListener(movieSearchListener: MovieSearchListener) {
@@ -82,6 +99,12 @@ class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             menu?.getItem(0)?.icon = ContextCompat.getDrawable(this, R.drawable.ic_english)
         }
 
+        if (sevenInTheMorningReminder.isAlarmSet(this)) {
+            menu?.getItem(1)?.icon = ContextCompat.getDrawable(this, R.drawable.ic_notifications)
+        } else {
+            menu?.getItem(1)?.icon = ContextCompat.getDrawable(this, R.drawable.ic_notifications_off)
+        }
+
         val menuSearch = menu?.findItem(R.id.search)
         val searchView = menuSearch?.actionView as SearchView
         searchView.setOnQueryTextListener(this)
@@ -98,6 +121,7 @@ class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             containerFL.visibility = View.GONE
             false
         }
+
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -111,6 +135,19 @@ class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.language -> showChangeLanguageDialog()
+            R.id.notification -> {
+                val icon: Drawable?
+                if (sevenInTheMorningReminder.isAlarmSet(this)) {
+                    sevenInTheMorningReminder.cancelAlarm(this)
+                    eightInTheMorningReminder.cancelAlarm(this)
+
+                    icon = ContextCompat.getDrawable(this, R.drawable.ic_notifications_off)
+                } else {
+                    setAlarm()
+                    icon = ContextCompat.getDrawable(this, R.drawable.ic_notifications)
+                }
+                item.icon = icon
+            }
         }
         return super.onOptionsItemSelected(item)
     }

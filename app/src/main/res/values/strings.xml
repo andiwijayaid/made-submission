@@ -32,6 +32,8 @@
     <string name="not_available" translatable="false">NA</string>
     <string name="overview_format" tools:ignore="MissingTranslation">%1$s\n</string>
     <string name="no_favorite">No Favorite</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
+    <string name="seven_morning_notif_title">Hi Popflixer</string>
+    <string name="seven_morning_notif_message">Don\'t miss your show, get your popcorn now!</string>
+    <string name="eight_morning_notif_title">Today\'s special</string>
+    <string name="eight_morning_notif_message">Today\'s show has been released for you</string>
 </resources>
