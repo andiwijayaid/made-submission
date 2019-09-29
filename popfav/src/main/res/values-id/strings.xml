@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">POPFav</string>
+    <string name="language_code">id</string>
+    <string name="popcorn">popcorn</string>
+    <string name="title">Judul</string>
+    <string name="poster">poster</string>
+    <string name="rating">Penilaian</string>
+    <string name="date">Tanggal</string>
+    <string name="overview">Kilasan Singkat</string>
+    <string name="currency_sign">Rp</string>
+    <string name="not_available_sign">-</string>
+    <string name="budget">Anggaran</string>
+    <string name="revenue">Pendapatan</string>
+    <string name="watch_now">Nonton Sekarang</string>
+    <string name="watching">Nonton…</string>
+    <string name="runtime">Durasi</string>
+    <string name="min">min</string>
+    <string name="movie">Film</string>
+    <string name="series">Serial TV</string>
+    <string name="favorite">Favorit</string>
+    <string name="number_of_eps">Jumlah Episode</string>
+    <string name="number_of_season">Jumlah Musim</string>
+    <string name="_99">99</string>
+    <string name="eps">eps</string>
+    <string name="container">containter</string>
+    <string name="choose_language">Pilih Bahasa</string>
+    <string name="language">Bahasa</string>
+    <string name="english">Inggris</string>
+    <string name="indonesian">Indonesia</string>
+    <string name="check_your_connection">cek konseksi Anda</string>
+    <string name="fail">gagal</string>
+    <string name="no_favorite">Tidak ada favorit</string>
+    <string name="seven_morning_notif_title">Halo Popflixer</string>
+    <string name="seven_morning_notif_message">Jangan lewatkan tontonan mu, ambil popcorn mu sekarang!</string>
+    <string name="eight_morning_notif_title">Spesial hari ini</string>
+    <string name="eight_morning_notif_message">Tontonan hari ini sudah rilis untuk kamu</string>
+    <string name="daily_reminder_setting_title">Notifikasi Harian</string>
+    <string name="daily_reminder_setting_message">Aku akan mengingatkan kamu setiap harinya. Jangan sampai ketinggalan update terbaru.</string>
+    <string name="release_reminder_setting_title">Notifikasi Film Terbaru</string>
+    <string name="release_reminder_setting_message">Kami akan mengirimkan film terbaru setiap harinya</string>
+    <string name="search">Pencarian</string>
+    <string name="setting">Pengaturan</string>
+</resources>

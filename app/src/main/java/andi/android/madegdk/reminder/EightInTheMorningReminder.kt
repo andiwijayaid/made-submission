@@ -1,7 +1,6 @@
 package andi.android.madegdk.reminder
 
 import andi.android.madegdk.R
-import andi.android.madegdk.ui.home.HomeActivity
 import andi.android.madegdk.ui.home.releasetoday.ReleaseTodayActivity
 import android.app.*
 import android.content.BroadcastReceiver
@@ -96,6 +95,12 @@ class EightInTheMorningReminder: BroadcastReceiver() {
         alarmManager.cancel(pendingIntent)
 
         Log.d("STAT", "CANCEL")
+    }
+
+    fun isAlarmSet(context: Context): Boolean {
+        val intent = Intent(context, EightInTheMorningReminder::class.java)
+
+        return PendingIntent.getBroadcast(context, REQUEST_CODE, intent, PendingIntent.FLAG_NO_CREATE) != null
     }
 
     private val REQUEST_CODE = 102

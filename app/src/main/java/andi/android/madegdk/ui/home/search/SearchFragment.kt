@@ -1,13 +1,10 @@
 package andi.android.madegdk.ui.home.search
 
 import andi.android.madegdk.R
-import andi.android.madegdk.ui.home.movie.MovieFragment
 import andi.android.madegdk.ui.home.search.movie.SearchMovieFragment
 import andi.android.madegdk.ui.home.search.tvseries.SearchTvSeriesFragment
-import andi.android.madegdk.ui.home.tvseries.TvSeriesFragment
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

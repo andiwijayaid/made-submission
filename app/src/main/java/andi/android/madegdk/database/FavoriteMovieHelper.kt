@@ -1,7 +1,6 @@
 package andi.android.madegdk.database
 
 import andi.android.madegdk.database.DatabaseContract.FavoriteMoviesColumn.Companion.MOVIE_ID
-import andi.android.madegdk.database.DatabaseContract.FavoriteMoviesColumn.Companion.POSTER
 import andi.android.madegdk.database.DatabaseContract.FavoriteMoviesColumn.Companion.TABLE_FAVORITE_MOVIE
 import android.content.ContentValues
 import android.content.Context

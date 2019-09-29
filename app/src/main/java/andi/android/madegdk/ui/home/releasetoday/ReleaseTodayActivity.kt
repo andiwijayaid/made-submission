@@ -4,9 +4,9 @@ import andi.android.madegdk.R
 import andi.android.madegdk.database.DatabaseContract
 import andi.android.madegdk.model.Movie
 import andi.android.madegdk.ui.home.movie.MovieFragment
-import andi.android.madegdk.ui.home.movie.MovieViewModel
 import andi.android.madegdk.ui.home.movie.adapter.MovieAdapter
 import andi.android.madegdk.ui.home.movie.detail.MovieDetailActivity
+import andi.android.madegdk.utils.getCurrentDate
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -18,19 +18,12 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_release_today.*
-import kotlinx.android.synthetic.main.fragment_movie.*
-import kotlinx.android.synthetic.main.fragment_movie.view.*
 
 class ReleaseTodayActivity : AppCompatActivity() {
 
     private lateinit var movieAdapter: MovieAdapter
 
-    companion object {
-        const val extraMovie = "EXTRA_MOVIE"
-    }
-
     private lateinit var movieViewModel: ReleaseTodayMovieViewModel
-    private var page = 1
 
     private lateinit var movies: ArrayList<Movie>
 
@@ -52,20 +45,27 @@ class ReleaseTodayActivity : AppCompatActivity() {
 
         movieViewModel = ViewModelProviders.of(this).get(ReleaseTodayMovieViewModel::class.java)
         if (movieViewModel.countRetrievedMovies() == null) {
-            movieViewModel.setMovies(resources.getString(R.string.language_code), "2019-09-28")
-//            showLoading(true)
+            movieViewModel.setMovies(resources.getString(R.string.language_code), getCurrentDate())
+            showLoading(true)
         }
         movieViewModel.getMovies().observe(this, getMovies)
     }
 
     private val getMovies = Observer<ArrayList<Movie>> { movies ->
         this.movies = movies
+        showLoading(false)
         if (movies != null) {
             movieAdapter.setMovies(movies)
-//            onFailLL.visibility = View.GONE
         } else {
-//            onFailLL.visibility = View.VISIBLE
             Toast.makeText(this, resources.getString(R.string.check_your_connection), Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun showLoading(state: Boolean) {
+        if (state) {
+            progressBar.visibility = View.VISIBLE
+        } else {
+            progressBar.visibility = View.GONE
         }
     }
 }

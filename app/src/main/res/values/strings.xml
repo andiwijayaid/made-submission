@@ -36,4 +36,11 @@
     <string name="seven_morning_notif_message">Don\'t miss your show, get your popcorn now!</string>
     <string name="eight_morning_notif_title">Today\'s special</string>
     <string name="eight_morning_notif_message">Today\'s show has been released for you</string>
+
+    <string name="daily_reminder_setting_title">Daily Reminder</string>
+    <string name="daily_reminder_setting_message">I will say hello to you every morning. Don\'t miss every update!</string>
+    <string name="release_reminder_setting_title">Release Reminder</string>
+    <string name="release_reminder_setting_message">We will give you notification for daily released movie</string>
+    <string name="search">Search</string>
+    <string name="setting">Setting</string>
 </resources>

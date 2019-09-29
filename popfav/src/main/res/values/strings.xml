@@ -1,0 +1,46 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">POPFav</string>
+    <string name="language_code">en-US</string>
+    <string name="popcorn">popcorn</string>
+    <string name="title">Title</string>
+    <string name="poster">poster</string>
+    <string name="rating">Rating</string>
+    <string name="date">Date</string>
+    <string name="overview">Overview</string>
+    <string name="currency_sign">$</string>
+    <string name="not_available_sign">-</string>
+    <string name="budget">Budget</string>
+    <string name="revenue">Revenue</string>
+    <string name="watch_now">Watch Now</string>
+    <string name="watching">Watching…</string>
+    <string name="runtime">Runtime</string>
+    <string name="min">min</string>
+    <string name="movie">Movie</string>
+    <string name="series">TV Series</string>
+    <string name="favorite">Favorite</string>
+    <string name="number_of_eps">No of Episode</string>
+    <string name="number_of_season">No of Season</string>
+    <string name="_99">99</string>
+    <string name="eps">eps</string>
+    <string name="container">containter</string>
+    <string name="choose_language">Choose Language</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="indonesian">Indonesian</string>
+    <string name="check_your_connection">check your connection</string>
+    <string name="fail">fail</string>
+    <string name="not_available" translatable="false">NA</string>
+    <string name="overview_format" tools:ignore="MissingTranslation">%1$s\n</string>
+    <string name="no_favorite">No Favorite</string>
+    <string name="seven_morning_notif_title">Hi Popflixer</string>
+    <string name="seven_morning_notif_message">Don\'t miss your show, get your popcorn now!</string>
+    <string name="eight_morning_notif_title">Today\'s special</string>
+    <string name="eight_morning_notif_message">Today\'s show has been released for you</string>
+
+    <string name="daily_reminder_setting_title">Daily Reminder</string>
+    <string name="daily_reminder_setting_message">I will say hello to you every morning. Don\'t miss every update!</string>
+    <string name="release_reminder_setting_title">Release Reminder</string>
+    <string name="release_reminder_setting_message">We will give you notification for daily released movie</string>
+    <string name="search">Search</string>
+    <string name="setting">Setting</string>
+</resources>

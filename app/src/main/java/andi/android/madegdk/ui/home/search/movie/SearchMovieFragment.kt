@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_search_movie.*
 import kotlinx.android.synthetic.main.fragment_search_movie.view.*
-import kotlinx.android.synthetic.main.fragment_search_movie.view.notFoundLL
 
 class SearchMovieFragment : Fragment(), HomeActivity.MovieSearchListener {
     override fun sendQueryToSearchMovieFragment(query: String?) {

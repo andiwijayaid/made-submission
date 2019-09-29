@@ -1,7 +1,10 @@
 package andi.android.madegdk.utils
 
+import android.annotation.SuppressLint
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun convertToCurrency(money: String?): String {
     val nf = NumberFormat.getCurrencyInstance()
@@ -28,4 +31,11 @@ fun convertToRupiah(dollar: String): String {
 
 fun isIndonesian(myLang: String?): Boolean {
     return myLang == "in"
+}
+
+@SuppressLint("SimpleDateFormat")
+fun getCurrentDate(): String {
+    val calendar = Calendar.getInstance().time
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+    return dateFormat.format(calendar)
 }

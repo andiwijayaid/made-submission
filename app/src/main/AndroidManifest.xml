@@ -20,6 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.home.setting.SettingActivity"></activity>
 
         <receiver android:name=".widget.FavoriteMovieWidget">
             <intent-filter>
@@ -38,7 +39,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.home.HomeActivity" />
         </activity>
-
         <activity android:name=".ui.home.tvseries.detail.TvSeriesDetailActivity" />
         <activity android:name=".ui.home.movie.detail.MovieDetailActivity" />
         <activity

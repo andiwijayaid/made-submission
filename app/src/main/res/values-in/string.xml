@@ -35,4 +35,10 @@
     <string name="seven_morning_notif_message">Jangan lewatkan tontonan mu, ambil popcorn mu sekarang!</string>
     <string name="eight_morning_notif_title">Spesial hari ini</string>
     <string name="eight_morning_notif_message">Tontonan hari ini sudah rilis untuk kamu</string>
+    <string name="daily_reminder_setting_title">Notifikasi Harian</string>
+    <string name="daily_reminder_setting_message">Aku akan mengingatkan kamu setiap harinya. Jangan sampai ketinggalan update terbaru.</string>
+    <string name="release_reminder_setting_title">Notifikasi Film Terbaru</string>
+    <string name="release_reminder_setting_message">Kami akan mengirimkan film terbaru setiap harinya</string>
+    <string name="search">Pencarian</string>
+    <string name="setting">Pengaturan</string>
 </resources>
