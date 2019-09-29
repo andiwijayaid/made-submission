@@ -17,18 +17,23 @@ import andi.android.madegdk.ui.home.favorite.movie.FavoriteMovieFragment.Compani
 import andi.android.madegdk.ui.home.favorite.movie.FavoriteMovieFragment.Companion.EXTRA_MOVIE
 import andi.android.madegdk.ui.home.favorite.movie.FavoriteMovieFragment.Companion.EXTRA_POSITION
 import andi.android.madegdk.utils.*
+import andi.android.madegdk.widget.FavoriteMovieWidget
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
+import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_movie_detail.*
+
 
 class MovieDetailActivity : AppCompatActivity() {
 
@@ -107,7 +112,30 @@ class MovieDetailActivity : AppCompatActivity() {
                 contentResolver.delete(intent.data, null, null)
             }
             sendResult()
+            updateFavoriteMovieWidget()
         }
+    }
+
+    private fun updateFavoriteMovieWidget() {
+//        val appWidgetManager = AppWidgetManager.getInstance(this)
+//        val remoteViews = RemoteViews(packageName, R.layout.favorite_movie_widget)
+//        val componentName = ComponentName(this, FavoriteMovieWidget::class.java)
+//        appWidgetManager.updateAppWidget(componentName, remoteViews)
+
+//        val intent = Intent(this, FavoriteMovieWidget::class.java)
+//        intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+//        val ids = AppWidgetManager.getInstance(application).getAppWidgetIds(ComponentName(application, FavoriteMovieWidget::class.java))
+//        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+//        sendBroadcast(intent)
+
+        val manager = AppWidgetManager.getInstance(this)
+        val view = RemoteViews(packageName, R.layout.widget_favorite_movie_item)
+        val theWidget = ComponentName(this, FavoriteMovieWidget::class.java)
+        manager.updateAppWidget(theWidget, view)
+
+//        val appWidgetManager = AppWidgetManager.getInstance(this)
+//        val ids = AppWidgetManager.getInstance(application).getAppWidgetIds(ComponentName(application, FavoriteMovieWidget::class.java))
+//        appWidgetManager.notifyAppWidgetViewDataChanged(ids, R.layout.favorite_movie_widget)
     }
 
     private fun sendResult() {

@@ -3,7 +3,6 @@
     package="andi.android.madegdk">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
@@ -21,6 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <receiver android:name=".widget.FavoriteMovieWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -31,9 +31,19 @@
                 android:resource="@xml/favorite_movie_widget_info" />
         </receiver>
 
+        <activity
+            android:name=".ui.home.releasetoday.ReleaseTodayActivity"
+            android:parentActivityName=".ui.home.HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.home.HomeActivity" />
+        </activity>
+
         <activity android:name=".ui.home.tvseries.detail.TvSeriesDetailActivity" />
         <activity android:name=".ui.home.movie.detail.MovieDetailActivity" />
-        <activity android:name=".ui.home.HomeActivity" />
+        <activity
+            android:name=".ui.home.HomeActivity"
+            android:launchMode="singleTop" />
         <activity
             android:name=".ui.launcher.MainActivity"
             android:screenOrientation="portrait"
@@ -60,7 +70,6 @@
             android:name=".reminder.SevenInTheMorningReminder"
             android:enabled="true"
             android:exported="true" />
-
         <receiver
             android:name=".reminder.EightInTheMorningReminder"
             android:enabled="true"

@@ -1,24 +1,53 @@
 package andi.android.madegdk.widget
 
+import andi.android.madegdk.BuildConfig
 import andi.android.madegdk.R
+import andi.android.madegdk.database.FavoriteMovieHelper
+import andi.android.madegdk.helper.mapFavoriteMovieCursorToArrayList
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
 
-class StackRemoteFavoriteMovieViewsFactory(private val mContext: Context): RemoteViewsService.RemoteViewsFactory {
+
+class StackRemoteFavoriteMovieViewsFactory(private val mContext: Context) : RemoteViewsService.RemoteViewsFactory {
 
     private val mWidgetItems = arrayListOf<Bitmap>()
 
     override fun onCreate() {}
 
+    private fun getBitmapFromURL(src: String): Bitmap? {
+        return try {
+            val url = URL(src)
+            val connection = url.openConnection() as HttpURLConnection
+            connection.setDoInput(true)
+            connection.connect()
+            val input = connection.getInputStream()
+            BitmapFactory.decodeStream(input)
+        } catch (e: IOException) {
+            // Log exception
+            null
+        }
+    }
+
     override fun onDataSetChanged() {
-        mWidgetItems.add(BitmapFactory.decodeResource(mContext.resources, R.drawable.ic_indonesian))
-        mWidgetItems.add(BitmapFactory.decodeResource(mContext.resources, R.drawable.ic_english))
-        mWidgetItems.add(BitmapFactory.decodeResource(mContext.resources, R.drawable.ic_launcher_foreground))
+        val favoriteMovieHelper = FavoriteMovieHelper.getInstance(mContext)
+        val favoriteMovieCursor = favoriteMovieHelper?.queryProvider()
+        val favoriteMovies = mapFavoriteMovieCursorToArrayList(favoriteMovieCursor)
+        if (favoriteMovies.size > 0) {
+            Log.d("AS", "SA")
+            for (i in 0 until favoriteMovies.size) {
+                getBitmapFromURL("${BuildConfig.IMAGE_URL}t/p/w185${favoriteMovies[i].poster}")?.let { mWidgetItems.add(it) }
+                Log.d("URL", favoriteMovies[i].poster)
+            }
+        }
     }
 
     override fun onDestroy() {}
@@ -29,11 +58,11 @@ class StackRemoteFavoriteMovieViewsFactory(private val mContext: Context): Remot
         val remoteViews = RemoteViews(mContext.packageName, R.layout.widget_favorite_movie_item)
         remoteViews.setImageViewBitmap(
                 R.id.imageView,
-                mWidgetItems.get(position)
+                mWidgetItems[position]
         )
 
         val extras = Bundle()
-        extras.putInt(mContext.packageName, R.layout.widget_favorite_movie_item)
+        extras.putInt(mContext.packageName, position)
         val fillInIntent = Intent()
         fillInIntent.putExtras(extras)
 

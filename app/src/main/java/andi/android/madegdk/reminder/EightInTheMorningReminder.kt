@@ -1,10 +1,9 @@
 package andi.android.madegdk.reminder
 
 import andi.android.madegdk.R
-import android.app.AlarmManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import andi.android.madegdk.ui.home.HomeActivity
+import andi.android.madegdk.ui.home.releasetoday.ReleaseTodayActivity
+import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -46,8 +45,14 @@ class EightInTheMorningReminder: BroadcastReceiver() {
 
     private fun showNotification(context: Context?, title: String?, message: String?, notificationId: Int) {
 
-        val CHANNEL_ID = "CHANNEL_WEEKLY"
-        val CHANNEL_NAME = "7 in the morning notification"
+        val CHANNEL_ID = "CHANNEL_EIGHT"
+        val CHANNEL_NAME = "8 in the morning notification"
+
+        val notificationIntent = Intent(context, ReleaseTodayActivity::class.java)
+        val pendingIntent = TaskStackBuilder.create(context)
+                .addParentStack(ReleaseTodayActivity::class.java)
+                .addNextIntent(notificationIntent)
+                .getPendingIntent(110, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val notificationManagerCompat = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
@@ -58,6 +63,8 @@ class EightInTheMorningReminder: BroadcastReceiver() {
                 .setColor(ContextCompat.getColor(context, android.R.color.black))
                 .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
                 .setSound(alarmSound)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 

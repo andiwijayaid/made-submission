@@ -52,4 +52,12 @@ interface MovieApi {
             @Query("api_key") apiKey: String,
             @Query("language") language: String
     ): Call<TvSeriesDetailResponse>
+
+    @GET("3/discover/movie")
+    fun getTodayReleasedMovie(
+            @Query("api_key") apiKey: String,
+            @Query("language") language: String,
+            @Query("primary_release_date.gte") releaseDateGte: String,
+            @Query("primary_release_date.ite") releaseDateIte: String
+    ): Call<MovieResponse>
 }

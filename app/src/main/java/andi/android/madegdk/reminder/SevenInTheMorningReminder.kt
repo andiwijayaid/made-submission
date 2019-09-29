@@ -46,7 +46,7 @@ class SevenInTheMorningReminder : BroadcastReceiver() {
 
     private fun showNotification(context: Context?, title: String?, message: String?, notificationId: Int) {
 
-        val CHANNEL_ID = "CHANNEL_WEEKLY"
+        val CHANNEL_ID = "CHANNEL_SEVEN"
         val CHANNEL_NAME = "7 in the morning notification"
 
         val notificationIntent = Intent(context, HomeActivity::class.java)
@@ -62,6 +62,7 @@ class SevenInTheMorningReminder : BroadcastReceiver() {
                 .setColor(ContextCompat.getColor(context, android.R.color.black))
                 .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
                 .setSound(alarmSound)
+                .setAutoCancel(true)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 

@@ -1,14 +1,13 @@
 package andi.android.madegdk.widget
 
+import andi.android.madegdk.R
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
-import android.widget.RemoteViews
-
-import andi.android.madegdk.R
-import android.app.PendingIntent
 import android.content.Intent
 import android.net.Uri
+import android.widget.RemoteViews
 import android.widget.Toast
 
 /**
@@ -16,8 +15,8 @@ import android.widget.Toast
  */
 class FavoriteMovieWidget : AppWidgetProvider() {
 
-    internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager,
-                                 appWidgetId: Int) {
+    private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager,
+                                appWidgetId: Int) {
 
         val intent = Intent(context, StackFavoriteMovieWidgetService::class.java)
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
@@ -37,18 +36,20 @@ class FavoriteMovieWidget : AppWidgetProvider() {
         appWidgetManager.updateAppWidget(appWidgetId, views)
     }
 
-    override fun onReceive(context: Context?, intent: Intent?) {
-        super.onReceive(context, intent)
-        if (intent?.action != null) {
-            val viewIndex = intent.getIntExtra(EXTRA_FAVORITE_MOVIE, 0)
-            Toast.makeText(context, "Touched view $viewIndex", Toast.LENGTH_SHORT).show()
-        }
-    }
-
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         // There may be multiple widgets active, so update all of them
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId)
+        }
+    }
+
+    override fun onReceive(context: Context?, intent: Intent?) {
+        super.onReceive(context, intent)
+        if (intent?.action != null) {
+            if (intent.action == TOAST_ACTION) {
+                val viewIndex = intent.getIntExtra(EXTRA_FAVORITE_MOVIE, 0)
+                Toast.makeText(context, "Touched view $viewIndex", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
