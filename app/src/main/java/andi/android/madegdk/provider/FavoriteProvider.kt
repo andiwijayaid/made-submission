@@ -66,12 +66,10 @@ class FavoriteProvider : ContentProvider() {
         favoriteTvSeriesHelper?.open()
         val added: Long?
         if (sUriMatcher.match(uri) == FAVORITE_MOVIE) {
-            Log.d("MOVIE", "INSERT, $context")
             added = values?.let { favoriteMovieHelper?.insertProvider(it) }
 //            context?.contentResolver?.notifyChange(DatabaseContract.FavoriteMoviesColumn.CONTENT_URI, DataObserver(Handler(), context))
             return Uri.parse("${DatabaseContract.FavoriteMoviesColumn.CONTENT_URI}/$added")
         } else if (sUriMatcher.match(uri) == FAVORITE_TV_SERIES) {
-            Log.d("TV", "INSERT, $context")
             added = values?.let { favoriteTvSeriesHelper?.insertProvider(it) }
             context?.contentResolver?.notifyChange(DatabaseContract.FavoriteTvSeriesColumn.CONTENT_URI, DataObserver(Handler(), context))
             return Uri.parse("${DatabaseContract.FavoriteTvSeriesColumn.CONTENT_URI}/$added")
@@ -80,7 +78,6 @@ class FavoriteProvider : ContentProvider() {
     }
 
     override fun update(uri: Uri, values: ContentValues?, selection: String?, selectionArgs: Array<String>?): Int {
-        Log.d("MOVIE", "update")
         favoriteMovieHelper?.open()
         favoriteTvSeriesHelper?.open()
         val updated = when (sUriMatcher.match(uri)) {
@@ -93,28 +90,14 @@ class FavoriteProvider : ContentProvider() {
     }
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
-//        Log.d("MOVIE", "delete")
-//        favoriteMovieHelper?.open()
-//        favoriteTvSeriesHelper?.open()
-//        val deleted = when (sUriMatcher.match(uri)) {
-//            FAVORITE_MOVIE_ID -> favoriteMovieHelper?.deleteProvider(uri.lastPathSegment)
-//            FAVORITE_TV_SERIES_ID -> favoriteTvSeriesHelper!!.deleteProvider(uri.lastPathSegment)
-//            else -> 0
-//        }
-////        context?.contentResolver?.notifyChange(CONTENT_URI, DataObserver(Handler(), context))
-//        return deleted!!
         favoriteMovieHelper?.open()
         favoriteTvSeriesHelper?.open()
         val deleted: Int?
         if (sUriMatcher.match(uri) == FAVORITE_MOVIE_ID) {
-            Log.d("MOVIE", "DELETE, $context")
             deleted = favoriteMovieHelper?.deleteProvider(uri.lastPathSegment)
-//            context?.contentResolver?.notifyChange(DatabaseContract.FavoriteMoviesColumn.CONTENT_URI, DataObserver(Handler(), context))
             return deleted!!
         } else if (sUriMatcher.match(uri) == FAVORITE_TV_SERIES_ID) {
-            Log.d("TV", "DELETE, $context")
             deleted = favoriteTvSeriesHelper!!.deleteProvider(uri.lastPathSegment)
-//            context?.contentResolver?.notifyChange(DatabaseContract.FavoriteTvSeriesColumn.CONTENT_URI, DataObserver(Handler(), context))
             return deleted!!
         }
         return 0

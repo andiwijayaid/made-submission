@@ -25,7 +25,6 @@ import kotlinx.android.synthetic.main.fragment_search_movie.view.*
 
 class SearchMovieFragment : Fragment(), HomeActivity.MovieSearchListener {
     override fun sendQueryToSearchMovieFragment(query: String?) {
-        Log.d("QUERY M", query)
         this.query = query.toString()
         searchMovieViewModel.setMovies(resources.getString(R.string.language_code), query)
         showLoading(true)

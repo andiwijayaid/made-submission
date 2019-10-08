@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.fragment_search_tv_series.view.*
 
 class SearchTvSeriesFragment : Fragment(), HomeActivity.TvSeriesSearchListener {
     override fun sendQueryToSearchTvSeriesFragment(query: String?) {
-        Log.d("QUERY TV", query)
         this.query = query.toString()
         searchTvSeriesViewModel.setTvSeries(resources.getString(R.string.language_code), query)
         showLoading(true)

@@ -42,10 +42,8 @@ class StackRemoteFavoriteMovieViewsFactory(private val mContext: Context) : Remo
         val favoriteMovieCursor = favoriteMovieHelper?.queryProvider()
         val favoriteMovies = mapFavoriteMovieCursorToArrayList(favoriteMovieCursor)
         if (favoriteMovies.size > 0) {
-            Log.d("AS", "SA")
             for (i in 0 until favoriteMovies.size) {
                 getBitmapFromURL("${BuildConfig.IMAGE_URL}t/p/w185${favoriteMovies[i].poster}")?.let { mWidgetItems.add(it) }
-                Log.d("URL", favoriteMovies[i].poster)
             }
         }
     }

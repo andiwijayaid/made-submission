@@ -27,7 +27,6 @@ class EightInTheMorningReminder: BroadcastReceiver() {
 
     fun setRepeatingAlarm(context: Context) {
 
-        Log.d("AS", "MASUK")
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, EightInTheMorningReminder::class.java)
 
@@ -39,7 +38,6 @@ class EightInTheMorningReminder: BroadcastReceiver() {
         val pendingIntent = PendingIntent.getBroadcast(context, REQUEST_CODE, intent, 0)
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
 
-        Log.d("STAT", "SET")
     }
 
     private fun showNotification(context: Context?, title: String?, message: String?, notificationId: Int) {
@@ -94,7 +92,6 @@ class EightInTheMorningReminder: BroadcastReceiver() {
 
         alarmManager.cancel(pendingIntent)
 
-        Log.d("STAT", "CANCEL")
     }
 
     fun isAlarmSet(context: Context): Boolean {

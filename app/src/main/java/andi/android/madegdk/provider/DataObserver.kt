@@ -10,7 +10,6 @@ import android.util.Log
 class DataObserver(handler: Handler, private val context: Context?) : ContentObserver(handler) {
     override fun onChange(selfChange: Boolean) {
         super.onChange(selfChange)
-        Log.d("CTX", context.toString())
         if (context != null) {
 //            FavoriteMovieFragment.LoadFavoriteMoviesAsync(context, context as LoadFavoriteMoviesCallback).execute()
             FavoriteTvSeriesFragment.LoadFavoriteTvSeriesAsync(context, context as LoadFavoriteTvSeriesCallback).execute()

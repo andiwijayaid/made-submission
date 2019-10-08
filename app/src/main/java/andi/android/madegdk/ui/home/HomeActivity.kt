@@ -159,7 +159,6 @@ class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     }
 
     private fun showChangeLanguageDialog() {
-        Log.d("menu", "lang")
         val checkedItem: Int = if (isIndonesian(languageManager.getMyLang())) {
             1
         } else {

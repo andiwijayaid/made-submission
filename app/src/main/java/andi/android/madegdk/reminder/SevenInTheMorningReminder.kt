@@ -11,13 +11,13 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import java.util.*
 
-
 class SevenInTheMorningReminder : BroadcastReceiver() {
+
+    private val REQUEST_CODE = 101
 
     override fun onReceive(context: Context?, intent: Intent?) {
 
@@ -26,22 +26,6 @@ class SevenInTheMorningReminder : BroadcastReceiver() {
         val notifId = REQUEST_CODE
 
         showNotification(context, title, message, notifId)
-    }
-
-    fun setRepeatingAlarm(context: Context) {
-
-        Log.d("AS", "MASUK")
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(context, SevenInTheMorningReminder::class.java)
-
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, 7)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-
-        val pendingIntent = PendingIntent.getBroadcast(context, REQUEST_CODE, intent, 0)
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
-
     }
 
     private fun showNotification(context: Context?, title: String?, message: String?, notificationId: Int) {
@@ -56,8 +40,8 @@ class SevenInTheMorningReminder : BroadcastReceiver() {
         val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
                 .setContentIntent(pendingIntent)
-                .setContentTitle(title)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle(title)
                 .setContentText(message)
                 .setColor(ContextCompat.getColor(context, android.R.color.black))
                 .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
@@ -76,10 +60,26 @@ class SevenInTheMorningReminder : BroadcastReceiver() {
             builder.setChannelId(CHANNEL_ID)
 
             notificationManagerCompat.createNotificationChannel(channel)
+
         }
 
         val notification = builder.build()
         notificationManagerCompat.notify(notificationId, notification)
+
+    }
+
+    fun setRepeatingAlarm(context: Context) {
+
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, SevenInTheMorningReminder::class.java)
+
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, 7)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+
+        val pendingIntent = PendingIntent.getBroadcast(context, REQUEST_CODE, intent, 0)
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
 
     }
 
@@ -98,7 +98,5 @@ class SevenInTheMorningReminder : BroadcastReceiver() {
 
         return PendingIntent.getBroadcast(context, REQUEST_CODE, intent, PendingIntent.FLAG_NO_CREATE) != null
     }
-
-    private val REQUEST_CODE = 101
 
 }
